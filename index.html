@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<h1>Hello World</h1>
+<p>I'm hosted with GitHub Pages.</p>
+</body>
+<script type="text/javascript">
+	function serviceWork () {
+			// testando se existe suport
+			if ( 'serviceWorker' in navigator ) {
+				navigator.serviceWorker.register('https://github.com/adelsonguimaraes/cfp/blob/master/libs/js/app.js').then(function() {
+					console.log( 'ServiceWorker registration Success!' );
+				}).catch(function(err){
+					console.log( 'ServiceWorker registration failed' + err );
+				});
+			}
+		};
+
+		serviceWork();
+</script>
+</html>
