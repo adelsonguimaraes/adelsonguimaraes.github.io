@@ -1,18 +1,20 @@
 /*
     Variável de conmfiguração
 */
-var cacheName = 'sw-v3';
+var cacheName = 'sw-v4';
+
 // var host = 'http://127.0.0.1/adelsonguimaraes.github.io/';
 var host = 'https://adelsonguimaraes.github.io/';
 
 var filesToCache = [
-    host + 'index.html',
+    
     host + 'libs/css/bootstrap/bootstrap.min.css',
     host + 'libs/js/jquery/jquery.min.js',
     host + 'libs/js/bootstrap/bootstrap.min.js',
     host + 'libs/js/angular/angular.min.js',
     host + 'libs/js/app.js',
-    host + 'libs/js/controllers/mainCtrl.js'
+    host + 'libs/js/controllers/mainCtrl.js',
+    host + 'index.html'
 ];
 
 self.addEventListener('install', function (e) {
@@ -30,6 +32,7 @@ self.addEventListener('install', function (e) {
 
 self.addEventListener('activate', function (e) {
     e.waitUntil(
+        console.log('Sua versaão atual é ' + cacheName),
         caches.keys().then(function (keyList) {
             return Promise.all(keyList.map(function(key){
                 if ( key !== cacheName ) return caches.delete(key)

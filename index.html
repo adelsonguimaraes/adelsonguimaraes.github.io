@@ -113,9 +113,6 @@
 					console.log( 'ServiceWorker registration Success!' );
 					registration.update();
 				}).catch(function(err){
-					// if ( err.indexOf('404')  ) {
-					// 	alert('Arquivo não encontrado');
-					// }
 					console.log( 'Erro : ' + err );
 				}),
 				navigator.serviceWorker.oncontrollerchange = function () {
