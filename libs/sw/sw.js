@@ -1,14 +1,16 @@
 /*
     Variável de conmfiguração
 */
-var cacheName = 'cache-name-123456';
+var cacheName = 'sw-v1';
 // var host = 'http://127.0.0.1/adelsonguimaraes.github.io/';
 var host = 'https://adelsonguimaraes.github.io/';
 
 var filesToCache = [
     host + 'index.html',
     host + 'libs/css/bootstrap/bootstrap.min.css',
-    host + 'libs/js/bootstrap/bootstrap.min.js'
+    host + 'libs/js/jquery/jquery.min.js',
+    host + 'libs/js/bootstrap/bootstrap.min.js',
+    host + 'libs/js/angular/angular.min.js'
 ];
 
 self.addEventListener('install', function (e) {
