@@ -9,7 +9,7 @@
 	function serviceWork () {
 			// testando se existe suport
 			if ( 'serviceWorker' in navigator ) {
-				navigator.serviceWorker.register('https://github.com/adelsonguimaraes/cfp/blob/master/libs/js/app.js').then(function() {
+				navigator.serviceWorker.register('libs/js/angular/angular.min.js').then(function() {
 					console.log( 'ServiceWorker registration Success!' );
 				}).catch(function(err){
 					console.log( 'ServiceWorker registration failed' + err );
