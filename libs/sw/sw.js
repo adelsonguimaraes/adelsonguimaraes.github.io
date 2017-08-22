@@ -2,7 +2,8 @@
     Variável de conmfiguração
 */
 var cacheName = 'cache-name-123456';
-var host = 'http://127.0.0.1/adelsonguimaraes.github.io/';
+// var host = 'http://127.0.0.1/adelsonguimaraes.github.io/';
+var host = 'http://adelsonguimaraes.github.io/';
 
 var filesToCache = [
     host + 'index.html',
