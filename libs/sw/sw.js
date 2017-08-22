@@ -10,7 +10,9 @@ var filesToCache = [
     host + 'libs/css/bootstrap/bootstrap.min.css',
     host + 'libs/js/jquery/jquery.min.js',
     host + 'libs/js/bootstrap/bootstrap.min.js',
-    host + 'libs/js/angular/angular.min.js'
+    host + 'libs/js/angular/angular.min.js',
+    host + 'libs/js/app.js',
+    host + 'libs/js/controllers/mainCtrl.js'
 ];
 
 self.addEventListener('install', function (e) {
