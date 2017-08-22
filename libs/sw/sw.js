@@ -1,7 +1,7 @@
 /*
     Variável de conmfiguração
 */
-var cacheName = 'sw-v2';
+var cacheName = 'sw-v3';
 // var host = 'http://127.0.0.1/adelsonguimaraes.github.io/';
 var host = 'https://adelsonguimaraes.github.io/';
 
@@ -29,11 +29,9 @@ self.addEventListener('install', function (e) {
 }),
 
 self.addEventListener('activate', function (e) {
-    console.log(key);
     e.waitUntil(
         caches.keys().then(function (keyList) {
             return Promise.all(keyList.map(function(key){
-                console.log(key);
                 if ( key !== cacheName ) return caches.delete(key)
             }))
         })

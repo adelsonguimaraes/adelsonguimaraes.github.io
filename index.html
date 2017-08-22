@@ -109,8 +109,9 @@
 		// testando se existe suport
 		if ( 'serviceWorker' in navigator ) {
 			window.addEventListener('load', function() {
-				navigator.serviceWorker.register('libs/sw/sw.js').then(function() {
+				navigator.serviceWorker.register('libs/sw/sw.js', {scope: 'libs/sw/'}).then(function(registration) {
 					console.log( 'ServiceWorker registration Success!' );
+					registration.update();
 				}).catch(function(err){
 					// if ( err.indexOf('404')  ) {
 					// 	alert('Arquivo não encontrado');
