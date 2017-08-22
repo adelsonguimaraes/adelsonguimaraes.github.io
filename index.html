@@ -1,18 +1,93 @@
 <!DOCTYPE html>
-<html>
-<head></head>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#F77F00">
+
+	<link rel="stylesheet" href="libs/css/bootstrap/bootstrap.min.css">
+
+	<link rel="manifest" href="manifest.json">
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<a class="navbar-brand" href="#"> Exemplo de Navegação  </a>
+		<!-- <ul class="nav navbar-nav">
+			<li class="active"><a href="#">Inicio</a></li>
+			<li><a href="#">Servicos</a></li>
+			<li><a href="#">Contato</a></li>
+		</ul> -->
+	</div>
+	<br><br><br>
+	<div class="content">
+		Aqui memo
+	</div>
 </body>
 <script type="text/javascript">
-	function serviceWork () {
+	/*
+			Indexed DB
+		*/
+		function indenxa () {
+
+			var myComics = [
+				{id: 1, title: "Turma da Mônica: A volta de Mr. Bento", published: "2014"},
+				{id: 2, title: "Liga da Justiça: A morte de The Flash", published: "2005"},
+				{id: 3, title: "Batman: A piada fatal", published: "2012"},
+				{id: 4, title: "Death Note Volume 1", published: "2007"}
+			];
+
+			if ( window.indexedDB ) {
+				var request = indexedDB.open("testes", 1);
+
+				request.onerror = function (e) {
+					alert( "DataBase Error" + e.target.errorCode );
+				};
+
+				request.onupgradeneeded = function (e) {
+					console.log(e);
+					var db = e.target.result;
+					var objectStore = db.createObjectStore("comics", {keyPath: "id"});
+					objectStore.createIndex("title", "title", {unique: false});
+					objectStore.transaction.oncomplete = function (e) {
+						var store  = db.transaction(["comics"], "readwrite").objectStore("comics");
+						for ( var i = 0; i < myComics.length; i++) {
+							store.add(myComics[i]);
+						}
+					}
+
+					// var t = db.transaction(["testes"]);
+					// var ob = t.objecStore("comics");
+					// var r = ob.get('1');
+					// console.log( r );
+
+				};
+
+				request.onsuccess = function ( e ) {
+					// console.log( request.result );
+				};
+			}else{
+				console.log("Not Supported");
+			}
+		};
+
+		// indenxa();
+
+		function serviceWork () {
 			// testando se existe suport
 			if ( 'serviceWorker' in navigator ) {
-				navigator.serviceWorker.register('libs/js/code/code.js').then(function() {
-					console.log( 'ServiceWorker registration Success!' );
-				}).catch(function(err){
-					console.log( 'ServiceWorker registration failed' + err );
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('libs/sw/sw.js').then(function() {
+						console.log( 'ServiceWorker registration Success!' );
+					}).catch(function(err){
+						// if ( err.indexOf('404')  ) {
+						// 	alert('Arquivo não encontrado');
+						// }
+						console.log( 'Erro : ' + err );
+					}),
+					navigator.serviceWorker.oncontrollerchange = function () {
+						console.log('Refresh to see the newest content');
+					}
 				});
 			}
 		};
