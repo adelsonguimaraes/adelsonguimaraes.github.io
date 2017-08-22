@@ -110,7 +110,7 @@
 		if ( 'serviceWorker' in navigator ) {
 			window.addEventListener('load', function() {
 				navigator.serviceWorker.register('libs/sw/sw.js').then(function() {
-					// console.log( 'ServiceWorker registration Success!' );
+					console.log( 'ServiceWorker registration Success!' );
 				}).catch(function(err){
 					// if ( err.indexOf('404')  ) {
 					// 	alert('Arquivo não encontrado');
