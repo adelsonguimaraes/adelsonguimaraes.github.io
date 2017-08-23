@@ -1,6 +1,7 @@
 /*
     Variável de conmfiguração
 */
+
 var cacheName = 'sw-v2';
 
 // var host = 'http://127.0.0.1/adelsonguimaraes.github.io/';

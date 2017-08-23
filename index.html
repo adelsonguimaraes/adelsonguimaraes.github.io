@@ -110,7 +110,7 @@
 		if ( 'serviceWorker' in navigator ) {
 			window.addEventListener('load', function() {
 				navigator.serviceWorker.register('libs/sw/sw.js', {scope: 'libs/sw/'}).then(function(registration) {
-					console.log( 'ServiceWorker registration Success!' );
+					// console.log( 'ServiceWorker registration Success!' );
 					registration.update();
 				}).catch(function(err){
 					console.log( 'Erro : ' + err );
