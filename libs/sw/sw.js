@@ -1,56 +1,20 @@
-/*
-    Variável de conmfiguração
-*/
+self.addEventListener('install', function (event) {
+    console.log('install');
+});
+self.addEventListener('activate', function (event) {
+    console.log('activate');
+});
+self.addEventListener('fetch', function (event) {
+    console.log('estamos aqui');
+    if ( event.request.url.includes('index.html')) {
+        var responseContent = '<html><body><div>Hello Nuvio</div></body></html>';
 
-var cacheName = 'sw-v2';
-
-// var host = 'http://127.0.0.1/adelsonguimaraes.github.io/';
-var host = 'https://adelsonguimaraes.github.io/';
-
-var filesToCache = [
-    
-    host + 'libs/css/bootstrap/bootstrap.min.css',
-    host + 'libs/js/jquery/jquery.min.js',
-    host + 'libs/js/bootstrap/bootstrap.min.js',
-    host + 'libs/js/angular/angular.min.js',
-    host + 'libs/js/app.js',
-    host + 'libs/js/controllers/mainCtrl.js',
-    host + 'index.html'
-];
-
-self.addEventListener('install', function (e) {
-    e.waitUntil(
-        caches
-            .open(cacheName)
-            .then(function (cache) {
-                return cache.addAll(filesToCache)
+        event.responseWith(
+            new Response(reponseContent, {
+                headers: {
+                    'Content-Type' : 'text/html'
+                }
             })
-            .then(function () {
-                return self.skipWaiting()
-            })
-    );
-}),
-
-self.addEventListener('activate', function (e) {
-    e.waitUntil(
-        console.log('Sua versaão atual é ' + cacheName),
-        caches.keys().then(function (keyList) {
-            return Promise.all(keyList.map(function(key){
-                if ( key !== cacheName ) return caches.delete(key)
-            }))
-        })
-    )
-    // forçar escuta de eventos de fetch
-    // assim que a service worker foi instalada
-    return self.clients.claim()
-}),
-
-self.addEventListener('fetch', function (e) {
-    e.respondWith(
-        caches.match(e.request)
-            .then(function(response) {
-                return response || fetch(e.request)
-            }
         )
-    );
-})
+    }
+});

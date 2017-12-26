@@ -110,9 +110,11 @@
 		// testando se existe suport
 		if ( 'serviceWorker' in navigator ) {
 			window.addEventListener('load', function() {
-				navigator.serviceWorker.register('libs/sw/sw.js', {scope: 'libs/sw/'}).then(function(registration) {
-					// console.log( 'ServiceWorker registration Success!' );
-					registration.update();
+				navigator.serviceWorker.register('libs/sw/sw.js', {
+				    scope: 'libs/sw/'}
+				    ).then(function(registration) {
+						console.log( 'ServiceWorker registration Success!' );
+						registration.update();
 				}).catch(function(err){
 					console.log( 'Erro : ' + err );
 				}),
@@ -123,6 +125,19 @@
 		}
 	};
 
-	serviceWork();
+	function sw () {
+	    /* Testando o Suporte do Navegador para Service Worker */
+	    if ( 'serviceWorker' in navigator ) {
+	        navigator.serviceWorker.register('libs/sw/sw.js')
+				.then((registration) => {
+	            console.log('Service Worker registered with scope: ' ,registration.scope);
+			})
+			.catch((err) => {
+				console.log('Service Worker registration falied: ', err);
+			})
+		}
+	}
+
+	sw();
 </script>
 </html>
