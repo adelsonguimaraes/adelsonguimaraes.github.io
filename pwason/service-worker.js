@@ -1,6 +1,6 @@
 let cacheName = 'notes-son-v.1.0.0';
 let filesToCache = [
-    '',
+    './',
     'index.html',
     'css/colors.css',
     'css/styles.css',
