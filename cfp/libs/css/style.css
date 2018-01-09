@@ -32,6 +32,36 @@ body {
 	margin: 5px;
 }
 
+/*
+	Menu Page
+*/
+.menu_page_container {
+	margin: 0 auto;
+}
+
+.menu_page_content {
+	background-color: #3D506C;
+	height: 200px;
+	width: 50%;
+	padding: 5px;
+	border-radius: 20px;
+	overflow: hidden;
+	margin: 5px;
+}
+
+.menu_page_content > img {
+	height: 100%;
+	width: 100%;
+	border-radius: 100px;
+}
+
+.menu_page_container > span {
+	color: #fff;
+	font-size:14px;
+	text-align: center;
+}
+
+
 /*  pequeno */
 @media (min-width: 576px) {
 	body {
@@ -39,7 +69,10 @@ body {
 	}
 	.container {
         max-width: 540px;
-    }
+	}
+	.menu_page_container {
+		margin: 0 auto;
+	}
 }
 /*  Médio */
 @media (min-width: 768px) {
@@ -51,6 +84,16 @@ body {
 	}
 	.panel_login {
 		max-width: 60%;
+	}
+	/* menu page  */
+	.menu_page_container {
+		display: inline-flex;
+	}
+	.menu_page_content {
+		height: 200px;
+		width: 25%;
+		margin: 30px;
+		margin-top: 180px;
 	}
 }
 /*  Grande */
@@ -64,6 +107,16 @@ body {
 	.panel_login {
 		max-width: 40%;
 	}
+	/* menu page  */
+	.menu_page_container {
+		display: inline-flex;
+	}
+	.menu_page_content {
+		height: 280px;
+		width: 30%;
+		margin: 30px;
+		margin-top: 180px;
+	}
 }
 /*  Muito Grande */
 @media (min-width: 1200px) {
@@ -75,5 +128,16 @@ body {
 	}
 	.panel_login {
 		max-width: 40%;
+	}
+
+	/* menu page  */
+	.menu_page_container {
+		display: inline-flex;
+	}
+	.menu_page_content {
+		height: 300px;
+		width: 50%;
+		margin: 30px;
+		margin-top: 180px;
 	}
 }
