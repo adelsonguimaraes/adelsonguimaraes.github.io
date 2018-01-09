@@ -1,0 +1,70 @@
+body {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color:#595959;
+	background-image: url(../img/financas.jpg);
+	background-repeat: no-repeat;
+	background-size: 300%;
+}
+.panel_login {
+	margin: 0 auto;
+	margin-top: 15%;
+	background: #fff;
+	border-radius: 15px;
+}
+.form_header {
+	padding: 20px;
+	border-bottom: 1px solid #595959;
+	background: slategrey;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+.form_login {
+	padding: 40px 20px;
+}
+
+/*  pequeno */
+@media (min-width: 576px) {
+	body {
+		background-size: 200%;
+	}
+	.container {
+        max-width: 540px;
+    }
+}
+/*  Médio */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+	}
+	body {
+		background-size: 150%;
+	}
+	.panel_login {
+		max-width: 60%;
+	}
+}
+/*  Grande */
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+	}
+	body {
+		background-size: 130%;
+	}
+	.panel_login {
+		max-width: 40%;
+	}
+}
+/*  Muito Grande */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+	}
+	body {
+		background-size: 100%;
+	}
+	.panel_login {
+		max-width: 40%;
+	}
+}

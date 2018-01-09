@@ -1,0 +1,47 @@
+<!-- Home -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Faturas de Despesas
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<td>Descrição</td>
+									<td>Valor</td>
+									<td>Vencimento</td>
+									<td>Status</td>
+									<td>Ação</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="obj in faturas">
+									<td>{{obj.descricao}}</td>
+									<td>{{obj.valor}}</td>
+									<td>{{obj.vencimento}}</td>
+									<td>{{obj.status}}</td>
+									<td>
+										<button class="btn btn-xs btn-danger">
+											Faturar
+										</button>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="5">
+										faturas em aberto (5)
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

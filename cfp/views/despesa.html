@@ -1,0 +1,140 @@
+<!-- Despesa -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" ng-if="!nova">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3>Lista de Despesas</h3>
+				</div>
+				<div class="panel-body">
+					<button class="btn btn-primary" ng-click="novaDespesa()"><i class="fa fa-plus"></i> Nova despesa</button>
+					<hr>
+					<div class="bg-danger btn-lg" ng-if="!despesas">
+						<span class="text-danger">Nenhuma despesa registrada</span>
+					</div>
+					<table class="table table-bordered table-striped table-hover"  ng-if="despesas">
+						<thead>
+							<tr>
+								<td>ID</td>
+								<td>Descrição</td>
+								<td>Valor</td>
+								<td>Quantidade</td>
+								<td>Prestações</td>
+								<td>Data Aquisição</td>
+								<td>Vencimento</td>
+								<td>Ações</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="obj in despesas">
+								<td ng-bind="obj.id"></td>
+								<td ng-bind="obj.descricao"></td>
+								<td ng-bind="obj.valor"></td>
+								<td ng-bind="obj.quantidade"></td>
+								<td ng-bind="obj.prestacoes"></td>
+								<td ng-bind="obj.dataaquisicao | data"></td>
+								<td ng-bind="obj.datavencimento | data"></td>
+								<td>
+									<div class="btn-group">
+										<button class="btn btn-warning" type="button" ng-click="editar(obj)"><i class="fa fa-pencil"></i></button>
+										<button class="btn btn-danger" type="button" ng-click="deletar(obj)"><i class="fa fa-trash"></i></button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr><td colspan="8">
+								<label class="label-control">Registros encontrados ({{despesas.length}})</label>
+								<button class="btn btn-default pull-right" type="button" ng-click="listar()">Refresh <i class="fa fa-refresh"></i></button>
+							</td></tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12" ng-if="nova">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Cadastro de Despesas
+				</div>
+				<div class="panel-body">
+					<h3>Instruções</h3>
+					<hr>
+					<ul>
+						<li>
+							<b>Descrição:</b> 
+							Descrava sua despesa de maneira que fique fácil para você a identificação durante as consultas.
+						</li>
+						<li>
+							<b>Valor:</b>
+							Coloque o valor total de sua despesa atualizado.
+						</li>
+						<li>
+							<b>Prestações:</b> 
+							Indique as prestações atuais atualizadas de sua despesa, o sistema irá calcular automaticamente o valor de cada parcela a partir do valor total informado.
+						</li>
+						<li>
+							<b>Data Aquisição:</b>
+							Informe a data de quando houve a aquisição do produto, isso irá servir como um lembrete.
+						</li>
+						<li>
+							<b>Data Vencimento:</b>
+							Informe a data do próximo vencimento de sua despesa, com essa informação o sistema irá criar o cronograma de sua despesa.
+						</li>
+					</ul>
+					<hr>
+					<form name="form" class="form" role="form">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+								 	<label class="label-control">Descrição</label>
+									<input type="text" class="form-control" name="descricao" ng-model="despesa.descricao" ng-required="true">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+								 	<label class="label-control">Valor</label>
+									<input type="text" class="form-control" name="valor" ng-model="despesa.valor" ng-required="true">
+								</div>
+							</div>
+							<!-- <div class="col-md-2">
+								<div class="form-group">
+								 	<label class="label-control">Quantidade</label>
+									<h-number value="despesa.quantidade" unit-position="left" min="1" max="9999" step="1" ng-model="despesa.quantidade"></h-number>
+								</div>
+							</div> -->
+							<div class="col-md-2">
+							 	<div class="form-group">
+							 		<label class="label-control">Prestações</label>
+							 		<h-number value="despesa.prestacoes" unit-position="left" min="1" max="120" step="1" ng-model="despesa.prestacoes"></h-number>
+							 	</div>
+						 	</div>
+
+							<div class="col-md-3">
+								<div class="form-group">
+								 	<label class="label-control">Data Aquisição</label>
+									<input type="text" class="form-control" name="dataaquisicao" ng-model="despesa.dataaquisicao" ng-required="true">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+								 	<label class="label-control">1º Vencimento</label>
+								 	<input type="text" class="form-control" name="datavencimento" ng-model="despesa.datavencimento" ng-required="true">
+								</div>
+							</div>	
+						</div>
+
+						<hr>
+						<div>
+							<button class="btn btn-success pull-rigth" type="button" ng-click="salvar(despesa)" ng-disabled="form.$invalid">Salvar Despesa</button>
+							<button class="btn btn-danger pull-rigth" type="button" ng-click="cancelar()">Cancelar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>	
+	</div>
+	
+</div>

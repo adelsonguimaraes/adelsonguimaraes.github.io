@@ -1,0 +1,22 @@
+<!-- Login -->
+<div class="container">
+	<div class="panel_login">
+		<div class="form_header">
+			<i class="fa fa-user"></i>
+			 Acessar Sistema - CFP
+		</div>
+		<form class="form_login">
+				<div class="form-group">
+					<label>Usuário</label>
+					<input type="text" class="form-control" placeholder="Digite seu Usuário" ng-model="login.usuario">
+				</div>
+				<div class="form-group">
+					<label>Senha</label>
+					<input type="password" class="form-control"  placeholder="Digite sua senha"  ng-model="login.senha">
+				</div>
+				<button type="submit" class="btn btn-success pull-right" ng-disabled="!login.usuario || !login.senha">
+					logar
+				</button>
+		</form>
+	</div>
+</div>

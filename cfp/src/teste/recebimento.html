@@ -1,0 +1,253 @@
+<html>
+<head>
+	<title>Teste Recebimento</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<style type="text/css">
+		body {
+			background: #ddd;
+		}
+		.cx-msg {
+			width: 100%;
+			position: fixed;
+			text-align: center;
+			top:70px;
+			z-index: 1;
+		}
+		.cx-content {
+			padding: 15px;
+			border-radius: 5px;
+			background: rgba(0, 255, 0, 0.4);
+			font: 16px "Open Sans", Helvetica;
+			font-weight: 700;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+        		<a class="navbar-brand" href="index.php">
+           		 ../Home
+        		</a>
+			</div>
+		</div>
+	</nav>
+	<div class="cx-msg hide">
+		<span class="cx-content">
+			Operação bem sucedida
+		</span>
+	</div>
+	<br><br><br><br>
+	<div class="panel">
+		<div class="container-fluid">
+			<h3>Teste da Classe  Recebimento</h3>
+		</div>
+	</div>
+	<div class="container-fluid">
+ 		<div class="row">
+ 			<div class="col-md-12">
+ 				<div class="panel panel-default">
+ 					<div class="panel-heading">
+ 						<h3>Cadastro / Atualização</h3>
+ 					</div>
+ 					<div class="panel-body">
+ 						<form>
+ 							<div class="form-group">
+								<input class="form-control" type="hidden" id="id_cadastrar" name="id_cadastro" />
+								Usuario:
+								<select class="form-control" id="idusuario_cadastrar" name="idusuario_cadastrar">
+								</select>
+								Descricao: <input class="form-control" type="text" id="descricao_cadastrar" name="descricao_cadastro" />
+								Valor: <input class="form-control" type="text" id="valor_cadastrar" name="valor_cadastro" />
+								Dataarrecadacao: <input class="form-control" type="text" id="dataarrecadacao_cadastrar" name="dataarrecadacao_cadastro" />
+								Tipo: <input class="form-control" type="text" id="tipo_cadastrar" name="tipo_cadastro" />
+								Ativo: <input class="form-control" type="text" id="ativo_cadastrar" name="ativo_cadastro" />
+ 							</div>
+ 							<button type="button" class="btn btn-success" id="salvar">Salvar</button>
+ 						</form>
+ 					</div>
+ 				</div>
+ 			</div>
+ 		</div>
+		<div class="row">
+ 			<div class="col-md-12">
+ 				<div class="panel  panel-default">
+ 					<div class="panel-heading">
+ 						<h3>Listar / BuscarPorId / Deletar</h3>
+ 					</div>
+ 					<div class="panel-body">
+ 						<table class="table table-striped">
+ 							<thead>
+ 								<tr>
+ 									<td>Id</td>
+ 									<td>Idusuario</td>
+ 									<td>Descricao</td>
+ 									<td>Valor</td>
+ 									<td>Dataarrecadacao</td>
+ 									<td>Tipo</td>
+ 									<td>Ativo</td>
+ 									<td>Datacadastro</td>
+ 									<td>Dataedicao</td>
+ 									<td>Ações</td>
+ 								</tr>
+ 							</thead>
+ 							<tbody id="trbody">
+ 							</tbody>
+ 						</table>
+ 						<div id="lista"></div>
+ 					</div>
+ 				</div>
+ 			</div>
+ 		</div>
+	</div>
+	<br><br><br><br>
+	<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+		<footer>
+		    <div class="container" style="padding-top:15px; text-align:center; color:#fff;">
+	        	<p>BlackCoffeePHP 2016 - by Adelson Guimarães</p>
+	    	</div>
+		</footer>
+	</nav>
+	<script   ../src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script ../src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script>
+		$(function () {
+		function listaUsuario () {
+			$.ajax({
+				url: '../rest/usuario.php',
+				type: 'POST',
+				data: {'metodo':'listar'},
+				success: function (data) {
+					if(data) {
+						var data = $.parseJSON(data);
+						var collection = '';
+						$.each(data, function (index, value) {
+						collection += '<option value="'+value.id+'">'+JSON.stringify(value)+'</option>';
+						});
+						$('#idusuario_cadastrar').append(collection);
+					}
+				}
+			});
+		}
+		listaUsuario();
+			function listar () {
+				$.ajax({
+					url: '../rest/recebimento.php',
+					type: 'POST',
+					data: {'metodo':'listar'},
+					success: function (data) {
+						if(data) {
+							var data = $.parseJSON(data);
+							var collection = '';
+							$.each(data, function (index, value) {
+								collection += '<tr>';
+								$.each(value, function (index2, value2) {
+									if(value2 !== null && typeof(value2)==='object') {
+										collection += '<td>'+value2.id+'</td>';
+									}else{
+										collection += '<td>'+value2+'</td>';
+									}
+								});
+								collection += '<td><div class="btn-group"><button class="btn btn-warning atualizar" type="button" value="'+value.id+'"><i class="glyphicon glyphicon-pencil"></i></button>';
+								collection += '<button class="btn btn-danger deletar"  type="button" value="'+value.id+'"><i class="glyphicon glyphicon-trash"></i></button></div></td>';
+								collection += '</tr>';
+							});
+							$('#trbody').find('td').remove();
+							$('#trbody').append(collection);
+							funcs();
+						}
+					}
+				});
+			}
+			listar();
+
+			function funcs () {
+				$('.atualizar').click( function () {
+					var dados = {"id":$(this).val()}
+					$.ajax({
+						url: '../rest/recebimento.php',
+						type: 'POST',
+						data: {
+							'metodo':'buscarPorId',
+							'data': dados
+						},
+						success: function (data) {
+							if(data) {
+								data = JSON.parse(data);
+								$("#id_cadastrar").val(data.id);
+								$("#idusuario_cadastrar").val(data.objusuario.id);
+								$("#descricao_cadastrar").val(data.descricao);
+								$("#valor_cadastrar").val(data.valor);
+								$("#dataarrecadacao_cadastrar").val(data.dataarrecadacao);
+								$("#tipo_cadastrar").val(data.tipo);
+								$("#ativo_cadastrar").val(data.ativo);
+							$('html, body').animate({scrollTop:0}, 'slow');
+							}
+						}
+					});
+				});
+				$('.deletar').click(function (){
+					var dados = {"id":$(this).val()}
+
+					$.ajax({
+						url: '../rest/recebimento.php',
+						type: 'POST',
+						data: {
+						'metodo':'deletar',
+							'data': dados
+						},
+						success: function (data) {
+							listar();
+							$('.cx-msg').removeClass('hide');
+							setTimeout(function () {$('.cx-msg').addClass('hide');}, 5000);
+						}
+					});
+
+				});
+
+			}
+			$('#salvar').click(function (){
+				var metodo = 'cadastrar';
+				if($("#id_cadastrar").val()) metodo = 'atualizar';
+				var dados = {
+					"id":$("#id_cadastrar").val(),
+					"idusuario":$("#idusuario_cadastrar").val(),
+					"descricao":$("#descricao_cadastrar").val(),
+					"valor":$("#valor_cadastrar").val(),
+					"dataarrecadacao":$("#dataarrecadacao_cadastrar").val(),
+					"tipo":$("#tipo_cadastrar").val(),
+					"ativo":$("#ativo_cadastrar").val()
+				}
+
+				$.ajax({
+					url: '../rest/recebimento.php',
+					type: 'POST',
+					data: {
+						'metodo':metodo,
+						'data': dados
+					},
+					success: function (data) {
+						listar();
+						$('.cx-msg').removeClass('hide');
+						setTimeout(function () {$('.cx-msg').addClass('hide');}, 5000);
+					}
+				});
+
+				$("#id_cadastrar").val('');
+				$("#descricao_cadastrar").val('');
+				$("#valor_cadastrar").val('');
+				$("#dataarrecadacao_cadastrar").val('');
+				$("#tipo_cadastrar").val('');
+				$("#ativo_cadastrar").val('');
+			});
+
+		});
+	</script>
+</body>
+<!-- Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães -->
+</html>
