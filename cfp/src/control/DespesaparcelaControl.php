@@ -1,24 +1,24 @@
 <?php
-// control : fluxodespesa
+// control : despesaparcela
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
-Class FluxodespesaControl {
+Class DespesaparcelaControl {
 	//atributos
 	protected $con;
 	protected $obj;
 	protected $objDAO;
 
 	//construtor
-	public function __construct(Fluxodespesa $obj=NULL) {
+	public function __construct(Despesaparcela $obj=NULL) {
 		$this->con = Conexao::getInstance()->getConexao();
-		$this->objDAO = new FluxodespesaDAO($this->con);
+		$this->objDAO = new DespesaparcelaDAO($this->con);
 		$this->obj = $obj;
 	}
 
@@ -30,7 +30,7 @@ Class FluxodespesaControl {
 		return $this->objDAO->buscarPorId($this->obj);
 	}
 	function listar () {
-		return $this->objDAO->listar($this->obj);
+		return $this->objDAO->listar();
 	}
 	function atualizar () {
 		return $this->objDAO->atualizar($this->obj);
@@ -46,5 +46,5 @@ Class FluxodespesaControl {
 	}
 }
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>

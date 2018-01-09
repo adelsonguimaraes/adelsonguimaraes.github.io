@@ -2,11 +2,11 @@
 // rest : usuario
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
 //inclui autoload
@@ -36,50 +36,48 @@ function cadastrar () {
 	$obj = new Usuario(
 		NULL,
 		$data['nome'],
-		$data['usuario'],
+		$data['email'],
 		$data['senha'],
-		$data['ativo']
+		$data['ativo'],
+		$data['authentication']
 	);
 	$control = new UsuarioControl($obj);
-	$id = $control->cadastrar();
-	echo $id;
+	$response = $control->cadastrar();
+	echo json_encode($response);
 }
 function buscarPorId () {
 	$data = $_POST['data'];
 	$control = new UsuarioControl(new Usuario($data['id']));
-	$obj = $control->buscarPorId();
-	if(!empty($obj)) {
-		echo json_encode($obj);
-	}
+	$response = $control->buscarPorId();
+	echo json_encode($response);
 }
 function listar () {
 	$control = new UsuarioControl(new Usuario);
-	$lista = $control->listar();
-	if(!empty($lista)) {
-		echo json_encode($lista);
-	}
+	$response = $control->listar();
+	echo json_encode($response);
 }
 function atualizar () {
 	$data = $_POST['data'];
 	$obj = new Usuario(
 		$data['id'],
 		$data['nome'],
-		$data['usuario'],
+		$data['email'],
 		$data['senha'],
-		$data['ativo']
+		$data['ativo'],
+		$data['authentication']
 	);
 	$control = new UsuarioControl($obj);
-	$id = $control->atualizar();
-	echo $id;
+	$response = $control->atualizar();
+	echo json_encode($response);
 }
 function deletar () {
 	$data = $_POST['data'];
 	$banco = new Usuario();
 	$banco->setId($data['id']);
 	$control = new UsuarioControl($banco);
-	echo $control->deletar();
+	echo json_encode($control->deletar());
 }
 
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>

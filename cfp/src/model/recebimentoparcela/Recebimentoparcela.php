@@ -1,19 +1,23 @@
 <?php
-// model : fluxorecebimento
+// model : recebimentoparcela
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
-Class Fluxorecebimento implements JsonSerializable {
+Class Recebimentoparcela implements JsonSerializable {
 	//atributos
 	private $id;
 	private $objrecebimento;
 	private $valor;
+	private $valorrecebido;
+	private $datavencimento;
+	private $datarecebimento;
+	private $status;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -23,6 +27,10 @@ Class Fluxorecebimento implements JsonSerializable {
 		$id = NULL,
 		Recebimento $objrecebimento = NULL,
 		$valor = NULL,
+		$valorrecebido = NULL,
+		$datavencimento = NULL,
+		$datarecebimento = NULL,
+		$status = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
@@ -30,6 +38,10 @@ Class Fluxorecebimento implements JsonSerializable {
 		$this->id	= $id;
 		$this->objrecebimento	= $objrecebimento;
 		$this->valor	= $valor;
+		$this->valorrecebido	= $valorrecebido;
+		$this->datavencimento	= $datavencimento;
+		$this->datarecebimento	= $datarecebimento;
+		$this->status	= $status;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -56,6 +68,34 @@ Class Fluxorecebimento implements JsonSerializable {
 		$this->valor = $valor;
 		return $this;
 	}
+	public function getValorrecebido() {
+		return $this->valorrecebido;
+	}
+	public function setValorrecebido($valorrecebido) {
+		$this->valorrecebido = $valorrecebido;
+		return $this;
+	}
+	public function getDatavencimento() {
+		return $this->datavencimento;
+	}
+	public function setDatavencimento($datavencimento) {
+		$this->datavencimento = $datavencimento;
+		return $this;
+	}
+	public function getDatarecebimento() {
+		return $this->datarecebimento;
+	}
+	public function setDatarecebimento($datarecebimento) {
+		$this->datarecebimento = $datarecebimento;
+		return $this;
+	}
+	public function getStatus() {
+		return $this->status;
+	}
+	public function setStatus($status) {
+		$this->status = $status;
+		return $this;
+	}
 	public function getDatacadastro() {
 		return $this->datacadastro;
 	}
@@ -77,11 +117,15 @@ Class Fluxorecebimento implements JsonSerializable {
 			"id"	=> $this->id,
 			"objrecebimento"	=> $this->objrecebimento,
 			"valor"	=> $this->valor,
+			"valorrecebido"	=> $this->valorrecebido,
+			"datavencimento"	=> $this->datavencimento,
+			"datarecebimento"	=> $this->datarecebimento,
+			"status"	=> $this->status,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];
 	}
 }
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>

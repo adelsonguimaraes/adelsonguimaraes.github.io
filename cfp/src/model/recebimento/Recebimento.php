@@ -2,21 +2,18 @@
 // model : recebimento
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
 Class Recebimento implements JsonSerializable {
 	//atributos
 	private $id;
 	private $objusuario;
-	private $descricao;
-	private $valor;
-	private $dataarrecadacao;
-	private $tipo;
+	private $objtipo;
 	private $ativo;
 	private $datacadastro;
 	private $dataedicao;
@@ -26,10 +23,7 @@ Class Recebimento implements JsonSerializable {
 	(
 		$id = NULL,
 		Usuario $objusuario = NULL,
-		$descricao = NULL,
-		$valor = NULL,
-		$dataarrecadacao = NULL,
-		$tipo = NULL,
+		Tipo $objtipo = NULL,
 		$ativo = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
@@ -37,10 +31,7 @@ Class Recebimento implements JsonSerializable {
 	{
 		$this->id	= $id;
 		$this->objusuario	= $objusuario;
-		$this->descricao	= $descricao;
-		$this->valor	= $valor;
-		$this->dataarrecadacao	= $dataarrecadacao;
-		$this->tipo	= $tipo;
+		$this->objtipo	= $objtipo;
 		$this->ativo	= $ativo;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
@@ -61,32 +52,11 @@ Class Recebimento implements JsonSerializable {
 		$this->objusuario = $objusuario;
 		return $this;
 	}
-	public function getDescricao() {
-		return $this->descricao;
+	public function getObjtipo() {
+		return $this->objtipo;
 	}
-	public function setDescricao($descricao) {
-		$this->descricao = $descricao;
-		return $this;
-	}
-	public function getValor() {
-		return $this->valor;
-	}
-	public function setValor($valor) {
-		$this->valor = $valor;
-		return $this;
-	}
-	public function getDataarrecadacao() {
-		return $this->dataarrecadacao;
-	}
-	public function setDataarrecadacao($dataarrecadacao) {
-		$this->dataarrecadacao = $dataarrecadacao;
-		return $this;
-	}
-	public function getTipo() {
-		return $this->tipo;
-	}
-	public function setTipo($tipo) {
-		$this->tipo = $tipo;
+	public function setObjtipo($objtipo) {
+		$this->objtipo = $objtipo;
 		return $this;
 	}
 	public function getAtivo() {
@@ -116,10 +86,7 @@ Class Recebimento implements JsonSerializable {
 		return [
 			"id"	=> $this->id,
 			"objusuario"	=> $this->objusuario,
-			"descricao"	=> $this->descricao,
-			"valor"	=> $this->valor,
-			"dataarrecadacao"	=> $this->dataarrecadacao,
-			"tipo"	=> $this->tipo,
+			"objtipo"	=> $this->objtipo,
 			"ativo"	=> $this->ativo,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
@@ -127,5 +94,5 @@ Class Recebimento implements JsonSerializable {
 	}
 }
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>

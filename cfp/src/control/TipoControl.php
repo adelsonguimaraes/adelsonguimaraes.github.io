@@ -1,5 +1,5 @@
 <?php
-// control : usuario
+// control : tipo
 
 /*
 	Projeto: CFP - (Controle Financeiro Pessoal).
@@ -9,16 +9,16 @@
 	Data Atual: 09/01/2018.
 */
 
-Class UsuarioControl {
+Class TipoControl {
 	//atributos
 	protected $con;
 	protected $obj;
 	protected $objDAO;
 
 	//construtor
-	public function __construct(Usuario $obj=NULL) {
+	public function __construct(Tipo $obj=NULL) {
 		$this->con = Conexao::getInstance()->getConexao();
-		$this->objDAO = new UsuarioDAO($this->con);
+		$this->objDAO = new TipoDAO($this->con);
 		$this->obj = $obj;
 	}
 

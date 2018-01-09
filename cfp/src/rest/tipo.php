@@ -1,5 +1,5 @@
 <?php
-// rest : despesa
+// rest : tipo
 
 /*
 	Projeto: CFP - (Controle Financeiro Pessoal).
@@ -33,46 +33,42 @@ switch ($_POST['metodo']) {
 
 function cadastrar () {
 	$data = $_POST['data'];
-	$obj = new Despesa(
+	$obj = new Tipo(
 		NULL,
-		new Usuario($data['idusuario']),
-		new Tipo($data['idtipo']),
 		$data['descricao'],
-		$data['ativo']
+		$data['uso']
 	);
-	$control = new DespesaControl($obj);
+	$control = new TipoControl($obj);
 	$response = $control->cadastrar();
 	echo json_encode($response);
 }
 function buscarPorId () {
 	$data = $_POST['data'];
-	$control = new DespesaControl(new Despesa($data['id']));
+	$control = new TipoControl(new Tipo($data['id']));
 	$response = $control->buscarPorId();
 	echo json_encode($response);
 }
 function listar () {
-	$control = new DespesaControl(new Despesa);
+	$control = new TipoControl(new Tipo);
 	$response = $control->listar();
 	echo json_encode($response);
 }
 function atualizar () {
 	$data = $_POST['data'];
-	$obj = new Despesa(
+	$obj = new Tipo(
 		$data['id'],
-		new Usuario($data['idusuario']),
-		new Tipo($data['idtipo']),
 		$data['descricao'],
-		$data['ativo']
+		$data['uso']
 	);
-	$control = new DespesaControl($obj);
+	$control = new TipoControl($obj);
 	$response = $control->atualizar();
 	echo json_encode($response);
 }
 function deletar () {
 	$data = $_POST['data'];
-	$banco = new Despesa();
+	$banco = new Tipo();
 	$banco->setId($data['id']);
-	$control = new DespesaControl($banco);
+	$control = new TipoControl($banco);
 	echo json_encode($control->deletar());
 }
 

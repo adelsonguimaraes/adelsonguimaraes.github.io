@@ -2,23 +2,19 @@
 // model : despesa
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
 Class Despesa implements JsonSerializable {
 	//atributos
 	private $id;
 	private $objusuario;
+	private $objtipo;
 	private $descricao;
-	private $valor;
-	private $quantidade;
-	private $prestacoes;
-	private $dataaquisicao;
-	private $datavencimento;
 	private $ativo;
 	private $datacadastro;
 	private $dataedicao;
@@ -28,12 +24,8 @@ Class Despesa implements JsonSerializable {
 	(
 		$id = NULL,
 		Usuario $objusuario = NULL,
+		Tipo $objtipo = NULL,
 		$descricao = NULL,
-		$valor = NULL,
-		$quantidade = NULL,
-		$prestacoes = NULL,
-		$dataaquisicao = NULL,
-		$datavencimento = NULL,
 		$ativo = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
@@ -41,12 +33,8 @@ Class Despesa implements JsonSerializable {
 	{
 		$this->id	= $id;
 		$this->objusuario	= $objusuario;
+		$this->objtipo	= $objtipo;
 		$this->descricao	= $descricao;
-		$this->valor	= $valor;
-		$this->quantidade	= $quantidade;
-		$this->prestacoes	= $prestacoes;
-		$this->dataaquisicao	= $dataaquisicao;
-		$this->datavencimento	= $datavencimento;
 		$this->ativo	= $ativo;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
@@ -67,46 +55,18 @@ Class Despesa implements JsonSerializable {
 		$this->objusuario = $objusuario;
 		return $this;
 	}
+	public function getObjtipo() {
+		return $this->objtipo;
+	}
+	public function setObjtipo($objtipo) {
+		$this->objtipo = $objtipo;
+		return $this;
+	}
 	public function getDescricao() {
 		return $this->descricao;
 	}
 	public function setDescricao($descricao) {
 		$this->descricao = $descricao;
-		return $this;
-	}
-	public function getValor() {
-		return $this->valor;
-	}
-	public function setValor($valor) {
-		$this->valor = $valor;
-		return $this;
-	}
-	public function getQuantidade() {
-		return $this->quantidade;
-	}
-	public function setQuantidade($quantidade) {
-		$this->quantidade = $quantidade;
-		return $this;
-	}
-	public function getPrestacoes() {
-		return $this->prestacoes;
-	}
-	public function setPrestacoes($prestacoes) {
-		$this->prestacoes = $prestacoes;
-		return $this;
-	}
-	public function getDataaquisicao() {
-		return $this->dataaquisicao;
-	}
-	public function setDataaquisicao($dataaquisicao) {
-		$this->dataaquisicao = $dataaquisicao;
-		return $this;
-	}
-	public function getDatavencimento() {
-		return $this->datavencimento;
-	}
-	public function setDatavencimento($datavencimento) {
-		$this->datavencimento = $datavencimento;
 		return $this;
 	}
 	public function getAtivo() {
@@ -136,12 +96,8 @@ Class Despesa implements JsonSerializable {
 		return [
 			"id"	=> $this->id,
 			"objusuario"	=> $this->objusuario,
+			"objtipo"	=> $this->objtipo,
 			"descricao"	=> $this->descricao,
-			"valor"	=> $this->valor,
-			"quantidade"	=> $this->quantidade,
-			"prestacoes"	=> $this->prestacoes,
-			"dataaquisicao"	=> $this->dataaquisicao,
-			"datavencimento"	=> $this->datavencimento,
 			"ativo"	=> $this->ativo,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
@@ -149,5 +105,5 @@ Class Despesa implements JsonSerializable {
 	}
 }
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>

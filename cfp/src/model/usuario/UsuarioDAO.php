@@ -2,11 +2,11 @@
 // dao : usuario
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
 Class UsuarioDAO {
@@ -15,94 +15,142 @@ Class UsuarioDAO {
 	private $sql;
 	private $obj;
 	private $lista = array();
+	private $superdao;
 
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
+		$this->superdao = new SuperDAO('usuario');
 	}
 
 	//cadastrar
-	function cadastrar (Usuario $obj) {
-		$this->sql = sprintf("INSERT INTO usuario(nome, usuario, senha, ativo)
-		VALUES('%s', '%s', '%s', '%s')",
+	function cadastrar (usuario $obj) {
+		$this->sql = sprintf("INSERT INTO usuario(nome, email, senha, ativo, authentication)
+		VALUES('%s', '%s', '%s', '%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getNome()),
-			mysqli_real_escape_string($this->con, $obj->getUsuario()),
+			mysqli_real_escape_string($this->con, $obj->getEmail()),
 			mysqli_real_escape_string($this->con, $obj->getSenha()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()));
+			mysqli_real_escape_string($this->con, $obj->getAtivo()),
+			mysqli_real_escape_string($this->con, $obj->getAuthentication()));
+
+		$this->superdao->resetResponse();
+
 		if(!mysqli_query($this->con, $this->sql)) {
-			die('[ERRO]: Class('.get_class($obj).') | Metodo(Cadastrar) | Erro('.mysqli_error($this->con).')');
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), get_class( $obj ), 'Cadastrar' ) );
+		}else{
+			$id = mysqli_insert_id( $this->con );
+
+			$this->superdao->setSuccess( true );
+			$this->superdao->setData( $id );
 		}
-		return mysqli_insert_id($this->con);
+		return $this->superdao->getResponse();
+	}
+
+	//atualizar
+	function atualizar (Usuario $obj) {
+		$this->sql = sprintf("UPDATE usuario SET nome = '%s', email = '%s', senha = '%s', ativo = '%s', authentication = '%s', dataedicao = '%s' WHERE id = %d ",
+			mysqli_real_escape_string($this->con, $obj->getNome()),
+			mysqli_real_escape_string($this->con, $obj->getEmail()),
+			mysqli_real_escape_string($this->con, $obj->getSenha()),
+			mysqli_real_escape_string($this->con, $obj->getAtivo()),
+			mysqli_real_escape_string($this->con, $obj->getAuthentication()),
+			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
+			mysqli_real_escape_string($this->con, $obj->getId()));
+		$this->superdao->resetResponse();
+
+		if(!mysqli_query($this->con, $this->sql)) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), get_class( $obj ), 'Atualizar' ) );
+		}else{
+			$this->superdao->setSuccess( true );
+			$this->superdao->setData( true );
+		}
+		return $this->superdao->getResponse();
 	}
 
 	//buscarPorId
 	function buscarPorId (Usuario $obj) {
 		$this->sql = sprintf("SELECT * FROM usuario WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
-		$resultSet = mysqli_query($this->con, $this->sql);
-		if(!$resultSet) {
-			die('[ERRO]: Class('.get_class($obj).') | Metodo(BuscarPorId) | Erro('.mysqli_error($this->con).')');
+		$result = mysqli_query($this->con, $this->sql);
+
+		$this->superdao->resetResponse();
+
+		if(!$result) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), get_class( $obj ), 'BuscarPorId' ) );
+		}else{
+			while($row = mysqli_fetch_object($result)) {
+				$this->obj = $row;
+			}
+			$this->superdao->setSuccess( true );
+			$this->superdao->setData( $this->obj );
 		}
-		while($row = mysqli_fetch_object($resultSet)) {
-			$this->obj = new Usuario($row->id, $row->nome, $row->usuario, $row->senha, $row->ativo, $row->datacadastro, $row->dataedicao);
-		}
-		return $this->obj;
+		return $this->superdao->getResponse();
 	}
 
 	//listar
-	function listar (Usuario $obj) {
+	function listar () {
 		$this->sql = "SELECT * FROM usuario";
-		$resultSet = mysqli_query($this->con, $this->sql);
-		if(!$resultSet) {
-			die('[ERRO]: Class(Banco) | Metodo(Listar) | Erro('.mysqli_error($this->con).')');
-		}
-		while($row = mysqli_fetch_object($resultSet)) {
-			$this->obj = new Usuario($row->id, $row->nome, $row->usuario, $row->senha, $row->ativo, $row->datacadastro, $row->dataedicao);
-			array_push($this->lista, $this->obj);
-		}
-		return $this->lista;
-	}
+		$result = mysqli_query($this->con, $this->sql);
 
-	//atualizar
-	function atualizar (Usuario $obj) {
-		$this->sql = sprintf("UPDATE usuario SET nome = '%s', usuario = '%s', senha = '%s', ativo = '%s', dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getNome()),
-			mysqli_real_escape_string($this->con, $obj->getUsuario()),
-			mysqli_real_escape_string($this->con, $obj->getSenha()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()),
-			mysqli_real_escape_string($this->con, date('Y-m-d')),
-			mysqli_real_escape_string($this->con, $obj->getId()));
-		if(!mysqli_query($this->con, $this->sql)) {
-			die('[ERRO]: Class('.get_class($obj).') | Metodo(Atualizar) | Erro('.mysqli_error($this->con).')');
-		}
-		return mysqli_insert_id($this->con);
-	}
+		$this->superdao->resetResponse();
 
-	//deletar
-	function deletar (Usuario $obj) {
-		$this->sql = sprintf("DELETE FROM usuario WHERE id = %d",
-			mysqli_real_escape_string($this->con, $obj->getId()));
-		$resultSet = mysqli_query($this->con, $this->sql);
-		if(!$resultSet) {
-			die('[ERRO]: Class('.get_class($obj).') | Metodo(Deletar) | Erro('.mysqli_error($this->con).')');
+		if(!$result) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Usuario' , 'Listar' ) );
+		}else{
+			while($row = mysqli_fetch_object($result)) {
+				array_push($this->lista, $row);
+			}
+			$this->superdao->setSuccess( true );
+			$this->superdao->setData( $this->lista );
 		}
-		return true;
+		return $this->superdao->getResponse();
 	}
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
 		$this->sql = "SELECT * FROM usuario limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
-		if (! $result) {
-			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );
+
+		$this->superdao->resetResponse();
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Usuario' , 'ListarPaginado' ) );
+		}else{
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
+			}
+
+			$this->superdao->setSuccess( true );			$this->superdao->setData( $this->lista );
+			$this->superdao->setTotal( $this->qtdTotal() );
 		}
-		$this->lista = array();
-		while ( $row = mysqli_fetch_assoc ( $result ) ) {
-			$this->lista=$row;
-		}
-		//teste
-		return $this->lista;
+
+		return $this->superdao->getResponse();
 	}
+	//deletar
+	function deletar (Usuario $obj) {
+		$this->superdao->resetResponse();
+
+		// buscando por dependentes
+		$dependentes = $this->superdao->verificaDependentes($obj->getId());
+		if ( $dependentes > 0 ) {
+			$this->superdao->setMsg( resolve( '0001', $dependentes, get_class( $obj ), 'Deletar' ));
+			return $this->superdao->getResponse();
+		}
+
+		$this->sql = sprintf("DELETE FROM usuario WHERE id = %d",
+			mysqli_real_escape_string($this->con, $obj->getId()));
+		$result = mysqli_query($this->con, $this->sql);
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), get_class( $obj ), 'Deletar' ));
+			return $this->superdao->getResponse();
+		}
+
+		$this->superdao->setSuccess( true );
+		$this->superdao->setData( true );
+
+		return $this->superdao->getResponse();
+	}
+
 	//quantidade total
 	function qtdTotal() {
 		$this->sql = "SELECT count(*) as quantidade FROM usuario";
@@ -118,5 +166,5 @@ Class UsuarioDAO {
 	}
 }
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>

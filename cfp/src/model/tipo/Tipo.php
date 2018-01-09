@@ -1,19 +1,19 @@
 <?php
-// model : fluxodespesa
+// model : tipo
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
-Class Fluxodespesa implements JsonSerializable {
+Class Tipo implements JsonSerializable {
 	//atributos
 	private $id;
-	private $objdespesa;
-	private $valor;
+	private $descricao;
+	private $uso;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -21,15 +21,15 @@ Class Fluxodespesa implements JsonSerializable {
 	public function __construct
 	(
 		$id = NULL,
-		Despesa $objdespesa = NULL,
-		$valor = NULL,
+		$descricao = NULL,
+		$uso = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
 	{
 		$this->id	= $id;
-		$this->objdespesa	= $objdespesa;
-		$this->valor	= $valor;
+		$this->descricao	= $descricao;
+		$this->uso	= $uso;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -42,18 +42,18 @@ Class Fluxodespesa implements JsonSerializable {
 		$this->id = $id;
 		return $this;
 	}
-	public function getObjdespesa() {
-		return $this->objdespesa;
+	public function getDescricao() {
+		return $this->descricao;
 	}
-	public function setObjdespesa($objdespesa) {
-		$this->objdespesa = $objdespesa;
+	public function setDescricao($descricao) {
+		$this->descricao = $descricao;
 		return $this;
 	}
-	public function getValor() {
-		return $this->valor;
+	public function getUso() {
+		return $this->uso;
 	}
-	public function setValor($valor) {
-		$this->valor = $valor;
+	public function setUso($uso) {
+		$this->uso = $uso;
 		return $this;
 	}
 	public function getDatacadastro() {
@@ -75,13 +75,13 @@ Class Fluxodespesa implements JsonSerializable {
 	public function JsonSerialize () {
 		return [
 			"id"	=> $this->id,
-			"objdespesa"	=> $this->objdespesa,
-			"valor"	=> $this->valor,
+			"descricao"	=> $this->descricao,
+			"uso"	=> $this->uso,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];
 	}
 }
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>

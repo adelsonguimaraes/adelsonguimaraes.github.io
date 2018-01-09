@@ -20,7 +20,16 @@ body {
 	border-top-right-radius: 15px;
 }
 .form_login {
-	padding: 40px 20px;
+	padding: 10px 20px;
+	padding-bottom: 40px;
+}
+.form_login_error {
+	background-color: #ffd1d1;
+	border-radius: 5px;
+	text-align: center;
+	color: darkred;
+	padding: 10px;
+	margin: 5px;
 }
 
 /*  pequeno */

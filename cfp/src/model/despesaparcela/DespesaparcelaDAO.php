@@ -1,5 +1,5 @@
 <?php
-// dao : recebimento
+// dao : despesaparcela
 
 /*
 	Projeto: CFP - (Controle Financeiro Pessoal).
@@ -9,7 +9,7 @@
 	Data Atual: 09/01/2018.
 */
 
-Class RecebimentoDAO {
+Class DespesaparcelaDAO {
 	//atributos
 	private $con;
 	private $sql;
@@ -20,16 +20,19 @@ Class RecebimentoDAO {
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
-		$this->superdao = new SuperDAO('recebimento');
+		$this->superdao = new SuperDAO('despesaparcela');
 	}
 
 	//cadastrar
-	function cadastrar (recebimento $obj) {
-		$this->sql = sprintf("INSERT INTO recebimento(idusuario, idtipo, ativo)
-		VALUES(%d, %d, '%s')",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjtipo()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()));
+	function cadastrar (despesaparcela $obj) {
+		$this->sql = sprintf("INSERT INTO despesaparcela(iddespesa, valor, valorpago, datavencimento, datapagamento, status)
+		VALUES(%d, %f, %f, '%s', '%s', '%s')",
+			mysqli_real_escape_string($this->con, $obj->getObjdespesa()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getValor()),
+			mysqli_real_escape_string($this->con, $obj->getValorpago()),
+			mysqli_real_escape_string($this->con, $obj->getDatavencimento()),
+			mysqli_real_escape_string($this->con, $obj->getDatapagamento()),
+			mysqli_real_escape_string($this->con, $obj->getStatus()));
 
 		$this->superdao->resetResponse();
 
@@ -45,11 +48,14 @@ Class RecebimentoDAO {
 	}
 
 	//atualizar
-	function atualizar (Recebimento $obj) {
-		$this->sql = sprintf("UPDATE recebimento SET idusuario = %d, idtipo = %d, ativo = '%s', dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjtipo()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()),
+	function atualizar (Despesaparcela $obj) {
+		$this->sql = sprintf("UPDATE despesaparcela SET iddespesa = %d, valor = %f, valorpago = %f, datavencimento = '%s', datapagamento = '%s', status = '%s', dataedicao = '%s' WHERE id = %d ",
+			mysqli_real_escape_string($this->con, $obj->getObjdespesa()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getValor()),
+			mysqli_real_escape_string($this->con, $obj->getValorpago()),
+			mysqli_real_escape_string($this->con, $obj->getDatavencimento()),
+			mysqli_real_escape_string($this->con, $obj->getDatapagamento()),
+			mysqli_real_escape_string($this->con, $obj->getStatus()),
 			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
@@ -64,8 +70,8 @@ Class RecebimentoDAO {
 	}
 
 	//buscarPorId
-	function buscarPorId (Recebimento $obj) {
-		$this->sql = sprintf("SELECT * FROM recebimento WHERE id = %d",
+	function buscarPorId (Despesaparcela $obj) {
+		$this->sql = sprintf("SELECT * FROM despesaparcela WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -85,13 +91,13 @@ Class RecebimentoDAO {
 
 	//listar
 	function listar () {
-		$this->sql = "SELECT * FROM recebimento";
+		$this->sql = "SELECT * FROM despesaparcela";
 		$result = mysqli_query($this->con, $this->sql);
 
 		$this->superdao->resetResponse();
 
 		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Recebimento' , 'Listar' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Despesaparcela' , 'Listar' ) );
 		}else{
 			while($row = mysqli_fetch_object($result)) {
 				array_push($this->lista, $row);
@@ -104,13 +110,13 @@ Class RecebimentoDAO {
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
-		$this->sql = "SELECT * FROM recebimento limit " . $start . ", " . $limit;
+		$this->sql = "SELECT * FROM despesaparcela limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
 
 		if ( !$result ) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Recebimento' , 'ListarPaginado' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Despesaparcela' , 'ListarPaginado' ) );
 		}else{
 			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
 			}
@@ -122,7 +128,7 @@ Class RecebimentoDAO {
 		return $this->superdao->getResponse();
 	}
 	//deletar
-	function deletar (Recebimento $obj) {
+	function deletar (Despesaparcela $obj) {
 		$this->superdao->resetResponse();
 
 		// buscando por dependentes
@@ -132,7 +138,7 @@ Class RecebimentoDAO {
 			return $this->superdao->getResponse();
 		}
 
-		$this->sql = sprintf("DELETE FROM recebimento WHERE id = %d",
+		$this->sql = sprintf("DELETE FROM despesaparcela WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -149,7 +155,7 @@ Class RecebimentoDAO {
 
 	//quantidade total
 	function qtdTotal() {
-		$this->sql = "SELECT count(*) as quantidade FROM recebimento";
+		$this->sql = "SELECT count(*) as quantidade FROM despesaparcela";
 		$result = mysqli_query ( $this->con, $this->sql );
 		if (! $result) {
 			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );

@@ -5,7 +5,10 @@
 			<i class="fa fa-user"></i>
 			 Acessar Sistema - CFP
 		</div>
-		<form class="form_login">
+		<form class="form_login" ng-submit="logar(login)">
+				<div class="form_login_error" ng-if="login.error">
+					<b>Atenção:</b> Usuário ou Senha Inválidos!
+				</div>
 				<div class="form-group">
 					<label>Usuário</label>
 					<input type="text" class="form-control" placeholder="Digite seu Usuário" ng-model="login.usuario">

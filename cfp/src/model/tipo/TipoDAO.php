@@ -1,5 +1,5 @@
 <?php
-// dao : recebimento
+// dao : tipo
 
 /*
 	Projeto: CFP - (Controle Financeiro Pessoal).
@@ -9,7 +9,7 @@
 	Data Atual: 09/01/2018.
 */
 
-Class RecebimentoDAO {
+Class TipoDAO {
 	//atributos
 	private $con;
 	private $sql;
@@ -20,16 +20,15 @@ Class RecebimentoDAO {
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
-		$this->superdao = new SuperDAO('recebimento');
+		$this->superdao = new SuperDAO('tipo');
 	}
 
 	//cadastrar
-	function cadastrar (recebimento $obj) {
-		$this->sql = sprintf("INSERT INTO recebimento(idusuario, idtipo, ativo)
-		VALUES(%d, %d, '%s')",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjtipo()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()));
+	function cadastrar (tipo $obj) {
+		$this->sql = sprintf("INSERT INTO tipo(descricao, uso)
+		VALUES('%s', '%s')",
+			mysqli_real_escape_string($this->con, $obj->getDescricao()),
+			mysqli_real_escape_string($this->con, $obj->getUso()));
 
 		$this->superdao->resetResponse();
 
@@ -45,11 +44,10 @@ Class RecebimentoDAO {
 	}
 
 	//atualizar
-	function atualizar (Recebimento $obj) {
-		$this->sql = sprintf("UPDATE recebimento SET idusuario = %d, idtipo = %d, ativo = '%s', dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjtipo()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()),
+	function atualizar (Tipo $obj) {
+		$this->sql = sprintf("UPDATE tipo SET descricao = '%s', uso = '%s', dataedicao = '%s' WHERE id = %d ",
+			mysqli_real_escape_string($this->con, $obj->getDescricao()),
+			mysqli_real_escape_string($this->con, $obj->getUso()),
 			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
@@ -64,8 +62,8 @@ Class RecebimentoDAO {
 	}
 
 	//buscarPorId
-	function buscarPorId (Recebimento $obj) {
-		$this->sql = sprintf("SELECT * FROM recebimento WHERE id = %d",
+	function buscarPorId (Tipo $obj) {
+		$this->sql = sprintf("SELECT * FROM tipo WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -85,13 +83,13 @@ Class RecebimentoDAO {
 
 	//listar
 	function listar () {
-		$this->sql = "SELECT * FROM recebimento";
+		$this->sql = "SELECT * FROM tipo";
 		$result = mysqli_query($this->con, $this->sql);
 
 		$this->superdao->resetResponse();
 
 		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Recebimento' , 'Listar' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Tipo' , 'Listar' ) );
 		}else{
 			while($row = mysqli_fetch_object($result)) {
 				array_push($this->lista, $row);
@@ -104,13 +102,13 @@ Class RecebimentoDAO {
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
-		$this->sql = "SELECT * FROM recebimento limit " . $start . ", " . $limit;
+		$this->sql = "SELECT * FROM tipo limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
 
 		if ( !$result ) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Recebimento' , 'ListarPaginado' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Tipo' , 'ListarPaginado' ) );
 		}else{
 			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
 			}
@@ -122,7 +120,7 @@ Class RecebimentoDAO {
 		return $this->superdao->getResponse();
 	}
 	//deletar
-	function deletar (Recebimento $obj) {
+	function deletar (Tipo $obj) {
 		$this->superdao->resetResponse();
 
 		// buscando por dependentes
@@ -132,7 +130,7 @@ Class RecebimentoDAO {
 			return $this->superdao->getResponse();
 		}
 
-		$this->sql = sprintf("DELETE FROM recebimento WHERE id = %d",
+		$this->sql = sprintf("DELETE FROM tipo WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -149,7 +147,7 @@ Class RecebimentoDAO {
 
 	//quantidade total
 	function qtdTotal() {
-		$this->sql = "SELECT count(*) as quantidade FROM recebimento";
+		$this->sql = "SELECT count(*) as quantidade FROM tipo";
 		$result = mysqli_query ( $this->con, $this->sql );
 		if (! $result) {
 			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );

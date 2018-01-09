@@ -2,20 +2,21 @@
 // model : usuario
 
 /*
-	Projeto: CFP - Controle Financeiro Pessoal.
-	Project Owner: Adelson Guimarães Monteiro.
+	Projeto: CFP - (Controle Financeiro Pessoal).
+	Project Owner: Adelson Guimarães.
 	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 20/06/2016.
-	Data Atual: 29/06/2016.
+	Data de início: 09/01/2018.
+	Data Atual: 09/01/2018.
 */
 
 Class Usuario implements JsonSerializable {
 	//atributos
 	private $id;
 	private $nome;
-	private $usuario;
+	private $email;
 	private $senha;
 	private $ativo;
+	private $authentication;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -24,18 +25,20 @@ Class Usuario implements JsonSerializable {
 	(
 		$id = NULL,
 		$nome = NULL,
-		$usuario = NULL,
+		$email = NULL,
 		$senha = NULL,
 		$ativo = NULL,
+		$authentication = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
 	{
 		$this->id	= $id;
 		$this->nome	= $nome;
-		$this->usuario	= $usuario;
+		$this->email	= $email;
 		$this->senha	= $senha;
 		$this->ativo	= $ativo;
+		$this->authentication	= $authentication;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -55,11 +58,11 @@ Class Usuario implements JsonSerializable {
 		$this->nome = $nome;
 		return $this;
 	}
-	public function getUsuario() {
-		return $this->usuario;
+	public function getEmail() {
+		return $this->email;
 	}
-	public function setUsuario($usuario) {
-		$this->usuario = $usuario;
+	public function setEmail($email) {
+		$this->email = $email;
 		return $this;
 	}
 	public function getSenha() {
@@ -74,6 +77,13 @@ Class Usuario implements JsonSerializable {
 	}
 	public function setAtivo($ativo) {
 		$this->ativo = $ativo;
+		return $this;
+	}
+	public function getAuthentication() {
+		return $this->authentication;
+	}
+	public function setAuthentication($authentication) {
+		$this->authentication = $authentication;
 		return $this;
 	}
 	public function getDatacadastro() {
@@ -96,14 +106,15 @@ Class Usuario implements JsonSerializable {
 		return [
 			"id"	=> $this->id,
 			"nome"	=> $this->nome,
-			"usuario"	=> $this->usuario,
+			"email"	=> $this->email,
 			"senha"	=> $this->senha,
 			"ativo"	=> $this->ativo,
+			"authentication"	=> $this->authentication,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];
 	}
 }
 
-// Classe gerada com BlackCoffeePHP 1.0 - by Adelson Guimarães
+// Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>
