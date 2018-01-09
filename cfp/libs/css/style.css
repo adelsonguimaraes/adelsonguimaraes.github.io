@@ -1,4 +1,5 @@
 body {
+	margin: 0 auto;
 	padding-top: 40px;
 	padding-bottom: 40px;
 	background-color:#a7bee2;
@@ -36,7 +37,8 @@ body {
 	Menu Page
 */
 .menu_page_container {
-	margin: 0 auto;
+	background: orange;
+	text-align: center;
 }
 
 .menu_page_content {
@@ -71,7 +73,10 @@ body {
         max-width: 540px;
 	}
 	.menu_page_container {
-		margin: 0 auto;
+		display: inline-flex;
+	}
+	.menu_page_content {
+		margin-top: 230px;
 	}
 }
 /*  Médio */
