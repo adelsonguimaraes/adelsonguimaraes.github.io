@@ -38,7 +38,7 @@ body {
 */
 .menu_page_container {
 	background: orange;
-	text-align: center;
+	float:right;
 }
 
 .menu_page_content {
