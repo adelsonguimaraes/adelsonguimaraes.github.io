@@ -1,6 +1,6 @@
 body {
 	margin: 0 auto;
-	padding-top: 40px;
+	padding-top: 20px;
 	padding-bottom: 40px;
 	background-color:#a7bee2;
 	background-image: url(../img/financas.jpg);
@@ -36,34 +36,37 @@ body {
 /*
 	Menu Page
 */
-.menu_page_container {
-	/* background: #ffd1d1; */
-	margin-left: 90px; 
-}
+
+/* .menu_page_container { */
+	/* background: #fff; */
+/* } */
 
 .menu_page_content {
 	background-color: #3D506C;
-	height: 140px;
-	width: 160px;
+	height: 160px;
+	width: 190px;
 	padding: 5px;
 	border-radius: 20px;
-	overflow: hidden;
-	margin: 10px;
+	/* overflow: hidden; */
+	margin: 35px auto;
 	cursor: pointer;
 }
 
 .menu_page_content > img {
-	height: 100%;
+	height: 85%;
 	width: 100%;
 	border-radius: 100px;
 }
 
-.menu_page_container > span {
-	color: #fff;
-	font-size:14px;
+.menu_page_content_footer {
+	width: 100%;
 	text-align: center;
+	color: #fff;
+	/* margin-left: -5px; */
+	font-size: 25px;
+	/* background: #3D506C; */
+	/* border-radius: 100px; */
 }
-
 
 /*  pequeno */
 @media (min-width: 576px) {
@@ -78,13 +81,9 @@ body {
 		/* margin-left: 0; */
 	}
 	.menu_page_content {
-		/* margin-top: 230px; */
-	}
-	.menu_page_content {
 		height: 200px;
 		width: 50%;
-		/* margin: 10px; */
-		/* margin-top: 180px; */
+		margin: 10px 12px;
 	}
 }
 /*  Médio */
@@ -150,7 +149,7 @@ body {
 	.menu_page_content {
 		height: 300px;
 		width: 50%;
-		margin: 30px;
+		margin: 30px 35px;
 		/* margin-top: 180px; */
 	}
 }
