@@ -37,7 +37,12 @@ body {
 	Menu Page
 */
 .menu_page_container {
+<<<<<<< HEAD
 	margin-left: 6%; 
+=======
+	/* background: #ffd1d1; */
+	margin-left: 10%; 
+>>>>>>> 0da70637b9c96492fc12cf7e3a39c4dea11e549c
 }
 
 .menu_page_content {
