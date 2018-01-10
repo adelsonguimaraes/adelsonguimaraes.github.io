@@ -49,6 +49,7 @@ body {
 	border-radius: 20px;
 	overflow: hidden;
 	margin: 15px;
+	cursor: pointer;
 }
 
 .menu_page_content > img {
