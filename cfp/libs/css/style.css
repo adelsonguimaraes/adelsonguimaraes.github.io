@@ -38,17 +38,17 @@ body {
 */
 .menu_page_container {
 	/* background: #ffd1d1; */
-	margin-left: 8%; 
+	margin-left: 90px; 
 }
 
 .menu_page_content {
 	background-color: #3D506C;
-	height: 200px;
-	width: 250px;
+	height: 140px;
+	width: 160px;
 	padding: 5px;
 	border-radius: 20px;
 	overflow: hidden;
-	margin: 15px;
+	margin: 10px;
 	cursor: pointer;
 }
 
