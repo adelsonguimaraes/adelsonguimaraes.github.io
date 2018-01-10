@@ -1,28 +1,15 @@
 
-var menupageCtrl = function ( $scope ) {
-	$scope.faturas = [
-		{
-			id:1,
-			'descricao':'Tenis',
-			'vencimento':'01/11/2016',
-			'valor':50.00,
-			'status':'EM ABERTO'
-		},
-		{
-			id:2,
-			'descricao':'Televisão',
-			'vencimento':'01/11/2016',
-			'valor':50.00,
-			'status':'EM ABERTO'
-		},
-		{
-			id:3,
-			'descricao':'Computador',
-			'vencimento':'01/11/2016',
-			'valor':50.00,
-			'status':'EM ABERTO'
-		}
-	];
+var menupageCtrl = function ( $rootScope, $scope, $location ) {
+	
+	//verifica sessao
+	if(!$rootScope.usuario) {
+		$location.path('/login');
+		return false;
+	};
+
+	$scope.clickMenu = function (item) {
+		console.log( item );
+	};
 };
 
 angular.module( 'cfp' )

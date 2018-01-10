@@ -4,10 +4,10 @@
 var despesaCtrl = function ($scope, $rootScope, $location, genericAPI) {
 
 	//verifica sessao
-	if(!$rootScope.usuario) {
-		$location.path('/login');
-		return false;
-	}
+	// if(!$rootScope.usuario) {
+	// 	$location.path('/login');
+	// 	return false;
+	// }
 	
 	function inciaScope () {
 		$scope.despesa = {
@@ -37,7 +37,7 @@ var despesaCtrl = function ($scope, $rootScope, $location, genericAPI) {
 			if( response.data.success === true ){
 	        	$scope.despesas = response.data.data;
 	        }else{
-	        	alert( response.data.msg );
+	        	console.log( response.data.msg );
 	        }
         }, function errorCallback(response) {
         	//error

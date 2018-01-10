@@ -4,10 +4,10 @@
 var recebimentoCtrl = function ($scope, $rootScope, $location, genericAPI) {
 	
 	//verifica sessao
-	if(!$rootScope.usuario) {
-		$location.path('/login');
-		return false;
-	}
+	// if(!$rootScope.usuario) {
+	// 	$location.path('/login');
+	// 	return false;
+	// }
 
 	function startScope () {
 		$scope.recebimento = {

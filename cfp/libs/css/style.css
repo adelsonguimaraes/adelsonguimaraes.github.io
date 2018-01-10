@@ -10,7 +10,7 @@ body {
 
 .panel_login {
 	margin: 0 auto;
-	margin-top: 15%;
+	margin-top: 25px;
 	background: #fff;
 	border-radius: 15px;
 }
@@ -61,7 +61,7 @@ body {
 }
 
 .menu_page_content > img {
-	height: 85%;
+	height: 80%;
 	width: 100%;
 	border-radius: 100px;
 }
