@@ -7,6 +7,7 @@ body {
 	background-repeat: no-repeat;
 	background-size: 350%;
 }
+
 .panel_login {
 	margin: 0 auto;
 	margin-top: 15%;
@@ -50,6 +51,13 @@ body {
 	/* overflow: hidden; */
 	margin: 35px auto;
 	cursor: pointer;
+	opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+
+.menu_page_content:hover {
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
 }
 
 .menu_page_content > img {
@@ -82,7 +90,7 @@ body {
 	}
 	.menu_page_content {
 		height: 200px;
-		width: 50%;
+		width: 150px;
 		margin: 10px 12px;
 	}
 }
