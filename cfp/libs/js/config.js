@@ -22,7 +22,22 @@
 	            url: "/home",
 	            templateUrl: "views/home.html",
 	            controller: "homeCtrl",
-	            data: { pageTitle: 'Login', specialClass: 'gray-bg'},
+	            data: { pageTitle: 'Home', specialClass: 'gray-bg'},
+	            resolve: {
+	                loadPlugin: function ($ocLazyLoad) {
+	                    return $ocLazyLoad.load([
+	                       	{
+	                            files: ['libs/js/plugins/moment/moment.min.js']
+	                        }
+	                    ]);
+	                }
+	            }
+			})
+			.state('cronograma', {
+	            url: "/cronograma",
+	            templateUrl: "views/cronograma.html",
+	            controller: "cronogramaCtrl",
+	            data: { pageTitle: 'Cronograma', specialClass: 'gray-bg'},
 	            resolve: {
 	                loadPlugin: function ($ocLazyLoad) {
 	                    return $ocLazyLoad.load([
@@ -37,7 +52,7 @@
 	            url: "/despesa",
 	            templateUrl: "views/despesa.html",
 	            controller: "despesaCtrl",
-	            data: { pageTitle: 'Login', specialClass: 'gray-bg'},
+	            data: { pageTitle: 'Despesas', specialClass: 'gray-bg'},
 	            resolve: {
 	                loadPlugin: function ($ocLazyLoad) {
 	                    return $ocLazyLoad.load([
@@ -56,7 +71,7 @@
 	            url: "/recebimento",
 	            templateUrl: "views/recebimento.html",
 	            controller: "recebimentoCtrl",
-	            data: { pageTitle: 'Login', specialClass: 'gray-bg'},
+	            data: { pageTitle: 'Recebimentos', specialClass: 'gray-bg'},
 	            resolve: {
 	                loadPlugin: function ($ocLazyLoad) {
 	                    return $ocLazyLoad.load([

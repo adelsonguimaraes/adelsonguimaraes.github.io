@@ -1,22 +1,29 @@
+<div ng-include="'views/nav.html'"></div>
 <div class="container">
     <div class="menu_page_container">
-        <div class="menu_page_content" ng-click="cronograma">
-           <img src="libs/img/cronograma.png" alt="Cronograma">
-           <div class="menu_page_content_footer">
-                Cronograma
+        <a href="#/cronograma">
+            <div class="menu_page_content" ng-click="cronograma">
+                <img src="libs/img/cronograma.png" alt="Cronograma">
+                <div class="menu_page_content_footer">
+                    Cronograma
+                </div>
             </div>
-        </div>
-        <div class="menu_page_content" ng-click="despesa">
-            <img src="libs/img/despesa.png" alt="Despesas">
-            <div class="menu_page_content_footer">
-                Despesas
+        </a>
+        <a href="#/despesa">
+            <div class="menu_page_content" ng-click="despesa">
+                <img src="libs/img/despesa.png" alt="Despesas">
+                <div class="menu_page_content_footer">
+                    Despesas
+                </div>
             </div>
-        </div>
-        <div class="menu_page_content" ng-click="recebimento">
-            <img src="libs/img/recebimento.png" alt="Recebimentos">
-            <div class="menu_page_content_footer">
-                Recebimentos
+        </a>
+        <a href="#/despesa">
+            <div class="menu_page_content" ng-click="recebimento">
+                <img src="libs/img/recebimento.png" alt="Recebimentos">
+                <div class="menu_page_content_footer">
+                    Recebimentos
+                </div>
             </div>
-        </div>
+        </a>
     </div>
 </div>
