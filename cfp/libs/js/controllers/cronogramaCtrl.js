@@ -212,14 +212,32 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     var data = ''; // variavel data
     
                     // laco de prestacoes da despesa
-                    for (var p=0; p<despesa.prestacoes; p++) {
-                        var dia = moment(despesa.datavencimento).add(p, "M").date(); // dia da data despesa + index
-                        var mes = moment(despesa.datavencimento).add(p, "M").month(); // mes data despesa + index
-                        var ano = moment(despesa.datavencimento).add(p, "M").year(); // ano data despesa + index
+                    // for (var p=0; p<despesa.prestacoes; p++) {
+                    //     var dia = moment(despesa.datavencimento).add(p, "M").date(); // dia da data despesa + index
+                    //     var mes = moment(despesa.datavencimento).add(p, "M").month(); // mes data despesa + index
+                    //     var ano = moment(despesa.datavencimento).add(p, "M").year(); // ano data despesa + index
+                        
+                    //     // caso o mes e ano da despesa seja = ao mes e ano atual 
+                    //     if (mes === month && ano === year) {
+                    //         data = {"data": mes+"/"+ano, "valor":despesa.valor};
+                    //         // pegando a prestação atual
+                    //         if (m === 0) { // m = o ( mes atual )
+                    //             despesa.prestacao = (p+1)+"/"+despesa.prestacoes;
+                    //         }
+                    //     }
+                    // }
+
+                    var totalprestacao = despesa.parcelas.length;
+                    for (var p=0; p<totalprestacao; p++) {
+                        var parcela = despesa[p]; // parcela da despesa
+
+                        var dia = moment(parcela.datavencimento).date(); // dia da data despesa
+                        var mes = moment(parcela.datavencimento).month(); // mes data despesa
+                        var ano = moment(parcela.datavencimento).year(); // ano data despesa
                         
                         // caso o mes e ano da despesa seja = ao mes e ano atual 
                         if (mes === month && ano === year) {
-                            data = {"data": mes+"/"+ano, "valor":despesa.valor};
+                            data = {"data": mes+"/"+ano, "valor":despesa[p].valor};
                             // pegando a prestação atual
                             if (m === 0) { // m = o ( mes atual )
                                 despesa.prestacao = (p+1)+"/"+despesa.prestacoes;
