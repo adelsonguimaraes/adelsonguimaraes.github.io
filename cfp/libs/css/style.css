@@ -132,9 +132,9 @@ body {
 		display: inline-flex;
 	}
 	.menu_page_content {
-		height: 280px;
-		width: 180px;
-		margin: 60px;
+		height: 250px;
+		width: 210px;
+		margin: 50px;
 		/* margin-top: 180px; */
 	}
 }
@@ -156,8 +156,8 @@ body {
 	}
 	.menu_page_content {
 		height: 300px;
-		width: 50%;
-		margin: 30px 35px;
+		width: 260px;
+		margin: 30px 55px;
 		/* margin-top: 180px; */
 	}
 }
