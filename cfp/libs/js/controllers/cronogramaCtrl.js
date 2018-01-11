@@ -25,8 +25,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         ];
     
         $scope.despesas = [
-            {"descricao":"Tênis", "valor":"90.00", "prestacoes":"5", "datavencimento":"2016-07-05"},
-            {"descricao":"Mouse Razor", "valor":"150", "prestacoes":"3", "datavencimento":"2016-07-05"},
+            {"descricao":"Tênis", "valor":"90.00", "prestacoes":"5", "datavencimento":"2017-12-05"},
+            {"descricao":"Mouse Razor", "valor":"150", "prestacoes":"3", "datavencimento":"2018-01-05"},
             {"descricao":"Carro", "valor":"450", "prestacoes":"25", "datavencimento":"2016-07-01"},
             {"descricao":"Bolsa", "valor":"70", "prestacoes":"1", "datavencimento":"2016-07-08"},
             {"descricao":"Oculos", "valor":"180", "prestacoes":"2", "datavencimento":"2016-07-20"},
