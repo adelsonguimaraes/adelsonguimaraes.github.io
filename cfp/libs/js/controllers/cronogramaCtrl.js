@@ -24,6 +24,16 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             {"nome":"Dezembro", 	"sigla":"DEZ", "ano":"0000"}
         ];
     
+        $scope.despesas = [
+            {"descricao":"Tênis", "valor":"90.00", "prestacoes":"5", "datavencimento":"2016-07-05"},
+            {"descricao":"Mouse Razor", "valor":"150", "prestacoes":"3", "datavencimento":"2016-07-05"},
+            {"descricao":"Carro", "valor":"450", "prestacoes":"25", "datavencimento":"2016-07-01"},
+            {"descricao":"Bolsa", "valor":"70", "prestacoes":"1", "datavencimento":"2016-07-08"},
+            {"descricao":"Oculos", "valor":"180", "prestacoes":"2", "datavencimento":"2016-07-20"},
+            {"descricao":"Notebook", "valor":"2000", "prestacoes":"10", "datavencimento":"2016-07-15"},
+            {"descricao":"Meia", "valor":"500", "prestacoes":"7", "datavencimento":"2016-09-15"}
+        ];
+
         $scope.periodos = [
             '3','4','5','6','7','8','9','10','11','12'
         ];
@@ -32,22 +42,29 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         function carregaMeses () {
             $scope.meses = [];
     
-            var now = new Date();
-            var count = now.getMonth();
-            var total = count + parseInt($scope.tlmeses);
-            var ano = moment().year();
-    
-            while (count < 12) {
-                meses[count].ano = ano;
-                $scope.meses.push(meses[count]);
-                count++;
+            var now = new Date(); // pegamos a data atual
+            var index = now.getMonth(); // retiramos o indicador do mes da data
+            var total = index + parseInt($scope.tlmeses); // mes da data + quantidade de meses selecionada
+            var ano = moment(now).year(); // pegando o ano da data
+            var count = 0;
+
+            // equanto index do mês atual for menor que a quantidade de meses para visualizar conta
+            while (index < 12) { //12
+                meses[index].ano = ano; // dentro de meses a posição ano recebe ano
+                if ($scope.meses.length < $scope.tlmeses) {
+                    $scope.meses.push(meses[index]); // o escopo meses recebe cada mês
+                }
+                index++;
             }
-            var resto = total - count;
-            count = 0;
-            while (count < resto) {
-                meses[count].ano = ano+1;
-                $scope.meses.push(meses[count]);
-                count++;
+            var resto = total - index; // calculamos o total de meses restantes
+            index = 0;
+            // enquanto index for menor que o resto
+            while (index < resto) {
+                meses[index].ano = ano+1; // meses conta acrescendo de 1 ano
+                if ($scope.meses.length < $scope.tlmeses) {
+                    $scope.meses.push(meses[index]); // o escopo meses recebe cada mês
+                }
+                index++;
             }
         }
         carregaMeses ();
@@ -60,16 +77,6 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             }
         };
         totaisValor();
-    
-        $scope.despesas = [
-            // {"descricao":"Tênis", "valor":"90.00", "prestacoes":"5", "datavencimento":"2016-07-05"},
-            // {"descricao":"Mouse Razor", "valor":"150", "prestacoes":"3", "datavencimento":"2016-07-05"},
-            // {"descricao":"Carro", "valor":"450", "prestacoes":"25", "datavencimento":"2016-07-01"},
-            // {"descricao":"Bolsa", "valor":"70", "prestacoes":"1", "datavencimento":"2016-07-08"},
-            // {"descricao":"Oculos", "valor":"180", "prestacoes":"2", "datavencimento":"2016-07-20"},
-            // {"descricao":"Notebook", "valor":"2000", "prestacoes":"10", "datavencimento":"2016-07-15"},
-            // {"descricao":"Meia", "valor":"500", "prestacoes":"7", "datavencimento":"2016-09-15"}
-        ];
     
         $scope.listarDespesaPorUsuario = function () {
             var data = {
@@ -181,6 +188,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             ordenaDatas( $scope.despesas );
             montaValorMes();
         };
+        $scope.changeTlMeses();
     }
     
     

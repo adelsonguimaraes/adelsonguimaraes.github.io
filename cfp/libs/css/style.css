@@ -73,6 +73,13 @@ body {
 	font-size: 20px;
 }
 
+/*
+	Cronograma
+*/
+.table-responsive {
+	min-height: 250px;
+}
+
 /*  pequeno */
 @media (min-width: 576px) {
 	body {
