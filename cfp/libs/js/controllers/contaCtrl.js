@@ -8,6 +8,8 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         // 	$location.path('/login');
         // 	return false;
         // }
+
+        $scope.dataatual = moment().format('YYYY-MM-DD');
         
         function inciaScope () {
             $scope.conta = {
