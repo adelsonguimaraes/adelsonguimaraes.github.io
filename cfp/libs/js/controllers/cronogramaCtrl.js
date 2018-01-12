@@ -136,6 +136,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     var year = moment().add(m, "M").year(); // ano atual + 1
                     var data = ''; // variavel data
     
+                    var totalParcela = (conta.parcela<10) ? '0'+conta.parcela : conta.parcela;
+
                     // laco de parcelas da conta
                     for (var p=0; p<conta.parcela; p++) {
                         var dia = moment(conta.datavencimento).add(p, "M").date(); // dia da data conta + index
@@ -147,7 +149,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                             data = {"data": mes+"/"+ano, "valor":conta.valor};
                             // pegando a prestação atual
                             if (m === 0) { // m = o ( mes atual )
-                                conta.parcelaAtual = (p+1)+"/"+conta.parcela;
+                                var pa = ((p+1)<10)?'0'+(p+1):(p+1);
+                                conta.parcelaAtual = pa+"/"+totalParcela;
                             }
                         }
                     }
@@ -155,9 +158,9 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     if (!conta.parcelaAtual) {
                         // se ano = atual mas mes menor ou ano menor
                         if ( (ano === year && mes < month) || (ano < year) ) {
-                            conta.parcelaAtual = conta.parcela+"/"+conta.parcela;
+                            conta.parcelaAtual = totalParcela+"/"+totalParcela;
                         }else{
-                            conta.parcelaAtual = "0/"+conta.parcela;
+                            conta.parcelaAtual = "00/"+totalParcela;
                         }
                     }
     
