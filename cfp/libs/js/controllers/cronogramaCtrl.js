@@ -136,6 +136,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     var year = moment().add(m, "M").year(); // ano atual + 1
                     var data = ''; // variavel data
     
+                    var totalParcela = (conta.parcela<10) ? '0'+conta.parcela : conta.parcela;
+
                     // laco de parcelas da conta
                     for (var p=0; p<conta.parcela; p++) {
                         var dia = moment(conta.datavencimento).add(p, "M").date(); // dia da data conta + index
@@ -147,7 +149,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                             data = {"data": mes+"/"+ano, "valor":conta.valor};
                             // pegando a prestação atual
                             if (m === 0) { // m = o ( mes atual )
-                                conta.parcelaAtual = (p+1)+"/"+conta.parcela;
+                                var pa = ((p+1)<10)?'0'+(p+1):(p+1);
+                                conta.parcelaAtual = pa+"/"+totalParcela;
                             }
                         }
                     }
@@ -155,9 +158,9 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     if (!conta.parcelaAtual) {
                         // se ano = atual mas mes menor ou ano menor
                         if ( (ano === year && mes < month) || (ano < year) ) {
-                            conta.parcelaAtual = conta.parcela+"/"+conta.parcela;
+                            conta.parcelaAtual = totalParcela+"/"+totalParcela;
                         }else{
-                            conta.parcelaAtual = "0/"+conta.parcela;
+                            conta.parcelaAtual = "00/"+totalParcela;
                         }
                     }
     
@@ -165,22 +168,27 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         conta.pres.push({"data": "00/0000", "valor":"xxxx", "color":"background:#f0f5f5; color:#ccc;", "icon":"fa-trophyx"});
                     }else{
                         conta.pres.push(data);
-                        $scope.totais[m].valor = $scope.totais[m].valor +  parseInt(conta.valor);
-                        
-                        if($scope.totais[m-1] != undefined && $scope.totais[m].valor < $scope.totais[m-1].valor) {
-                            $scope.totais[m].icon = "fa-arrow-down";
-                        }else if($scope.totais[m-1] != undefined && $scope.totais[m].valor > $scope.totais[m-1].valor) {
-                            $scope.totais[m].icon = "fa-arrow-up";
-                        }else{
-                            $scope.totais[m].icon = "fa-arrow-right";
-                        }
+                        $scope.totais[m].valor += parseInt(conta.valor);
                     }
                 }
     
-                $scope.totalgeral = $scope.totalgeral + parseFloat(conta.valor);
+                $scope.totalgeral += parseFloat(conta.valor);
             }
+            setUpDownMes();
         }
     
+        function setUpDownMes () {
+            for (var m in $scope.totais) {
+                if($scope.totais[m-1] != undefined && $scope.totais[m].valor < $scope.totais[m-1].valor) {
+                    $scope.totais[m].icon = "fa-arrow-down";
+                }else if($scope.totais[m-1] != undefined && $scope.totais[m].valor > $scope.totais[m-1].valor) {
+                    $scope.totais[m].icon = "fa-arrow-up";
+                }else{
+                    $scope.totais[m].icon = "fa-arrow-right";
+                }
+            }
+        }
+
         $scope.changeTlMeses = function () {
             $scope.meses = [];
             carregaMeses();

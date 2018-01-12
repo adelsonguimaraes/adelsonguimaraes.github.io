@@ -48,10 +48,10 @@
 	                }
 	            }
 	        })
-	        .state('despesa', {
-	            url: "/despesa",
-	            templateUrl: "views/despesa.html",
-	            controller: "despesaCtrl",
+	        .state('apagar', {
+	            url: "/apagar",
+	            templateUrl: "views/contaapagar.html",
+	            controller: "contaCtrl",
 	            data: { pageTitle: 'Despesas', specialClass: 'gray-bg'},
 	            resolve: {
 	                loadPlugin: function ($ocLazyLoad) {
@@ -67,10 +67,10 @@
 	                }
 	            }
 	        })
-	        .state('recebimento', {
-	            url: "/recebimento",
-	            templateUrl: "views/recebimento.html",
-	            controller: "recebimentoCtrl",
+	        .state('areceber', {
+	            url: "/areceber",
+	            templateUrl: "views/contaareceber.html",
+	            controller: "contaCtrl",
 	            data: { pageTitle: 'Recebimentos', specialClass: 'gray-bg'},
 	            resolve: {
 	                loadPlugin: function ($ocLazyLoad) {
@@ -87,27 +87,7 @@
 	            }
 	        })
 
-	        .state('fatura', {
-	            url: "/fatura",
-	            templateUrl: "views/fatura.html",
-	            controller: "faturaCtrl",
-	            data: { pageTitle: 'Login', specialClass: 'gray-bg'},
-	            resolve: {
-	                loadPlugin: function ($ocLazyLoad) {
-	                    return $ocLazyLoad.load([
-	                       {
-	                            files: ['libs/js/plugins/moment/moment.min.js']
-	                        },
-	                        {
-	                            name: 'datePicker',
-	                            files: ['libs/css/plugins/datapicker/angular-datapicker.css','libs/js/plugins/datapicker/angular-datepicker.js']
-	                        },
-	                    ]);
-	                }
-	            }
-			})
-			
-			.state('menupage', {
+	        .state('menupage', {
 	            url: "/menu",
 	            templateUrl: "views/menupage.html",
 	            controller: "menupageCtrl",
