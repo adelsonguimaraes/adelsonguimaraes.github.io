@@ -8,7 +8,7 @@
 					<h3>Lista de Despesas</h3>
 				</div>
 				<div class="panel-body">
-					<button class="btn btn-primary" ng-click="novaDespesa()"><i class="fa fa-plus"></i> Nova despesa</button>
+					<button class="btn btn-primary" ng-click="novaConta()"><i class="fa fa-plus"></i> Nova despesa</button>
 					<hr>
 					<div class="bg-danger btn-lg" ng-if="!despesas">
 						<span class="text-danger">Nenhuma despesa registrada</span>
@@ -85,7 +85,15 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+								 	<label class="label-control">Categoria</label>
+									<select class="form-control" name="categoria" ng-options="obj.id as obj.descricao for obj in categorias" ng-model="conta.idcategoria" ng-required="true">
+									</select>
+								</div>
+							</div>
 							<div class="col-md-2">
 								<div class="form-group">
 								 	<label class="label-control">Valor</label>
@@ -93,18 +101,18 @@
 								</div>
 							</div>
 							<!-- <div class="col-md-2">
-								<div class="form-group">
-								 	<label class="label-control">Quantidade</label>
-									<h-number value="despesa.quantidade" unit-position="left" min="1" max="9999" step="1" ng-model="despesa.quantidade"></h-number>
-								</div>
-							</div> -->
-							<div class="col-md-2">
 							 	<div class="form-group">
 							 		<label class="label-control">Parcelas</label>
 							 		<h-number value="conta.parcela" unit-position="left" min="1" max="120" step="1" ng-model="conta.parcela"></h-number>
 							 	</div>
-						 	</div>
-
+						 	</div> -->
+							<div class="col-md-2">
+								<div class="form-group">
+										<label class="label-control">Categoria</label>
+									<select class="form-control" name="categoria" ng-options="obj as obj for obj in parcelas" ng-model="conta.idcategoria" ng-required="true">
+									</select>
+								</div>
+							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 								 	<label class="label-control">Vencimento</label>

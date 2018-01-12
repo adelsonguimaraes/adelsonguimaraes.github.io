@@ -32,6 +32,9 @@ Class CategoriaControl {
 	function listar () {
 		return $this->objDAO->listar();
 	}
+	function listarCategoriaContasAPagar () {
+		return $this->objDAO->listarCategoriaContasAPagar();
+	}
 	function atualizar () {
 		return $this->objDAO->atualizar($this->obj);
 	}

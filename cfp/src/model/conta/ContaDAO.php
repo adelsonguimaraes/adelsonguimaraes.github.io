@@ -25,8 +25,8 @@ Class ContaDAO {
 
 	//cadastrar
 	function cadastrar (conta $obj) {
-		$this->sql = sprintf("INSERT INTO conta(idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, status, datavencimento)
-		VALUES(%d, %d, '%s', %f, %d, '%s', '%s', '%s', '%s')",
+		$this->sql = sprintf("INSERT INTO conta(idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, datavencimento)
+		VALUES(%d, %d, '%s', %f, %d, '%s', '%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
 			mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
@@ -34,8 +34,8 @@ Class ContaDAO {
 			mysqli_real_escape_string($this->con, $obj->getParcela()),
 			mysqli_real_escape_string($this->con, $obj->getIndeterminada()),
 			mysqli_real_escape_string($this->con, $obj->getTipo()),
-			mysqli_real_escape_string($this->con, $obj->getStatus()),
-			mysqli_real_escape_string($this->con, $obj->getDatavencimento()));
+			// mysqli_real_escape_string($this->con, $obj->getStatus()),
+			mysqli_real_escape_string($this->con, substr($obj->getDatavencimento(),0,10) ));
 
 		$this->superdao->resetResponse();
 
@@ -124,7 +124,29 @@ Class ContaDAO {
 		if ( !$result ) {
 			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'ListarPaginado' ) );
 		}else{
-			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
+			}
+
+			$this->superdao->setSuccess( true );			$this->superdao->setData( $this->lista );
+			$this->superdao->setTotal( $this->qtdTotal() );
+		}
+
+		return $this->superdao->getResponse();
+	}
+
+	function listarContasAPagarPorUsuario ($idusuario) {
+		$this->sql = "SELECT * from conta where idusuario = $idusuario and tipo ='APAGAR'";
+
+		$result = mysqli_query ( $this->con, $this->sql );
+		
+		$this->superdao->resetResponse();
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'ListarPaginado' ) );
+		}else{
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
 			}
 
 			$this->superdao->setSuccess( true );			$this->superdao->setData( $this->lista );

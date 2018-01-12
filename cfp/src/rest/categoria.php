@@ -23,6 +23,9 @@ switch ($_POST['metodo']) {
 	case 'listar':
 		listar();
 		break;
+	case 'listarCategoriaContasAPagar':
+		listarCategoriaContasAPagar();
+		break;
 	case 'atualizar':
 		atualizar();
 		break;
@@ -51,6 +54,11 @@ function buscarPorId () {
 function listar () {
 	$control = new CategoriaControl(new Categoria);
 	$response = $control->listar();
+	echo json_encode($response);
+}
+function listarCategoriaContasAPagar () {
+	$control = new CategoriaControl();
+	$response = $control->listarCategoriaContasAPagar();
 	echo json_encode($response);
 }
 function atualizar () {
