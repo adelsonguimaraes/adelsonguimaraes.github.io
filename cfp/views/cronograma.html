@@ -40,12 +40,12 @@
 								<td ng-repeat="mes in meses" style="background:#bce7e6;">{{mes.sigla}}/{{mes.ano}}</td>
 								
 							</tr>
-							<tr ng-repeat="despesa in despesas">
-								<td ng-bind="despesa.descricao"></td>
-								<td ng-bind="despesa.valor"></td>
-								<td ng-bind="despesa.diavencimento"></td>
-								<td ng-bind="despesa.prestacao"></td>
-								<td ng-repeat="pres in despesa.pres" style="{{pres.color}}">
+							<tr ng-repeat="conta in contas">
+								<td ng-bind="conta.descricao"></td>
+								<td ng-bind="conta.valor"></td>
+								<td ng-bind="conta.diavencimento"></td>
+								<td ng-bind="conta.parcelaAtual"></td>
+								<td ng-repeat="pres in conta.pres" style="{{pres.color}}">
 									{{pres.valor}}
 									<i class="fa" ng-class="pres.icon"></i>
 								</td>
