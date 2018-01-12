@@ -34,81 +34,6 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             {"descricao":"Meia", "valor":"500", "prestacoes":"7", "datavencimento":"2016-09-15"}
         ];
 
-        $scope.despesas = [
-            {
-                "id":1,
-                "idusuario":1,
-                "idtipo":1,
-                "descricao":"Tênis", 
-                "ativo":"SIM",
-                "parcelas": [
-                    {
-                        "id":1,
-                        "iddespesa":1,
-                        "valor":"90.00",
-                        "valorpago":"0.00",
-                        "datavencimento":"2017-12-05",
-                        "datapagamento":"",
-                        "status":"EMABERTO"
-                    },
-                    {
-                        "id":2,
-                        "iddespesa":1,
-                        "valor":"90.00",
-                        "valorpago":"0.00",
-                        "datavencimento":"2018-01-05",
-                        "datapagamento":"",
-                        "status":"EMABERTO"
-                    },
-                    {
-                        "id":3,
-                        "iddespesa":1,
-                        "valor":"90.00",
-                        "valorpago":"0.00",
-                        "datavencimento":"2018-02-05",
-                        "datapagamento":"",
-                        "status":"EMABERTO"
-                    }
-                ]
-            },
-            {
-                "id":1,
-                "idusuario":1,
-                "idtipo":1,
-                "descricao":"Mouse Razor", 
-                "ativo":"SIM",
-                "parcelas": [
-                    {
-                        "id":1,
-                        "iddespesa":1,
-                        "valor":"150.00",
-                        "valorpago":"0.00",
-                        "datavencimento":"2018-01-15",
-                        "datapagamento":"",
-                        "status":"EMABERTO"
-                    },
-                    {
-                        "id":2,
-                        "iddespesa":1,
-                        "valor":"150.00",
-                        "valorpago":"0.00",
-                        "datavencimento":"2018-02-15",
-                        "datapagamento":"",
-                        "status":"EMABERTO"
-                    },
-                    {
-                        "id":3,
-                        "iddespesa":1,
-                        "valor":"150.00",
-                        "valorpago":"0.00",
-                        "datavencimento":"2018-03-15",
-                        "datapagamento":"",
-                        "status":"EMABERTO"
-                    }
-                ]
-            },
-        ];
-
         $scope.periodos = [
             '3','4','5','6','7','8','9','10','11','12'
         ];
@@ -212,38 +137,38 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     var data = ''; // variavel data
     
                     // laco de prestacoes da despesa
-                    // for (var p=0; p<despesa.prestacoes; p++) {
-                    //     var dia = moment(despesa.datavencimento).add(p, "M").date(); // dia da data despesa + index
-                    //     var mes = moment(despesa.datavencimento).add(p, "M").month(); // mes data despesa + index
-                    //     var ano = moment(despesa.datavencimento).add(p, "M").year(); // ano data despesa + index
-                        
-                    //     // caso o mes e ano da despesa seja = ao mes e ano atual 
-                    //     if (mes === month && ano === year) {
-                    //         data = {"data": mes+"/"+ano, "valor":despesa.valor};
-                    //         // pegando a prestação atual
-                    //         if (m === 0) { // m = o ( mes atual )
-                    //             despesa.prestacao = (p+1)+"/"+despesa.prestacoes;
-                    //         }
-                    //     }
-                    // }
-
-                    var totalprestacao = despesa.parcelas.length;
-                    for (var p=0; p<totalprestacao; p++) {
-                        var parcela = despesa[p]; // parcela da despesa
-
-                        var dia = moment(parcela.datavencimento).date(); // dia da data despesa
-                        var mes = moment(parcela.datavencimento).month(); // mes data despesa
-                        var ano = moment(parcela.datavencimento).year(); // ano data despesa
+                    for (var p=0; p<despesa.prestacoes; p++) {
+                        var dia = moment(despesa.datavencimento).add(p, "M").date(); // dia da data despesa + index
+                        var mes = moment(despesa.datavencimento).add(p, "M").month(); // mes data despesa + index
+                        var ano = moment(despesa.datavencimento).add(p, "M").year(); // ano data despesa + index
                         
                         // caso o mes e ano da despesa seja = ao mes e ano atual 
                         if (mes === month && ano === year) {
-                            data = {"data": mes+"/"+ano, "valor":despesa[p].valor};
+                            data = {"data": mes+"/"+ano, "valor":despesa.valor};
                             // pegando a prestação atual
                             if (m === 0) { // m = o ( mes atual )
                                 despesa.prestacao = (p+1)+"/"+despesa.prestacoes;
                             }
                         }
                     }
+
+                    // var totalprestacao = despesa.parcelas.length;
+                    // for (var p=0; p<totalprestacao; p++) {
+                    //     var parcela = despesa[p]; // parcela da despesa
+
+                    //     var dia = moment(parcela.datavencimento).date(); // dia da data despesa
+                    //     var mes = moment(parcela.datavencimento).month(); // mes data despesa
+                    //     var ano = moment(parcela.datavencimento).year(); // ano data despesa
+                        
+                    //     // caso o mes e ano da despesa seja = ao mes e ano atual 
+                    //     if (mes === month && ano === year) {
+                    //         data = {"data": mes+"/"+ano, "valor":despesa[p].valor};
+                    //         // pegando a prestação atual
+                    //         if (m === 0) { // m = o ( mes atual )
+                    //             despesa.prestacao = (p+1)+"/"+despesa.prestacoes;
+                    //         }
+                    //     }
+                    // }
     
                     if (!despesa.prestacao) {
                         // se ano = atual mas mes menor ou ano menor
