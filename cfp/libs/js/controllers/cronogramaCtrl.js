@@ -177,10 +177,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         function setUpDownMes () {
             for (var m in $scope.totais) {
                 if($scope.totais[m-1] != undefined && $scope.totais[m].valor < $scope.totais[m-1].valor) {
-                    console.log($scope.totais[m-1]);
                     $scope.totais[m].icon = "fa-arrow-down";
                 }else if($scope.totais[m-1] != undefined && $scope.totais[m].valor > $scope.totais[m-1].valor) {
-                    console.log($scope.totais[m-1]);
                     $scope.totais[m].icon = "fa-arrow-up";
                 }else{
                     $scope.totais[m].icon = "fa-arrow-right";
