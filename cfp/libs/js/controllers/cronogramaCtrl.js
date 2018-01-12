@@ -165,22 +165,29 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         conta.pres.push({"data": "00/0000", "valor":"xxxx", "color":"background:#f0f5f5; color:#ccc;", "icon":"fa-trophyx"});
                     }else{
                         conta.pres.push(data);
-                        $scope.totais[m].valor = $scope.totais[m].valor +  parseInt(conta.valor);
-                        
-                        if($scope.totais[m-1] != undefined && $scope.totais[m].valor < $scope.totais[m-1].valor) {
-                            $scope.totais[m].icon = "fa-arrow-down";
-                        }else if($scope.totais[m-1] != undefined && $scope.totais[m].valor > $scope.totais[m-1].valor) {
-                            $scope.totais[m].icon = "fa-arrow-up";
-                        }else{
-                            $scope.totais[m].icon = "fa-arrow-right";
-                        }
+                        $scope.totais[m].valor += parseInt(conta.valor);
                     }
                 }
     
-                $scope.totalgeral = $scope.totalgeral + parseFloat(conta.valor);
+                $scope.totalgeral += parseFloat(conta.valor);
             }
+            setUpDownMes();
         }
     
+        function setUpDownMes () {
+            for (var m in $scope.totais) {
+                if($scope.totais[m-1] != undefined && $scope.totais[m].valor < $scope.totais[m-1].valor) {
+                    console.log($scope.totais[m-1]);
+                    $scope.totais[m].icon = "fa-arrow-down";
+                }else if($scope.totais[m-1] != undefined && $scope.totais[m].valor > $scope.totais[m-1].valor) {
+                    console.log($scope.totais[m-1]);
+                    $scope.totais[m].icon = "fa-arrow-up";
+                }else{
+                    $scope.totais[m].icon = "fa-arrow-right";
+                }
+            }
+        }
+
         $scope.changeTlMeses = function () {
             $scope.meses = [];
             carregaMeses();
