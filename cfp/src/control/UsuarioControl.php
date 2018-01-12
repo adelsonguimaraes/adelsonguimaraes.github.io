@@ -2,11 +2,11 @@
 // control : usuario
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
 Class UsuarioControl {

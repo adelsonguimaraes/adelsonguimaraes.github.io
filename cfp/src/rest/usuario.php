@@ -2,11 +2,11 @@
 // rest : usuario
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
 //inclui autoload
@@ -39,7 +39,8 @@ function cadastrar () {
 		$data['email'],
 		$data['senha'],
 		$data['ativo'],
-		$data['authentication']
+		$data['perfil'],
+		$data['pushkey']
 	);
 	$control = new UsuarioControl($obj);
 	$response = $control->cadastrar();
@@ -64,7 +65,8 @@ function atualizar () {
 		$data['email'],
 		$data['senha'],
 		$data['ativo'],
-		$data['authentication']
+		$data['perfil'],
+		$data['pushkey']
 	);
 	$control = new UsuarioControl($obj);
 	$response = $control->atualizar();

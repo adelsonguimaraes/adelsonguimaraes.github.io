@@ -1,12 +1,12 @@
 <?php
-// rest : despesaparcela
+// rest : conta
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
 //inclui autoload
@@ -33,50 +33,56 @@ switch ($_POST['metodo']) {
 
 function cadastrar () {
 	$data = $_POST['data'];
-	$obj = new Despesaparcela(
+	$obj = new Conta(
 		NULL,
-		new Despesa($data['iddespesa']),
+		new Usuario($data['idusuario']),
+		new Categoria($data['idcategoria']),
+		$data['descricao'],
 		$data['valor'],
-		$data['valorpago'],
-		$data['datavencimento'],
-		$data['datapagamento'],
-		$data['status']
+		$data['parcela'],
+		$data['indeterminada'],
+		$data['tipo'],
+		$data['status'],
+		$data['datavencimento']
 	);
-	$control = new DespesaparcelaControl($obj);
+	$control = new ContaControl($obj);
 	$response = $control->cadastrar();
 	echo json_encode($response);
 }
 function buscarPorId () {
 	$data = $_POST['data'];
-	$control = new DespesaparcelaControl(new Despesaparcela($data['id']));
+	$control = new ContaControl(new Conta($data['id']));
 	$response = $control->buscarPorId();
 	echo json_encode($response);
 }
 function listar () {
-	$control = new DespesaparcelaControl(new Despesaparcela);
+	$control = new ContaControl(new Conta);
 	$response = $control->listar();
 	echo json_encode($response);
 }
 function atualizar () {
 	$data = $_POST['data'];
-	$obj = new Despesaparcela(
+	$obj = new Conta(
 		$data['id'],
-		new Despesa($data['iddespesa']),
+		new Usuario($data['idusuario']),
+		new Categoria($data['idcategoria']),
+		$data['descricao'],
 		$data['valor'],
-		$data['valorpago'],
-		$data['datavencimento'],
-		$data['datapagamento'],
-		$data['status']
+		$data['parcela'],
+		$data['indeterminada'],
+		$data['tipo'],
+		$data['status'],
+		$data['datavencimento']
 	);
-	$control = new DespesaparcelaControl($obj);
+	$control = new ContaControl($obj);
 	$response = $control->atualizar();
 	echo json_encode($response);
 }
 function deletar () {
 	$data = $_POST['data'];
-	$banco = new Despesaparcela();
+	$banco = new Conta();
 	$banco->setId($data['id']);
-	$control = new DespesaparcelaControl($banco);
+	$control = new ContaControl($banco);
 	echo json_encode($control->deletar());
 }
 

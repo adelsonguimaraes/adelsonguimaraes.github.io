@@ -2,11 +2,11 @@
 // model : usuario
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
 Class Usuario implements JsonSerializable {
@@ -16,7 +16,8 @@ Class Usuario implements JsonSerializable {
 	private $email;
 	private $senha;
 	private $ativo;
-	private $authentication;
+	private $perfil;
+	private $pushkey;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -28,7 +29,8 @@ Class Usuario implements JsonSerializable {
 		$email = NULL,
 		$senha = NULL,
 		$ativo = NULL,
-		$authentication = NULL,
+		$perfil = NULL,
+		$pushkey = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
@@ -38,7 +40,8 @@ Class Usuario implements JsonSerializable {
 		$this->email	= $email;
 		$this->senha	= $senha;
 		$this->ativo	= $ativo;
-		$this->authentication	= $authentication;
+		$this->perfil	= $perfil;
+		$this->pushkey	= $pushkey;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -79,11 +82,18 @@ Class Usuario implements JsonSerializable {
 		$this->ativo = $ativo;
 		return $this;
 	}
-	public function getAuthentication() {
-		return $this->authentication;
+	public function getPerfil() {
+		return $this->perfil;
 	}
-	public function setAuthentication($authentication) {
-		$this->authentication = $authentication;
+	public function setPerfil($perfil) {
+		$this->perfil = $perfil;
+		return $this;
+	}
+	public function getPushkey() {
+		return $this->pushkey;
+	}
+	public function setPushkey($pushkey) {
+		$this->pushkey = $pushkey;
 		return $this;
 	}
 	public function getDatacadastro() {
@@ -109,7 +119,8 @@ Class Usuario implements JsonSerializable {
 			"email"	=> $this->email,
 			"senha"	=> $this->senha,
 			"ativo"	=> $this->ativo,
-			"authentication"	=> $this->authentication,
+			"perfil"	=> $this->perfil,
+			"pushkey"	=> $this->pushkey,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];

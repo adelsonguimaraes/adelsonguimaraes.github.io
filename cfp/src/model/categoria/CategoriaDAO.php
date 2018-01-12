@@ -1,15 +1,15 @@
 <?php
-// dao : tipo
+// dao : categoria
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
-Class TipoDAO {
+Class CategoriaDAO {
 	//atributos
 	private $con;
 	private $sql;
@@ -20,15 +20,15 @@ Class TipoDAO {
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
-		$this->superdao = new SuperDAO('tipo');
+		$this->superdao = new SuperDAO('categoria');
 	}
 
 	//cadastrar
-	function cadastrar (tipo $obj) {
-		$this->sql = sprintf("INSERT INTO tipo(descricao, uso)
+	function cadastrar (categoria $obj) {
+		$this->sql = sprintf("INSERT INTO categoria(descricao, tipo)
 		VALUES('%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
-			mysqli_real_escape_string($this->con, $obj->getUso()));
+			mysqli_real_escape_string($this->con, $obj->getTipo()));
 
 		$this->superdao->resetResponse();
 
@@ -44,10 +44,10 @@ Class TipoDAO {
 	}
 
 	//atualizar
-	function atualizar (Tipo $obj) {
-		$this->sql = sprintf("UPDATE tipo SET descricao = '%s', uso = '%s', dataedicao = '%s' WHERE id = %d ",
+	function atualizar (Categoria $obj) {
+		$this->sql = sprintf("UPDATE categoria SET descricao = '%s', tipo = '%s', dataedicao = '%s' WHERE id = %d ",
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
-			mysqli_real_escape_string($this->con, $obj->getUso()),
+			mysqli_real_escape_string($this->con, $obj->getTipo()),
 			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
@@ -62,8 +62,8 @@ Class TipoDAO {
 	}
 
 	//buscarPorId
-	function buscarPorId (Tipo $obj) {
-		$this->sql = sprintf("SELECT * FROM tipo WHERE id = %d",
+	function buscarPorId (Categoria $obj) {
+		$this->sql = sprintf("SELECT * FROM categoria WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -83,13 +83,13 @@ Class TipoDAO {
 
 	//listar
 	function listar () {
-		$this->sql = "SELECT * FROM tipo";
+		$this->sql = "SELECT * FROM categoria";
 		$result = mysqli_query($this->con, $this->sql);
 
 		$this->superdao->resetResponse();
 
 		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Tipo' , 'Listar' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Categoria' , 'Listar' ) );
 		}else{
 			while($row = mysqli_fetch_object($result)) {
 				array_push($this->lista, $row);
@@ -102,13 +102,13 @@ Class TipoDAO {
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
-		$this->sql = "SELECT * FROM tipo limit " . $start . ", " . $limit;
+		$this->sql = "SELECT * FROM categoria limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
 
 		if ( !$result ) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Tipo' , 'ListarPaginado' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Categoria' , 'ListarPaginado' ) );
 		}else{
 			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
 			}
@@ -120,7 +120,7 @@ Class TipoDAO {
 		return $this->superdao->getResponse();
 	}
 	//deletar
-	function deletar (Tipo $obj) {
+	function deletar (Categoria $obj) {
 		$this->superdao->resetResponse();
 
 		// buscando por dependentes
@@ -130,7 +130,7 @@ Class TipoDAO {
 			return $this->superdao->getResponse();
 		}
 
-		$this->sql = sprintf("DELETE FROM tipo WHERE id = %d",
+		$this->sql = sprintf("DELETE FROM categoria WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -147,7 +147,7 @@ Class TipoDAO {
 
 	//quantidade total
 	function qtdTotal() {
-		$this->sql = "SELECT count(*) as quantidade FROM tipo";
+		$this->sql = "SELECT count(*) as quantidade FROM categoria";
 		$result = mysqli_query ( $this->con, $this->sql );
 		if (! $result) {
 			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );

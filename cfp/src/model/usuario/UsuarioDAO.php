@@ -2,11 +2,11 @@
 // dao : usuario
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
 Class UsuarioDAO {
@@ -25,13 +25,14 @@ Class UsuarioDAO {
 
 	//cadastrar
 	function cadastrar (usuario $obj) {
-		$this->sql = sprintf("INSERT INTO usuario(nome, email, senha, ativo, authentication)
-		VALUES('%s', '%s', '%s', '%s', '%s')",
+		$this->sql = sprintf("INSERT INTO usuario(nome, email, senha, ativo, perfil, pushkey)
+		VALUES('%s', '%s', '%s', '%s', '%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getNome()),
 			mysqli_real_escape_string($this->con, $obj->getEmail()),
 			mysqli_real_escape_string($this->con, $obj->getSenha()),
 			mysqli_real_escape_string($this->con, $obj->getAtivo()),
-			mysqli_real_escape_string($this->con, $obj->getAuthentication()));
+			mysqli_real_escape_string($this->con, $obj->getPerfil()),
+			mysqli_real_escape_string($this->con, $obj->getPushkey()));
 
 		$this->superdao->resetResponse();
 
@@ -48,12 +49,13 @@ Class UsuarioDAO {
 
 	//atualizar
 	function atualizar (Usuario $obj) {
-		$this->sql = sprintf("UPDATE usuario SET nome = '%s', email = '%s', senha = '%s', ativo = '%s', authentication = '%s', dataedicao = '%s' WHERE id = %d ",
+		$this->sql = sprintf("UPDATE usuario SET nome = '%s', email = '%s', senha = '%s', ativo = '%s', perfil = '%s', pushkey = '%s', dataedicao = '%s' WHERE id = %d ",
 			mysqli_real_escape_string($this->con, $obj->getNome()),
 			mysqli_real_escape_string($this->con, $obj->getEmail()),
 			mysqli_real_escape_string($this->con, $obj->getSenha()),
 			mysqli_real_escape_string($this->con, $obj->getAtivo()),
-			mysqli_real_escape_string($this->con, $obj->getAuthentication()),
+			mysqli_real_escape_string($this->con, $obj->getPerfil()),
+			mysqli_real_escape_string($this->con, $obj->getPushkey()),
 			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();

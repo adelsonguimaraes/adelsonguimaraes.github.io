@@ -34,7 +34,7 @@ function logar() {
     $data = $_POST['data'];
 
     $pass= $data['senha'];
-    $userName = $data['usuario']; 
+    $userName = $data['email']; 
 
     $userName = stripslashes ( strip_tags( trim( $userName ) ) ); 
     $pass = stripslashes ( strip_tags( trim( $pass ) ) ); 
@@ -43,6 +43,7 @@ function logar() {
     $pass = mysqli_real_escape_string ( $con ,$pass ); 
 
     $sql = "SELECT * FROM usuario WHERE email='$userName' and senha='$pass'"; 
+
     $result = array (); 
     if ($resultdb = mysqli_query( $con, $sql )) {
         $count = $resultdb->num_rows; 
@@ -51,7 +52,7 @@ function logar() {
                 $result = array(
                     "success"   => true,
                     "msg"       => "logado",
-                    "data"      => $usuario = array('idusuario'=>$row['id'],'usuario'=>$row['email'], 'nome'=> $row['nome'], 'inatividade'=>'ativo')
+                    "data"      => $usuario = array('idusuario'=>$row['id'],'email'=>$row['email'], 'nome'=> $row['nome'], 'inatividade'=>'ativo')
                 );
             }   
         } else {

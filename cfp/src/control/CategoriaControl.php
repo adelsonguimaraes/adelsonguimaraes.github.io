@@ -1,24 +1,24 @@
 <?php
-// control : despesaparcela
+// control : categoria
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
-Class DespesaparcelaControl {
+Class CategoriaControl {
 	//atributos
 	protected $con;
 	protected $obj;
 	protected $objDAO;
 
 	//construtor
-	public function __construct(Despesaparcela $obj=NULL) {
+	public function __construct(Categoria $obj=NULL) {
 		$this->con = Conexao::getInstance()->getConexao();
-		$this->objDAO = new DespesaparcelaDAO($this->con);
+		$this->objDAO = new CategoriaDAO($this->con);
 		$this->obj = $obj;
 	}
 

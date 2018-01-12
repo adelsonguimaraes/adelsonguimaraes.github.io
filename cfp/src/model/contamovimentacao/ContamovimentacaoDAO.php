@@ -1,15 +1,15 @@
 <?php
-// dao : recebimento
+// dao : contamovimentacao
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
-Class RecebimentoDAO {
+Class ContamovimentacaoDAO {
 	//atributos
 	private $con;
 	private $sql;
@@ -20,16 +20,16 @@ Class RecebimentoDAO {
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
-		$this->superdao = new SuperDAO('recebimento');
+		$this->superdao = new SuperDAO('contamovimentacao');
 	}
 
 	//cadastrar
-	function cadastrar (recebimento $obj) {
-		$this->sql = sprintf("INSERT INTO recebimento(idusuario, idtipo, ativo)
-		VALUES(%d, %d, '%s')",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjtipo()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()));
+	function cadastrar (contamovimentacao $obj) {
+		$this->sql = sprintf("INSERT INTO contamovimentacao(idconta, valor, datareferencia)
+		VALUES(%d, %f, '%s')",
+			mysqli_real_escape_string($this->con, $obj->getObjconta()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getValor()),
+			mysqli_real_escape_string($this->con, $obj->getDatareferencia()));
 
 		$this->superdao->resetResponse();
 
@@ -45,11 +45,11 @@ Class RecebimentoDAO {
 	}
 
 	//atualizar
-	function atualizar (Recebimento $obj) {
-		$this->sql = sprintf("UPDATE recebimento SET idusuario = %d, idtipo = %d, ativo = '%s', dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjtipo()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()),
+	function atualizar (Contamovimentacao $obj) {
+		$this->sql = sprintf("UPDATE contamovimentacao SET idconta = %d, valor = %f, datareferencia = '%s', dataedicao = '%s' WHERE id = %d ",
+			mysqli_real_escape_string($this->con, $obj->getObjconta()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getValor()),
+			mysqli_real_escape_string($this->con, $obj->getDatareferencia()),
 			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
@@ -64,8 +64,8 @@ Class RecebimentoDAO {
 	}
 
 	//buscarPorId
-	function buscarPorId (Recebimento $obj) {
-		$this->sql = sprintf("SELECT * FROM recebimento WHERE id = %d",
+	function buscarPorId (Contamovimentacao $obj) {
+		$this->sql = sprintf("SELECT * FROM contamovimentacao WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -85,13 +85,13 @@ Class RecebimentoDAO {
 
 	//listar
 	function listar () {
-		$this->sql = "SELECT * FROM recebimento";
+		$this->sql = "SELECT * FROM contamovimentacao";
 		$result = mysqli_query($this->con, $this->sql);
 
 		$this->superdao->resetResponse();
 
 		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Recebimento' , 'Listar' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Contamovimentacao' , 'Listar' ) );
 		}else{
 			while($row = mysqli_fetch_object($result)) {
 				array_push($this->lista, $row);
@@ -104,13 +104,13 @@ Class RecebimentoDAO {
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
-		$this->sql = "SELECT * FROM recebimento limit " . $start . ", " . $limit;
+		$this->sql = "SELECT * FROM contamovimentacao limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
 
 		if ( !$result ) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Recebimento' , 'ListarPaginado' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Contamovimentacao' , 'ListarPaginado' ) );
 		}else{
 			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
 			}
@@ -122,7 +122,7 @@ Class RecebimentoDAO {
 		return $this->superdao->getResponse();
 	}
 	//deletar
-	function deletar (Recebimento $obj) {
+	function deletar (Contamovimentacao $obj) {
 		$this->superdao->resetResponse();
 
 		// buscando por dependentes
@@ -132,7 +132,7 @@ Class RecebimentoDAO {
 			return $this->superdao->getResponse();
 		}
 
-		$this->sql = sprintf("DELETE FROM recebimento WHERE id = %d",
+		$this->sql = sprintf("DELETE FROM contamovimentacao WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -149,7 +149,7 @@ Class RecebimentoDAO {
 
 	//quantidade total
 	function qtdTotal() {
-		$this->sql = "SELECT count(*) as quantidade FROM recebimento";
+		$this->sql = "SELECT count(*) as quantidade FROM contamovimentacao";
 		$result = mysqli_query ( $this->con, $this->sql );
 		if (! $result) {
 			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );

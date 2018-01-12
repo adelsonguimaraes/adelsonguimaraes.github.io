@@ -1,21 +1,19 @@
 <?php
-// model : despesa
+// model : categoria
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
-Class Despesa implements JsonSerializable {
+Class Categoria implements JsonSerializable {
 	//atributos
 	private $id;
-	private $objusuario;
-	private $objtipo;
 	private $descricao;
-	private $ativo;
+	private $tipo;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -23,19 +21,15 @@ Class Despesa implements JsonSerializable {
 	public function __construct
 	(
 		$id = NULL,
-		Usuario $objusuario = NULL,
-		Tipo $objtipo = NULL,
 		$descricao = NULL,
-		$ativo = NULL,
+		$tipo = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
 	{
 		$this->id	= $id;
-		$this->objusuario	= $objusuario;
-		$this->objtipo	= $objtipo;
 		$this->descricao	= $descricao;
-		$this->ativo	= $ativo;
+		$this->tipo	= $tipo;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -48,20 +42,6 @@ Class Despesa implements JsonSerializable {
 		$this->id = $id;
 		return $this;
 	}
-	public function getObjusuario() {
-		return $this->objusuario;
-	}
-	public function setObjusuario($objusuario) {
-		$this->objusuario = $objusuario;
-		return $this;
-	}
-	public function getObjtipo() {
-		return $this->objtipo;
-	}
-	public function setObjtipo($objtipo) {
-		$this->objtipo = $objtipo;
-		return $this;
-	}
 	public function getDescricao() {
 		return $this->descricao;
 	}
@@ -69,11 +49,11 @@ Class Despesa implements JsonSerializable {
 		$this->descricao = $descricao;
 		return $this;
 	}
-	public function getAtivo() {
-		return $this->ativo;
+	public function getTipo() {
+		return $this->tipo;
 	}
-	public function setAtivo($ativo) {
-		$this->ativo = $ativo;
+	public function setTipo($tipo) {
+		$this->tipo = $tipo;
 		return $this;
 	}
 	public function getDatacadastro() {
@@ -95,10 +75,8 @@ Class Despesa implements JsonSerializable {
 	public function JsonSerialize () {
 		return [
 			"id"	=> $this->id,
-			"objusuario"	=> $this->objusuario,
-			"objtipo"	=> $this->objtipo,
 			"descricao"	=> $this->descricao,
-			"ativo"	=> $this->ativo,
+			"tipo"	=> $this->tipo,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];

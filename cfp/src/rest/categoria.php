@@ -1,12 +1,12 @@
 <?php
-// rest : despesa
+// rest : categoria
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
 //inclui autoload
@@ -33,46 +33,42 @@ switch ($_POST['metodo']) {
 
 function cadastrar () {
 	$data = $_POST['data'];
-	$obj = new Despesa(
+	$obj = new Categoria(
 		NULL,
-		new Usuario($data['idusuario']),
-		new Tipo($data['idtipo']),
 		$data['descricao'],
-		$data['ativo']
+		$data['tipo']
 	);
-	$control = new DespesaControl($obj);
+	$control = new CategoriaControl($obj);
 	$response = $control->cadastrar();
 	echo json_encode($response);
 }
 function buscarPorId () {
 	$data = $_POST['data'];
-	$control = new DespesaControl(new Despesa($data['id']));
+	$control = new CategoriaControl(new Categoria($data['id']));
 	$response = $control->buscarPorId();
 	echo json_encode($response);
 }
 function listar () {
-	$control = new DespesaControl(new Despesa);
+	$control = new CategoriaControl(new Categoria);
 	$response = $control->listar();
 	echo json_encode($response);
 }
 function atualizar () {
 	$data = $_POST['data'];
-	$obj = new Despesa(
+	$obj = new Categoria(
 		$data['id'],
-		new Usuario($data['idusuario']),
-		new Tipo($data['idtipo']),
 		$data['descricao'],
-		$data['ativo']
+		$data['tipo']
 	);
-	$control = new DespesaControl($obj);
+	$control = new CategoriaControl($obj);
 	$response = $control->atualizar();
 	echo json_encode($response);
 }
 function deletar () {
 	$data = $_POST['data'];
-	$banco = new Despesa();
+	$banco = new Categoria();
 	$banco->setId($data['id']);
-	$control = new DespesaControl($banco);
+	$control = new CategoriaControl($banco);
 	echo json_encode($control->deletar());
 }
 

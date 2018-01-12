@@ -1,15 +1,15 @@
 <?php
-// dao : despesaparcela
+// dao : conta
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
-Class DespesaparcelaDAO {
+Class ContaDAO {
 	//atributos
 	private $con;
 	private $sql;
@@ -20,19 +20,22 @@ Class DespesaparcelaDAO {
 	//construtor
 	public function __construct($con) {
 		$this->con = $con;
-		$this->superdao = new SuperDAO('despesaparcela');
+		$this->superdao = new SuperDAO('conta');
 	}
 
 	//cadastrar
-	function cadastrar (despesaparcela $obj) {
-		$this->sql = sprintf("INSERT INTO despesaparcela(iddespesa, valor, valorpago, datavencimento, datapagamento, status)
-		VALUES(%d, %f, %f, '%s', '%s', '%s')",
-			mysqli_real_escape_string($this->con, $obj->getObjdespesa()->getId()),
+	function cadastrar (conta $obj) {
+		$this->sql = sprintf("INSERT INTO conta(idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, status, datavencimento)
+		VALUES(%d, %d, '%s', %f, %d, '%s', '%s', '%s', '%s')",
+			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getDescricao()),
 			mysqli_real_escape_string($this->con, $obj->getValor()),
-			mysqli_real_escape_string($this->con, $obj->getValorpago()),
-			mysqli_real_escape_string($this->con, $obj->getDatavencimento()),
-			mysqli_real_escape_string($this->con, $obj->getDatapagamento()),
-			mysqli_real_escape_string($this->con, $obj->getStatus()));
+			mysqli_real_escape_string($this->con, $obj->getParcela()),
+			mysqli_real_escape_string($this->con, $obj->getIndeterminada()),
+			mysqli_real_escape_string($this->con, $obj->getTipo()),
+			mysqli_real_escape_string($this->con, $obj->getStatus()),
+			mysqli_real_escape_string($this->con, $obj->getDatavencimento()));
 
 		$this->superdao->resetResponse();
 
@@ -48,14 +51,17 @@ Class DespesaparcelaDAO {
 	}
 
 	//atualizar
-	function atualizar (Despesaparcela $obj) {
-		$this->sql = sprintf("UPDATE despesaparcela SET iddespesa = %d, valor = %f, valorpago = %f, datavencimento = '%s', datapagamento = '%s', status = '%s', dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getObjdespesa()->getId()),
+	function atualizar (Conta $obj) {
+		$this->sql = sprintf("UPDATE conta SET idusuario = %d, idcategoria = %d, descricao = '%s', valor = %f, parcela = %d, indeterminada = '%s', tipo = '%s', status = '%s', datavencimento = '%s', dataedicao = '%s' WHERE id = %d ",
+			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
+			mysqli_real_escape_string($this->con, $obj->getDescricao()),
 			mysqli_real_escape_string($this->con, $obj->getValor()),
-			mysqli_real_escape_string($this->con, $obj->getValorpago()),
-			mysqli_real_escape_string($this->con, $obj->getDatavencimento()),
-			mysqli_real_escape_string($this->con, $obj->getDatapagamento()),
+			mysqli_real_escape_string($this->con, $obj->getParcela()),
+			mysqli_real_escape_string($this->con, $obj->getIndeterminada()),
+			mysqli_real_escape_string($this->con, $obj->getTipo()),
 			mysqli_real_escape_string($this->con, $obj->getStatus()),
+			mysqli_real_escape_string($this->con, $obj->getDatavencimento()),
 			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
@@ -70,8 +76,8 @@ Class DespesaparcelaDAO {
 	}
 
 	//buscarPorId
-	function buscarPorId (Despesaparcela $obj) {
-		$this->sql = sprintf("SELECT * FROM despesaparcela WHERE id = %d",
+	function buscarPorId (Conta $obj) {
+		$this->sql = sprintf("SELECT * FROM conta WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -91,13 +97,13 @@ Class DespesaparcelaDAO {
 
 	//listar
 	function listar () {
-		$this->sql = "SELECT * FROM despesaparcela";
+		$this->sql = "SELECT * FROM conta";
 		$result = mysqli_query($this->con, $this->sql);
 
 		$this->superdao->resetResponse();
 
 		if(!$result) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Despesaparcela' , 'Listar' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'Listar' ) );
 		}else{
 			while($row = mysqli_fetch_object($result)) {
 				array_push($this->lista, $row);
@@ -110,13 +116,13 @@ Class DespesaparcelaDAO {
 
 	//listar paginado
 	function listarPaginado($start, $limit) {
-		$this->sql = "SELECT * FROM despesaparcela limit " . $start . ", " . $limit;
+		$this->sql = "SELECT * FROM conta limit " . $start . ", " . $limit;
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
 
 		if ( !$result ) {
-			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Despesaparcela' , 'ListarPaginado' ) );
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'ListarPaginado' ) );
 		}else{
 			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
 			}
@@ -128,7 +134,7 @@ Class DespesaparcelaDAO {
 		return $this->superdao->getResponse();
 	}
 	//deletar
-	function deletar (Despesaparcela $obj) {
+	function deletar (Conta $obj) {
 		$this->superdao->resetResponse();
 
 		// buscando por dependentes
@@ -138,7 +144,7 @@ Class DespesaparcelaDAO {
 			return $this->superdao->getResponse();
 		}
 
-		$this->sql = sprintf("DELETE FROM despesaparcela WHERE id = %d",
+		$this->sql = sprintf("DELETE FROM conta WHERE id = %d",
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$result = mysqli_query($this->con, $this->sql);
 
@@ -155,7 +161,7 @@ Class DespesaparcelaDAO {
 
 	//quantidade total
 	function qtdTotal() {
-		$this->sql = "SELECT count(*) as quantidade FROM despesaparcela";
+		$this->sql = "SELECT count(*) as quantidade FROM conta";
 		$result = mysqli_query ( $this->con, $this->sql );
 		if (! $result) {
 			die ( '[ERRO]: ' . mysqli_error ( $this->con ) );

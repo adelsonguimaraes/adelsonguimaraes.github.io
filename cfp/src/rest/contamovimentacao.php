@@ -1,12 +1,12 @@
 <?php
-// rest : recebimentoparcela
+// rest : contamovimentacao
 
 /*
-	Projeto: CFP - (Controle Financeiro Pessoal).
-	Project Owner: Adelson Guimarães.
-	Desenvolvedor: Adelson Guimarães Monteiro.
-	Data de início: 09/01/2018.
-	Data Atual: 09/01/2018.
+	Projeto: CFP - Controle Financeiro Pessoal.
+	Project Owner: Adelson Guimarães Monteiro.
+	Desenvolvedor: Adelson Guimaães.
+	Data de início: 12/01/2018.
+	Data Atual: 12/01/2018.
 */
 
 //inclui autoload
@@ -33,50 +33,44 @@ switch ($_POST['metodo']) {
 
 function cadastrar () {
 	$data = $_POST['data'];
-	$obj = new Recebimentoparcela(
+	$obj = new Contamovimentacao(
 		NULL,
-		new Recebimento($data['idrecebimento']),
+		new Conta($data['idconta']),
 		$data['valor'],
-		$data['valorrecebido'],
-		$data['datavencimento'],
-		$data['datarecebimento'],
-		$data['status']
+		$data['datareferencia']
 	);
-	$control = new RecebimentoparcelaControl($obj);
+	$control = new ContamovimentacaoControl($obj);
 	$response = $control->cadastrar();
 	echo json_encode($response);
 }
 function buscarPorId () {
 	$data = $_POST['data'];
-	$control = new RecebimentoparcelaControl(new Recebimentoparcela($data['id']));
+	$control = new ContamovimentacaoControl(new Contamovimentacao($data['id']));
 	$response = $control->buscarPorId();
 	echo json_encode($response);
 }
 function listar () {
-	$control = new RecebimentoparcelaControl(new Recebimentoparcela);
+	$control = new ContamovimentacaoControl(new Contamovimentacao);
 	$response = $control->listar();
 	echo json_encode($response);
 }
 function atualizar () {
 	$data = $_POST['data'];
-	$obj = new Recebimentoparcela(
+	$obj = new Contamovimentacao(
 		$data['id'],
-		new Recebimento($data['idrecebimento']),
+		new Conta($data['idconta']),
 		$data['valor'],
-		$data['valorrecebido'],
-		$data['datavencimento'],
-		$data['datarecebimento'],
-		$data['status']
+		$data['datareferencia']
 	);
-	$control = new RecebimentoparcelaControl($obj);
+	$control = new ContamovimentacaoControl($obj);
 	$response = $control->atualizar();
 	echo json_encode($response);
 }
 function deletar () {
 	$data = $_POST['data'];
-	$banco = new Recebimentoparcela();
+	$banco = new Contamovimentacao();
 	$banco->setId($data['id']);
-	$control = new RecebimentoparcelaControl($banco);
+	$control = new ContamovimentacaoControl($banco);
 	echo json_encode($control->deletar());
 }
 
