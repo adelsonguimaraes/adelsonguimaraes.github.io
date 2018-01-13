@@ -81,7 +81,7 @@
 							<div class="col-md-12">
 								<div class="form-group">
 								 	<label class="label-control">Descrição</label>
-									<input type="text" class="form-control" name="descricao" ng-model="conta.descricao" ng-required="true">
+									<input type="text" placeholder="Descreva sua despesa." class="form-control" name="descricao" ng-model="conta.descricao" ng-required="true">
 								</div>
 							</div>
 						</div>
@@ -108,9 +108,8 @@
 						 	</div> -->
 							<div class="col-md-2">
 								<div class="form-group">
-										{{conta.parcela}}
 										<label class="label-control">Parcela</label>
-									<select class="form-control" name="categoria" ng-options="obj as obj for obj in parcelas" ng-model="conta.idcategoria" ng-required="true">
+									<select class="form-control" name="parcela" ng-options="obj as obj for obj in parcelas" ng-model="conta.parcela" ng-required="true">
 									</select>
 								</div>
 							</div>

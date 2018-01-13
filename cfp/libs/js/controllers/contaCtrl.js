@@ -42,8 +42,6 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         };
         montaParcelas();
 
-        console.log( $scope.parcelas );
-    
         $scope.listarContasPorUsuario = function (page) {
             
             var metodo = (page === 'apagar') ? 'listarContasAPagarPorUsuario' : 'listarContasAReceberPorUsuario';

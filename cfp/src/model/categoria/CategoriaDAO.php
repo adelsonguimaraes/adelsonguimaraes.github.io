@@ -120,7 +120,7 @@ Class CategoriaDAO {
 		return $this->superdao->getResponse();
 	}
 	function listarCategoriaContasAPagar () {
-		$this->sql = "SELECT * FROM categoria where tipo = 'APAGAR'";
+		$this->sql = "SELECT * FROM categoria where tipo = 'APAGAR' or tipo = 'AMBOS'";
 		$result = mysqli_query ( $this->con, $this->sql );
 
 		$this->superdao->resetResponse();
