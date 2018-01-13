@@ -16,6 +16,36 @@ const indexedDBCtrl = {
     "version":1, // versão do banco
     "con":"", // conexao
     "db":"", // banco
+    "tables":[
+        {
+            'name':'usuario',
+            'indexes':[
+                {'description':'id', 'index':'id', 'unique':true},
+                {'description':'nome', 'index':'nome', 'unique':false},
+                {'description':'email', 'index':'email', 'unique':false},
+                {'description':'senha', 'index':'senha', 'unique':false},
+                {'description':'perfil', 'index':'perfil', 'unique':false},
+                {'description':'datacadastro', 'index':'datacastro', 'unique':false},
+                {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
+            ]
+        },
+        {
+            'name':'conta',
+            'indexes':[
+                {'description':'id', 'index':'id','unique':true},
+                {'description':'idusuario', 'index':'idusuario','unique':false},
+                {'description':'idcategoria', 'index':'idcategoria','unique':false},
+                {'description':'descricao', 'index':'descricao','unique':false},
+                {'description':'valor', 'index':'valor','unique':false},
+                {'description':'parcela', 'index':'parcela','unique':false},
+                {'description':'tipo', 'index':'tipo','unique':false},
+                {'description':'status', 'index':'status','unique':false},
+                {'description':'datavencimento', 'index':'datavencimento','unique':false},
+                {'description':'datacadastro', 'index':'datacastro', 'unique':false},
+                {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
+            ]
+        }
+    ],
     "init": function () {
         
         // Handle the prefix of Chrome to IDBTransaction/IDBKeyRange.
@@ -34,21 +64,29 @@ const indexedDBCtrl = {
     "start": function () {
         // abre o banco
         // var request = indexedDB.open(this.name, this.version);
-        this.request = indexedDB.open(this.name, this.version);
-        
-        this.request.onerror = function(event) {
+        var request = indexedDB.open(this.name, this.version);
+        var tables = this.tables;
+
+        request.onerror = function(event) {
             console.log("error: ");
         };
          
-        this.request.onsuccess = function(event) {
-            this.db = this.request.result;
+        request.onsuccess = function(event) {
+            this.db = request.result;
             console.log("success: "+ this.db);
         }
-    },
-    "createTable": function (table) {
-        this.request.onupgradeneeded = function(e) {
-            this.db = this.request.result;
-            this.db.createObjectStore(table, {keyPath: "id"});
+
+        request.onupgradeneeded = function(e) {
+            this.db = request.result;
+            for(var t in tables) {
+                var table = tables[t];
+                var store = this.db.createObjectStore(table.name, {keyPath: "id"});
+                for(var i in table.indexes){
+                    var index = table.indexes[i];
+                    store.createIndex(index.description, index.index, {unique: index.unique});
+                }
+            }
+            
         };
     },
     "add": function (table, data) {
