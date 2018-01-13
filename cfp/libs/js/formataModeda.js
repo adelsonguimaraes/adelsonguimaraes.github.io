@@ -1,6 +1,6 @@
 function formataValor ( val ) {
     
-    val = this.trataValor( val );
+    val = this.trataValor( val ); // limita a 30 caracteres
 
     var polaridade = (val.toString().indexOf('-') === -1) ? '' : '-';
 
@@ -119,7 +119,7 @@ function formataValor ( val ) {
     /*
        converte o valor para string
     */
-    val = val.toString();
+    val = val.toString().substr(-30);
 
     /*
        Verifica polaridade do valor

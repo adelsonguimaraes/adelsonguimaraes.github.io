@@ -877,7 +877,7 @@ function mascaraMoeda ($timeout) {
                    b -= 48;
                 }
                 if (((b >= 41 && b <= 122) || b == 32 || b == 8 || b > 186) && (!a.altKey && !a.ctrlKey)) {
-                   return false;
+                    a.stopPropagation();
                 }
             };
             function start (input) {
@@ -885,29 +885,28 @@ function mascaraMoeda ($timeout) {
             };
 
             el.bind("keyup", function (e) {
+                stopEventFunction(e);
+                model.$setViewValue(format(model.$viewValue));
+                model.$render();
+            });
+
+            el.bind("keydown", function (e) {
+                stopEventFunction(e);
+                // if (_keyCodes(e.keyCode)) return false;
+                model.$setViewValue(format(model.$viewValue));
+                model.$render();
+            });
+            
+            el.bind("keypress", function (e) {
                 if(stopEventFunction(e)) return false;
                 model.$setViewValue(format(model.$viewValue));
                 model.$render();
             });
 
-            el.bind("keypress", function (e) {
-                if(stopEventFunction(e)) return false;
-                // if (_keyCodes(e.keyCode)) return false;
-                // model.$setViewValue(_digitado(model.$viewValue));
-                // model.$render();
-            });
-
-            el.bind("keydown", function (e) {
-                if(stopEventFunction(e)) return false;
-                // if (_keyCodes(e.keyCode)) return false;
-                // model.$setViewValue(_digitado(model.$viewValue));
-                // model.$render();
-            });
-
             // format
             function format (k) {
                 var value = model.$viewValue;
-          
+
                 var j = k.keyCode;
                 if (isInRange(j, KEY_RANGES.padnum)) {
                    j -= 48;
@@ -917,14 +916,16 @@ function mascaraMoeda ($timeout) {
                 
                 var a = h.length;
                 
+                
                 if (d == "" && a > 0 && j == 8) {
                    a--;
                    h = h.substring(0, a);      
-                   k.stopEvent();
+                   k.stopPropagation();
                 }
-                if (a >= 24) {
-                   return false;
-                }
+                
+                // if (a >= 23){
+                //     k.stopPropagation();
+                // }
           
                 /*
                    adiciona ponto do decimal
