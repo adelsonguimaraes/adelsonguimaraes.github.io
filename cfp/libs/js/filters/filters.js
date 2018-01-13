@@ -69,6 +69,13 @@ function data ($timeout) {
 	}
 }
 
+function moeda () {
+	return function (input) {
+		if(!input || typeof(input) === 'object') return input;
+		return formataValor(input);
+	}
+}
+
 angular
 	.module('cfp')
 	.filter('nomeProprio', nomeProprio)
@@ -79,3 +86,4 @@ angular
 	.filter('fax', fax)
 	.filter('cel', cel)
 	.filter('data', data)
+	.filter('moeda', moeda)
