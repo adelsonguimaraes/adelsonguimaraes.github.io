@@ -3,7 +3,7 @@
 	"use strict"
 
 	var config = function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdleProvider, KeepaliveProvider) {
-		$urlRouterProvider.otherwise("/home");
+		$urlRouterProvider.otherwise("/menu");
 
 		$ocLazyLoadProvider.config({
 	        // Set to true if you want to see what and when is dynamically loaded
