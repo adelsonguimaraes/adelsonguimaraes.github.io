@@ -4,10 +4,10 @@
 var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
     
         //verifica sessao
-        // if(!$rootScope.usuario) {
-        //     $location.path('/login');
-        //     return false;
-        // }
+        if(!$rootScope.usuario) {
+            $location.path('/login');
+            return false;
+        }
     
         var meses = [
             {"nome":"Janeiro",	"sigla":"JAN", "ano":"0000"},

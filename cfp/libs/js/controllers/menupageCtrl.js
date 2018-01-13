@@ -2,10 +2,10 @@
 var menupageCtrl = function ( $rootScope, $scope, $location ) {
 	
 	//verifica sessao
-	// if(!$rootScope.usuario) {
-	// 	$location.path('/login');
-	// 	return false;
-	// };
+	if(!$rootScope.usuario) {
+		$location.path('/login');
+		return false;
+	};
 
 	$scope.clickMenu = function (item) {
 		console.log( item );

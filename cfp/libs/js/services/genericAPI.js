@@ -8,7 +8,6 @@
             return $http({
                 method: 'POST',
                 url: api + "src/rest/" + data.class + ".php",
-                dataType: 'jsonp',
                 data: {
                     metodo: data.metodo,
                     data: data.data,
