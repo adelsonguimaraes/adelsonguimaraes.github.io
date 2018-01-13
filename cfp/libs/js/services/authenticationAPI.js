@@ -8,7 +8,7 @@
 		function _authentication (data) {
 			return $http({
 				method: 'POST',
-				url: "src/rest/authentication.php",
+				url: api + "src/rest/authentication.php",
 				data: {
 					metodo: data.metodo,
 					data: data.data

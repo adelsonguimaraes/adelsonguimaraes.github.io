@@ -8,7 +8,7 @@
         function _generic (data, scope) {
             return $http({
                 method: 'POST',
-                url: "src/rest/" + data.class + ".php",
+                url: api + "src/rest/" + data.class + ".php",
                 data: {
                     metodo: data.metodo,
                     data: data.data,
