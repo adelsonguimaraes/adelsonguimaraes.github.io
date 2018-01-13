@@ -11,11 +11,13 @@ if (!window.indexedDB) {
     console.log("Your browser doesn't support a stable version of IndexedDB.");
 }
 
+var db;
+var request;
+
 const indexedDBCtrl = {
     "name":"cfp", // nome do banco
     "version":1, // versão do banco
     "con":"", // conexao
-    "db":"", // banco
     "tables":[
         {
             'name':'usuario',
@@ -66,21 +68,21 @@ const indexedDBCtrl = {
         // var request = indexedDB.open(this.name, this.version);
         var request = indexedDB.open(this.name, this.version);
         var tables = this.tables;
-
+        
         request.onerror = function(event) {
             console.log("error: ");
         };
          
         request.onsuccess = function(event) {
-            this.db = request.result;
-            console.log("success: "+ this.db);
+            db = request.result;
+            console.log("success: "+ db);
         }
-
+        
         request.onupgradeneeded = function(e) {
-            this.db = request.result;
+            db = request.result;
             for(var t in tables) {
                 var table = tables[t];
-                var store = this.db.createObjectStore(table.name, {keyPath: "id"});
+                var store = db.createObjectStore(table.name, {keyPath: "id"});
                 for(var i in table.indexes){
                     var index = table.indexes[i];
                     store.createIndex(index.description, index.index, {unique: index.unique});
@@ -88,11 +90,14 @@ const indexedDBCtrl = {
             }
             
         };
+
+    },
+    "getObjectStore": function (table) {
+        return db.transaction([table], "readwrite")
+        .objectStore(table);
     },
     "add": function (table, data) {
-        
-        var request = db.transaction([this.name], "readwrite")
-        .objectStore(table)
+        var request = getObjectStore(table)
         .add(data);
         
         request.onsuccess = function(event) {
@@ -104,11 +109,12 @@ const indexedDBCtrl = {
         }
         
     },
-    "update": function (table, data) {
-
+    "update": function (table, data, metodo) {
+        var request = getObjectStore(table)
+        .add(data);
     },
     "get": function (table, data) {
-
+        
     },
     "delete": function (table, data) {
 
