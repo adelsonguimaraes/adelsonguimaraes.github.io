@@ -7,10 +7,7 @@
 	Data Atual: 29/06/2016.
 */
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Access-Control-Max-Age: 1000');
-header('Access-Control-Allow-Headers: Content-Type');
+
 
 //Trata requisição
 if(!$_POST){
