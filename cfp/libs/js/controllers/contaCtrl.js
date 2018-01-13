@@ -17,7 +17,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                 "idusuario":"",
                 "idcategoria":"",
                 "descricao":"",
-                "valor":"",
+                "valor":formataValor('0.00'),
                 "parcela":'INDETERMINADO',
                 "indeterminada":"NAO",
                 "tipo":"APAGAR",
