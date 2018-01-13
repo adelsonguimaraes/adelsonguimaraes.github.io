@@ -18,6 +18,7 @@ const indexedDBCtrl = {
     "name":"cfp", // nome do banco
     "version":1, // versão do banco
     "con":"", // conexao
+    "selectedItem":"",
     "tables":[
         {
             'name':'usuario',
@@ -66,16 +67,17 @@ const indexedDBCtrl = {
     "start": function () {
         // abre o banco
         // var request = indexedDB.open(this.name, this.version);
+        var dbname = this.name;
         var request = indexedDB.open(this.name, this.version);
         var tables = this.tables;
         
         request.onerror = function(event) {
-            console.log("error: ");
+            console.log("Erro ao tentar conectar com o banco de dados "+ dbname);
         };
          
         request.onsuccess = function(event) {
             db = request.result;
-            console.log("success: "+ db);
+            console.log("Conexão com banco de dados "+ dbname +" iniciada!" );
         }
         
         request.onupgradeneeded = function(e) {
@@ -109,14 +111,48 @@ const indexedDBCtrl = {
         }
         
     },
-    "update": function (table, data, metodo) {
-        var request = getObjectStore(table)
-        .add(data);
-    },
-    "get": function (table, data) {
+    "getPorId": function (table, id) {
+        var request = this.getObjectStore(table).get(+id);
         
+        request.onsuccess = function(event) {
+            this.selectedItem = request.result;
+            console.log("Dado Getado: " + JSON.stringify(this.selectedItem));
+        };
+        
+        request.onerror = function(event) {
+            console.log("Não foi possível localizar o dado no banco de dados! ");
+        }
+    },
+    "authentication": function (table, data) {
+        var request = this.getObjectStore(table).get(+id);
+        
+        request.onsuccess = function(event) {
+            this.selectedItem = request.result;
+            console.log("Dado Getado: " + JSON.stringify(this.selectedItem));
+        };
+        
+        request.onerror = function(event) {
+            console.log("Não foi possível localizar o dado no banco de dados! ");
+        }
+    },
+    "update": function (table, data, metodo) {
+        this.get(table, +data.id);
+        
+        
+        var request = this.getObjectStore(table).put(data);
+        
+        request.onsuccess = function(event) {
+            console.log("Dados atualizados com sucesso!");
+        };
+        
+        request.onerror = function(event) {
+            console.log("Não foi possível atualizar no banco de dados! ");
+        }
     },
     "delete": function (table, data) {
 
     }
 };
+
+// starta conexão
+indexedDBCtrl.start();
