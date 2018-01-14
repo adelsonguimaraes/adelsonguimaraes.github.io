@@ -40,6 +40,16 @@ const indexedDBCtrl = {
     },
     "tables":[
         {
+            'name':'categoria',
+            'indexes':[
+                {'description':'id', 'index':'id', 'unique':true},
+                {'description':'descricao', 'index':'descricao', 'unique':false},
+                {'description':'tipo', 'index':'tipo', 'unique':false},
+                {'description':'datacadastro', 'index':'datacastro', 'unique':false},
+                {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
+            ]
+        },
+        {
             'name':'usuario',
             'indexes':[
                 {'description':'id', 'index':'id', 'unique':true},
@@ -208,10 +218,10 @@ const indexedDBCtrl = {
             ctrl.reset();
             
             // if ( ctrl.selectedItem ) {
-                var request = this.getObjectStore(table).put(data);
+                var request = ctrl.getObjectStore(table).put(data);
                 
                 request.onsuccess = function(event) {
-                    var request = this.getObjectStore(table).put(data);
+                    var request = ctrl.getObjectStore(table).put(data);
                     ctrl.response.set(true, 'Dados atualizados com sucesso!', data);
                     success(ctrl.response);
                     // console.log("Dados atualizados com sucesso!");
@@ -246,29 +256,7 @@ const indexedDBCtrl = {
                 }
             }
         });
-    },
-    "authentication": function (table, data) {
-        var ctrl = this;
-        
-        // reset variáveis
-        ctrl.reset();
-
-        ctrl.getAll(table)
-            .then(function success(result){
-                for (var i in ctrl.listItem) {
-                    if (ctrl.listItem[i].email === data.email && ctrl.listItem[i].senha === data.senha) {
-                        ctrl.response.set(true, 'Usuário existe ' + ctrl.listItem[i].nome, ctrl.listItem[i]);
-                        // console.log('Usuário existe ' + ctrl.listItem[i].nome);
-                    }else{
-                        ctrl.response.set(false, 'Email ou Senha Inválidos! ', '');
-                        // console.log('Email ou Senha Inválidos!');
-                    }
-                }
-            },function error(result) {
-                ctrl.response = result;
-            });
-        return ctrl.response;
-    },
+    }
 };
 
 // starta conexão
