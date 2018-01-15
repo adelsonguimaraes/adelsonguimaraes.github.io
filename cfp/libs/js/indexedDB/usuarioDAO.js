@@ -72,17 +72,28 @@ const usuarioDAO = {
         return response;
     },
     "autoIncrementID": function () {
-        var response = indexedDBCtrl.getAll('usuario');
+        // var response = indexedDBCtrl.getAll('usuario');
         var ultimo;
         
-        setTimeout(function () {
-            if (response.success === false) return response;
-            if (response.data.length > 0) {
-                for (var x in response.data) {
-                    ultimo = response.data[x].id;
+        indexedDBCtrl.getAll('usuario')
+        .then(function resolve(result){
+            if (result.data.length > 0) {
+                for (var x in result.data) {
+                    ultimo = result.data[x].id;
                 }
             }
-        }, 100);
+        },function reject(result){
+            //
+        });
+        // setTimeout(function () {
+        //     if (response.success === false) return response;
+        //     if (response.data.length > 0) {
+        //         for (var x in response.data) {
+        //             ultimo = response.data[x].id;
+        //         }
+        //     }
+        // }, 100);
+        console.log(ultimo);
         return ultimo+1;
     },
     "authentication": function (data) {

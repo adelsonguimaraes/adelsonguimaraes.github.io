@@ -171,27 +171,30 @@ const indexedDBCtrl = {
         return ctrl.response;
     },
     "getAll": function (table) {
-        var ctrl = this;
-        
-        var request = ctrl.getObjectStore(table).openCursor();
-        // reset variáveis
-        ctrl.reset();
+        // var ctrl = this;
+        return new Promise (function (resolve, reject) {
 
-        request.onsuccess = function(event) {
-            var cursor = event.target.result;
-            if(cursor) {
-                ctrl.listItem.push(cursor.value);
-                cursor.continue();
-            } else {
-                // no more results
+            var request = indexedDBCtrl.getObjectStore(table).openCursor();
+            // reset variáveis
+            indexedDBCtrl.reset();
+
+            request.onsuccess = function(event) {
+                var cursor = event.target.result;
+                if(cursor) {
+                    indexedDBCtrl.listItem.push(cursor.value);
+                    cursor.continue();
+                } else {
+                    // no more results
+                }
+                indexedDBCtrl.response.set(true, "Listagem realizada com sucesso!", indexedDBCtrl.listItem);
+                resolve(indexedDBCtrl.response);
             }
-            ctrl.response.set(true, "Listagem realizada com sucesso!", ctrl.listItem);
-        }
-        request.onerror = function(event) {
-            ctrl.response.set(false, "Erro ao tentar listar!", '');
-            // console.log("Não foi possível localizar o dado no banco de dados! ");
-        };
-        return ctrl.response;
+            request.onerror = function(event) {
+                indexedDBCtrl.response.set(false, "Erro ao tentar listar!", '');
+                // console.log("Não foi possível localizar o dado no banco de dados! ");
+            };
+        });
+        // return ctrl.response;
     },
     "update": function (table, data, metodo) {
         var ctrl = this;
