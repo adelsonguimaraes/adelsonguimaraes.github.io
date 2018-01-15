@@ -8,7 +8,7 @@ var menupageCtrl = function ( $rootScope, $scope, $location ) {
 	};
 
 	$scope.clickMenu = function (item) {
-		console.log( item );
+		console.log(usuarioDAO.autoIncrementID());
 	};
 };
 

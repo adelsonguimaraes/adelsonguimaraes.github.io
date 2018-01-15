@@ -80,6 +80,7 @@ const usuarioDAO = {
             if (result.data.length > 0) {
                 for (var x in result.data) {
                     ultimo = result.data[x].id;
+                    console.log(result.data[x].id);
                 }
             }
         },function reject(result){
@@ -93,7 +94,6 @@ const usuarioDAO = {
         //         }
         //     }
         // }, 100);
-        console.log(ultimo);
         return ultimo+1;
     },
     "authentication": function (data) {
