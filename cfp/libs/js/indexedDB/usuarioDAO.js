@@ -73,7 +73,7 @@ const usuarioDAO = {
     },
     "autoIncrementID": function () {
         // var response = indexedDBCtrl.getAll('usuario');
-        var ultimo;
+        var ultimo = 0;
         
         indexedDBCtrl.getAll('usuario')
         .then(function resolve(result){
@@ -99,27 +99,32 @@ const usuarioDAO = {
     "authentication": function (data) {
         // reset response
         // usuarioDAO.reset();
-        var resp = indexedDBCtrl.getAll('usuario');
+        // var resp = indexedDBCtrl.getAll('usuario');
 
-        setTimeout(function(){
-            if (resp.success) {
-                if (resp.data.length>1) {
+        // setTimeout(function(){
+            indexedDBCtrl.getAll('usuario')
+            .then(function resolve(result){
+            if (result.success) {
+                if (result.data.length>1) {
                     for (var i in indexedDBCtrl.listItem) {
                         if (indexedDBCtrl.listItem[i].email === data.email && indexedDBCtrl.listItem[i].senha === data.senha) {
-                            resp.msg = 'Usuário existe ' + indexedDBCtrl.listItem[i].nome;
-                            resp.data = indexedDBCtrl.listItem[i];
+                            usuarioDAO.response.msg = 'Usuário existe ' + indexedDBCtrl.listItem[i].nome;
+                            usuarioDAO.response.data = indexedDBCtrl.listItem[i];
                         }else{
-                            resp.msg = 'Email ou Senha Inválidos!';
+                            usuarioDAO.response.msg = 'Email ou Senha Inválidos!';
                         }
                     }
                 }else{
-                    resp.msg = 'Email ou Senha Inválidos!';
+                    usuarioDAO.response.msg = 'Email ou Senha Inválidos!';
                 }
             }else{
-                resp.msg = 'Ocorreu um erro na operação com o banco!';
+                usuarioDAO.response.msg = 'Ocorreu um erro na operação com o banco!';
             }
-        }, 300);
+        },function reject(result){
+            //
+        });
+        // }, 300);
         
-        return resp;
+        return usuarioDAO.response;
     }
 }
