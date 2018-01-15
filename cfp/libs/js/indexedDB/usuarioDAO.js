@@ -9,17 +9,23 @@ const usuarioDAO = {
             usuarioDAO.data = d;
         }
     },
-    "atributos":[
-        {'description':'id', 'index':'id', 'unique':true},
-        {'description':'nome', 'index':'nome', 'unique':false},
-        {'description':'email', 'index':'email', 'unique':false},
-        {'description':'senha', 'index':'senha', 'unique':false},
-        {'description':'perfil', 'index':'perfil', 'unique':false},
-        {'description':'datacadastro', 'index':'datacastro', 'unique':false},
-        {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
+    "data":[
+        'id',
+        'nome',
+        'email',
+        'senha',
+        'perfil',
+        'datacadastro',
+        'dataedicao'
     ],
-    "setAtributos": function (data) {
-        
+    "setData": function (id, nome, email, senha, perfil, datacastro, dataedicao) {
+        this.data.id = (id != undefined) ? id : null;
+        this.data.nome = (nome != undefined) ? nome : null;
+        this.data.email = (email != undefined) ? email : null;
+        this.data.senha = (senha != undefined) ? senha : null;
+        this.data.perfil = (perfil != undefined) ? perfil : null;
+        this.data.datacastro = (datacastro != undefined) ? datacastro : null;
+        this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
     "reset": function () {
         usuarioDAO.response.success = "";
@@ -29,6 +35,17 @@ const usuarioDAO = {
     "cadastrar": function (data) {
         // reset response
         usuarioDAO.reset();
+
+        // seta os atributos
+        usuarioDAO.setData(
+            usuarioDAO.autoIncrementID(), // id
+            data.nome, // nome 
+            data.email, // email
+            data.senha, // senha
+            data.perfil, // perfil
+            data.datacadastro, // datacadastro
+            null // dataedicao
+        );
 
         var resp = indexedDBCtrl.add('usuario', data)
         
@@ -53,6 +70,20 @@ const usuarioDAO = {
         // usuarioDAO.reset();
         var response = indexedDBCtrl.getAll('usuario');
         return response;
+    },
+    "autoIncrementID": function () {
+        var response = indexedDBCtrl.getAll('usuario');
+        var ultimo;
+        
+        setTimeout(function () {
+            if (response.success === false) return response;
+            if (response.data.length > 0) {
+                for (var x in response.data) {
+                    ultimo = response.data[x].id;
+                }
+            }
+        }, 100);
+        return ultimo+1;
     },
     "authentication": function (data) {
         // reset response
