@@ -136,126 +136,106 @@ const indexedDBCtrl = {
     "add": function (table, data) {
         var ctrl = this;
         
-        return Promise (function (success, error) {
-            var request = ctrl.getObjectStore(table)
-            .add(data);
-            
-            // reset variáveis
-            ctrl.reset();
+        var request = ctrl.getObjectStore(table)
+        .add(data);
+        
+        // reset variáveis
+        ctrl.reset();
 
-            request.onsuccess = function(event) {
-                db = request.result;
-                ctrl.response.set(true, "Dados adicionados com sucesso!", data);
-                success(ctrl.response);
-                // console.log("Dados adicionado com sucesso!");
-            }
+        request.onsuccess = function(event) {
+            db = request.result;
+            ctrl.response.set(true, "Dados adicionados com sucesso!", data);
+        }
 
-            request.onerror = function(event) {
-                ctrl.response.set(false, "Não foi possível adicionar ao banco de dados", "");
-                error(ctrl.response);
-                // console.log("Não foi possível adicionar ao banco de dados! ");
-            };
-        });
-        // return ctrl.response;
+        request.onerror = function(event) {
+            ctrl.response.set(false, "Não foi possível adicionar ao banco de dados", "");
+        };
+        return ctrl.response;
     },
     "getPorId": function (table, id) {
         var ctrl = this;
         
-        return new Promise (function (success, error) {
-            var request = ctrl.getObjectStore(table).get(+id);
-            
-            // reset variáveis
-            ctrl.reset();
+        var request = ctrl.getObjectStore(table).get(+id);
+        
+        // reset variáveis
+        ctrl.reset();
 
-            request.onsuccess = function(event) {
-                ctrl.selectedItem = request.result;
-                ctrl.response.set(true, "Get realizado com sucesso!", ctrl.selectedItem);
-                success(ctrl.response);
-            };
-            
-            request.onerror = function(event) {
-                ctrl.response.set(false, "Não foi possível localizar o dado no banco de dados!", "");
-                error(ctrl.response);
-                // console.log("Não foi possível localizar o dado no banco de dados! ");
-            }
-        });
-        // return ctrl.response;
+        request.onsuccess = function(event) {
+            ctrl.selectedItem = request.result;
+            ctrl.response.set(true, "Get realizado com sucesso!", ctrl.selectedItem);
+        };
+        
+        request.onerror = function(event) {
+            ctrl.response.set(false, "Não foi possível localizar o dado no banco de dados!", "");
+        }
+        return ctrl.response;
     },
     "getAll": function (table) {
         var ctrl = this;
         
-        return new Promise (function (success, error) {
-            var request = ctrl.getObjectStore(table).openCursor();
-            // reset variáveis
-            ctrl.reset();
+        var request = ctrl.getObjectStore(table).openCursor();
+        // reset variáveis
+        ctrl.reset();
 
-            request.onsuccess = function(event) {
-                var cursor = event.target.result;
-                if(cursor) {
-                    ctrl.listItem.push(cursor.value);
-                    cursor.continue();
-                } else {
-                    // no more results
-                }
-                ctrl.response.set(true, "Listagem realizada com sucesso!", ctrl.listItem);
-                success(ctrl.response);
+        request.onsuccess = function(event) {
+            var cursor = event.target.result;
+            if(cursor) {
+                ctrl.listItem.push(cursor.value);
+                cursor.continue();
+            } else {
+                // no more results
             }
-            request.onerror = function(event) {
-                ctrl.response.set(false, "Erro ao tentar listar!", '');
-                error(ctrl.response);
-                // console.log("Não foi possível localizar o dado no banco de dados! ");
-            };
- 
-        });
+            ctrl.response.set(true, "Listagem realizada com sucesso!", ctrl.listItem);
+        }
+        request.onerror = function(event) {
+            ctrl.response.set(false, "Erro ao tentar listar!", '');
+            // console.log("Não foi possível localizar o dado no banco de dados! ");
+        };
+        return ctrl.response;
     },
     "update": function (table, data, metodo) {
         var ctrl = this;
         
-        return new Promise (function (success, error) {
-            // ctrl.getPorId(table, +data.id);
+        ctrl.getPorId(table, +data.id);
+        
+        // reset variáveis
+        ctrl.reset();
+        
+        if ( ctrl.selectedItem ) {
+            var request = ctrl.getObjectStore(table).put(data);
             
-            // reset variáveis
-            ctrl.reset();
-            
-            // if ( ctrl.selectedItem ) {
+            request.onsuccess = function(event) {
                 var request = ctrl.getObjectStore(table).put(data);
-                
-                request.onsuccess = function(event) {
-                    var request = ctrl.getObjectStore(table).put(data);
-                    ctrl.response.set(true, 'Dados atualizados com sucesso!', data);
-                    success(ctrl.response);
-                    // console.log("Dados atualizados com sucesso!");
-                };
-                
-                request.onerror = function(event) {
-                    ctrl.response.set(false, 'Não foi possível atualizar no banco de dados!', '');
-                    error(ctrl.response);
-                    // console.log("Não foi possível atualizar no banco de dados! ");
-                }
-            // }
-        });
+                ctrl.response.set(true, 'Dados atualizados com sucesso!', data);
+            };
+            
+            request.onerror = function(event) {
+                ctrl.response.set(false, 'Não foi possível atualizar no banco de dados!', '');
+            }
+        };
+        return ctrl.response;
+        
     },
     "delete": function (table, data) {
         var ctrl = this;
         
-        return new Promise (function (success, error) {
-            // reset variáveis
-            ctrl.reset();
+        // reset variáveis
+        ctrl.reset();
+        
+        // if ( ctrl.selectedItem ) {
+            var request = this.getObjectStore(table).delete(+data.id);
             
-            if ( ctrl.selectedItem ) {
-                var request = this.getObjectStore(table).delete(+data.id);
-                
-                request.onsuccess = function(event) {
-                    ctrl.response.set(true, 'Dados deletados com sucesso!', data);
-                    success(ctrl.response);
-                };
-                
-                request.onerror = function(event) {
-                    ctrl.response.set(false, 'Não foi possível deletar no banco de dados!', data);
-                    error(ctrl.response);
-                }
+            request.onsuccess = function(event) {
+                ctrl.response.set(true, 'Dados deletados com sucesso!', data);
+                success(ctrl.response);
+            };
+            
+            request.onerror = function(event) {
+                ctrl.response.set(false, 'Não foi possível deletar no banco de dados!', data);
+                error(ctrl.response);
             }
-        });
+        // }
+        return ctrl.response;
     }
 };
 

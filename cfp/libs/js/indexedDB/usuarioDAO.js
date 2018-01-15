@@ -9,6 +9,18 @@ const usuarioDAO = {
             usuarioDAO.data = d;
         }
     },
+    "atributos":[
+        {'description':'id', 'index':'id', 'unique':true},
+        {'description':'nome', 'index':'nome', 'unique':false},
+        {'description':'email', 'index':'email', 'unique':false},
+        {'description':'senha', 'index':'senha', 'unique':false},
+        {'description':'perfil', 'index':'perfil', 'unique':false},
+        {'description':'datacadastro', 'index':'datacastro', 'unique':false},
+        {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
+    ],
+    "setAtributos": function (data) {
+        
+    },
     "reset": function () {
         usuarioDAO.response.success = "";
         usuarioDAO.response.msg = "";
@@ -18,67 +30,54 @@ const usuarioDAO = {
         // reset response
         usuarioDAO.reset();
 
-        indexedDBCtrl.add('usuario', data)
-        .then(function success(result) {
-            usuarioDAO.response.set(result.success, result.msg, result.data);
-        },function error(result) {
-            usuarioDAO.response.set(result.success, result.msg, result.data);
-        });
-        return usuarioDAO.response;
+        var resp = indexedDBCtrl.add('usuario', data)
+        
+        return resp;
     },
     "atualizar": function (data) {
         // reset response
         usuarioDAO.reset();
         
-        indexedDBCtrl.update('usuario', data)
-        .then(function success(result) {
-            usuarioDAO.response.set(result.success, result.msg, result.data);
-        },function error(result) {
-            usuarioDAO.response.set(result.success, result.msg, result.data);
-        });
-        return usuarioDAO.response;
+        var resp = indexedDBCtrl.update('usuario', data)
+        return resp;
     },
     "buscarPorId": function (data) {
         // reset response
         usuarioDAO.reset();
 
-        indexedDBCtrl.getPorId('usuario', +data.id)
-        .then(function success(result) {
-            usuarioDAO.response.set(result.success, result.msg, result.data);
-        },function error(result) {
-            usuarioDAO.response.set(result.success, result.msg, result.data);
-        });
-        return usuarioDAO.response;
+        var resp = indexedDBCtrl.getPorId('usuario', +data.id)
+        return resp;
     },
     "listarTodos": function () {
         // reset response
-        usuarioDAO.reset();
-        var response;
-
-        indexedDBCtrl.getAll('usuario')
-        .then(function success(result){
-            response = {"success":result.success, "msg":result.msg, "data":result.data};
-        },function error(result) {
-            response = {"success":result.success, "msg":result.msg, "data":result.data};
-        });
+        // usuarioDAO.reset();
+        var response = indexedDBCtrl.getAll('usuario');
         return response;
     },
     "authentication": function (data) {
         // reset response
-        usuarioDAO.reset();
+        // usuarioDAO.reset();
+        var resp = indexedDBCtrl.getAll('usuario');
 
-        indexedDBCtrl.getAll('usuario')
-            .then(function success(result){
-                for (var i in indexedDBCtrl.listItem) {
-                    if (indexedDBCtrl.listItem[i].email === data.email && indexedDBCtrl.listItem[i].senha === data.senha) {
-                        usuarioDAO.response.set(true, 'Usuário existe ' + indexedDBCtrl.listItem[i].nousuarioDAO, indexedDBCtrl.listItem[i]);
-                    }else{
-                        usuarioDAO.response.set(false, 'Email ou Senha Inválidos! ', '');
+        setTimeout(function(){
+            if (resp.success) {
+                if (resp.data.length>1) {
+                    for (var i in indexedDBCtrl.listItem) {
+                        if (indexedDBCtrl.listItem[i].email === data.email && indexedDBCtrl.listItem[i].senha === data.senha) {
+                            resp.msg = 'Usuário existe ' + indexedDBCtrl.listItem[i].nome;
+                            resp.data = indexedDBCtrl.listItem[i];
+                        }else{
+                            resp.msg = 'Email ou Senha Inválidos!';
+                        }
                     }
+                }else{
+                    resp.msg = 'Email ou Senha Inválidos!';
                 }
-            },function error(result) {
-                usuarioDAO.response = result;
-            });
-        return usuarioDAO.response;
+            }else{
+                resp.msg = 'Ocorreu um erro na operação com o banco!';
+            }
+        }, 300);
+        
+        return resp;
     }
 }
