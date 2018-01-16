@@ -87,20 +87,35 @@ const usuarioDAO = {
         });
     },
     "buscarPorId": function (data) {
-        // reset response
-        usuarioDAO.reset();
-
-        var resp = indexedDBCtrl.getPorId('usuario', +data.id)
-        return resp;
+        return new Promise (resolve => {
+            setTimeout(function () {
+                // reset response
+                usuarioDAO.reset();
+                indexedDBCtrl.getPorId('usuario', +data.id).then(item => {
+                    if (item){
+                        usuarioDAO.response.set(true, 'Dado encontrado', item);
+                        resolve(usuarioDAO.response);
+                    }else{
+                        usuarioDAO.response.set(false, 'Usuário não encontado!', item);
+                        resolve(usuarioDAO.response);
+                    }
+                });
+            });
+        });
     },
     "listarTodos": function () {
-        // reset response
-        // usuarioDAO.reset();
-        var response = indexedDBCtrl.getAll('usuario');
-        return response;
+        return new Promise (resolve => {
+            setTimeout(function () {
+                // reset response
+                usuarioDAO.reset();
+                indexedDBCtrl.getAll('usuario').then(listItem => {
+                    usuarioDAO.response.set(true, 'Listagem com sucesso', listItem);
+                    resolve(usuarioDAO.response);
+                });
+            });
+        });
     },
     "autoIncrementID": function () {
-        // var response = indexedDBCtrl.getAll('usuario');
         return new Promise (resolve => {
             setTimeout(function (){
                 var ultimo = 0;
@@ -114,34 +129,31 @@ const usuarioDAO = {
         });
     },
     "authentication": function (data) {
-        // reset response
-        // usuarioDAO.reset();
-        // var resp = indexedDBCtrl.getAll('usuario');
+        return new Promise (resolve => {
+            setTimeout(function(){
+            
+                // reset response
+                usuarioDAO.reset();
+                
+                var usuario = null;
 
-        // setTimeout(function(){
-            indexedDBCtrl.getAll('usuario')
-            .then(function resolve(result){
-            if (result.success) {
-                if (result.data.length>1) {
-                    for (var i in indexedDBCtrl.listItem) {
-                        if (indexedDBCtrl.listItem[i].email === data.email && indexedDBCtrl.listItem[i].senha === data.senha) {
-                            usuarioDAO.response.msg = 'Usuário existe ' + indexedDBCtrl.listItem[i].nome;
-                            usuarioDAO.response.data = indexedDBCtrl.listItem[i];
-                        }else{
-                            usuarioDAO.response.msg = 'Email ou Senha Inválidos!';
+                indexedDBCtrl.getAll('usuario').then(listItem =>{
+                    if (listItem.length>1) {
+                        for (var i in listItem) {
+                            if (listItem[i].email === data.email && listItem[i].senha === data.senha) {
+                                usuario = listItem[i];
+                            }
                         }
                     }
-                }else{
-                    usuarioDAO.response.msg = 'Email ou Senha Inválidos!';
-                }
-            }else{
-                usuarioDAO.response.msg = 'Ocorreu um erro na operação com o banco!';
-            }
-        },function reject(result){
-            //
-        });
-        // }, 300);
-        
-        return usuarioDAO.response;
+                    if (usuario !== null) {
+                        usuarioDAO.response.set(true, 'Logado com sucesso!', usuario);
+                    }else{
+                        usuarioDAO.response.set(true, 'Login ou Senha inválidos!', '');
+                    }
+                    resolve(usuarioDAO.response);
+                });
+            });
+                     
+        });        
     }
 }

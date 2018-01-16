@@ -16,7 +16,7 @@ var menupageCtrl = function ( $rootScope, $scope, $location ) {
 			'perfil':'USUARIO',
 		};
 		usuarioDAO.atualizar(data).then(response => {
-			if (response) {
+			if (response.success) {
 				console.log(response);
 			}else{
 				console.log('error');

@@ -133,23 +133,22 @@ const indexedDBCtrl = {
 
             request.onsuccess = function(event) {
                 indexedDBCtrl.selectedItem = request.result;
-                // indexedDBCtrl.response.set(true, "Get realizado com sucesso!", indexedDBCtrl.selectedItem);
                 resolve(indexedDBCtrl.selectedItem);
             };
         });
     },
     "getAll": function (table) {
         return new Promise (resolve => {
-            request = this.getObjectStore(table).openCursor();
+            request = indexedDBCtrl.getObjectStore(table).openCursor();
             request.onsuccess = (event) => {
                 cursor = event.target.result;
                 if (cursor) {
-                    this.listItem.push(cursor.value);
+                    indexedDBCtrl.listItem.push(cursor.value);
                     cursor.continue();
                 }else{
                     // no more results
                 }
-                resolve(this.listItem);
+                resolve(indexedDBCtrl.listItem);
             };
         });
     },
