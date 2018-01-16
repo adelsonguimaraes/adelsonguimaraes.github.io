@@ -111,16 +111,22 @@ const indexedDBCtrl = {
         .objectStore(table);
     },
     "add": function (table, data) {
+
         return new Promise (resolve => {
             // adicionando ao banco de dados
-            var request = indexedDBCtrl.getObjectStore(table).add(data);
+            request = indexedDBCtrl.getObjectStore(table).add(data);
             
             indexedDBCtrl.reset();
     
             request.onsuccess = function(event) {
+                console.log( data );
                 // db = request.result;
                 indexedDBCtrl.response.set(true, "Dados adicionados com sucesso!", data);
                 resolve(indexedDBCtrl.response);
+            }
+
+            request.onerror = function(event) {
+                console.log( event );
             }
         });
     },
@@ -128,12 +134,14 @@ const indexedDBCtrl = {
         return new Promise (resolve => {
             request = indexedDBCtrl.getObjectStore(table).get(+id);
         
+            var item = null;
+
             // reset variáveis
             indexedDBCtrl.reset();
 
             request.onsuccess = function(event) {
-                indexedDBCtrl.selectedItem = request.result;
-                resolve(indexedDBCtrl.selectedItem);
+                item = request.result;
+                resolve(item);
             };
         });
     },
@@ -141,6 +149,9 @@ const indexedDBCtrl = {
         return new Promise (resolve => {
             request = indexedDBCtrl.getObjectStore(table).openCursor();
             request.onsuccess = (event) => {
+            
+                indexedDBCtrl.reset();
+            
                 cursor = event.target.result;
                 if (cursor) {
                     indexedDBCtrl.listItem.push(cursor.value);
@@ -154,23 +165,12 @@ const indexedDBCtrl = {
     },
     "update": function (table, data, metodo) {
         return new Promise (resolve => {
-            indexedDBCtrl.getPorId(table, +data.id).then(selectItem => {   
+            request = indexedDBCtrl.getObjectStore(table).put(data);
                 
-                // reset variáveis
-                indexedDBCtrl.reset();
-                if ( indexedDBCtrl.selectedItem ) {
-                    request = indexedDBCtrl.getObjectStore(table).put(data);
-                    
-                    request.onsuccess = function(event) {
-                        request = indexedDBCtrl.getObjectStore(table).put(data);
-                        indexedDBCtrl.response.set(true, 'Dados atualizados com sucesso!', data);
-                        resolve(indexedDBCtrl.response);
-                    };
-                }else{
-                    indexedDBCtrl.response.set(false, 'Este dado não foi encontrado!', data);
-                    resolve(indexedDBCtrl.response);
-                }
-            });
+            request.onsuccess = function(event) {
+                request = indexedDBCtrl.getObjectStore(table).put(data);
+                resolve(data);
+            };
         });
         
     },

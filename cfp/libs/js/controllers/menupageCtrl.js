@@ -9,17 +9,17 @@ var menupageCtrl = function ( $rootScope, $scope, $location ) {
 
 	$scope.clickMenu = function (item) {
 		var data = {
-			'id':58,
-			'nome': 'Nilton C. Jr',
-			'email': 'niltonbox@gmail.com',
-			'senha':MD5('741'),
+			'id': 1,
+			'nome': 'Adelson Guimarães',
+			'email': 'adelson@gmail.com',
+			'senha': MD5('123'),
 			'perfil':'USUARIO',
 		};
-		usuarioDAO.atualizar(data).then(response => {
+		usuarioDAO.cadastrar(data).then(response => {
 			if (response.success) {
 				console.log(response);
 			}else{
-				console.log('error');
+				console.log(response);
 			}
 		});
 	};

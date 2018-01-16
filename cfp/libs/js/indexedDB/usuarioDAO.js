@@ -51,8 +51,11 @@ const usuarioDAO = {
                         (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
                     );
                     indexedDBCtrl.add('usuario', usuarioDAO.data).then(response => {
+                        console.log(idIncrementado);
+                        
                         if (response) {
                             usuarioDAO.response.set(true, 'Cadastrado com Sucesso!', response.data);
+                            console.log(response.data);
                         }
                         resolve(usuarioDAO.response);
                     });
@@ -63,24 +66,36 @@ const usuarioDAO = {
     "atualizar": function (data) {
         return new Promise (resolve => {
            setTimeout(function (){
-                // reset response
-                usuarioDAO.reset();
-                // seta os atributos
-                usuarioDAO.setData(
-                    data.id, // id
-                    data.nome, // nome 
-                    data.email, // email
-                    data.senha, // senha
-                    data.perfil, // perfil
-                    data.datacadastro, // datacadastro
-                    (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
-                );
-                indexedDBCtrl.update('usuario', usuarioDAO.data).then(response => {
+                // buscamos por ID para verificar se o usuário existe    
+                usuarioDAO.buscarPorId(data).then(response => {
+
+                    // reset response
+                    usuarioDAO.reset();
+                    
+                    // se haver sucesso
                     if (response.success) {
-                        usuarioDAO.response.set(true, 'Dados atualizados', response.data);
-                        resolve(usuarioDAO.response);
-                    }else{
-                        resolve(response);
+
+                        // verificamos se a data tem tamnho maior que 0
+                        if (response.data.length > 0) {
+                            // seta os atributos
+                            usuarioDAO.setData(
+                                data.id, // id
+                                data.nome, // nome 
+                                data.email, // email
+                                data.senha, // senha
+                                data.perfil, // perfil
+                                data.datacadastro, // datacadastro
+                                (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                            );
+                            indexedDBCtrl.update('usuario', usuarioDAO.data).then(data => {
+                                usuarioDAO.response.set(true, 'Dados atualizados', response.data);
+                                resolve(usuarioDAO.response);
+                            });   
+                        }else{
+                            usuarioDAO.response.set(true, 'Usuário não encontrado!', '');
+                            resolve(usuarioDAO.response);
+                        }
+
                     }
                 });
             });
@@ -88,18 +103,20 @@ const usuarioDAO = {
     },
     "buscarPorId": function (data) {
         return new Promise (resolve => {
-            setTimeout(function () {
-                // reset response
-                usuarioDAO.reset();
-                indexedDBCtrl.getPorId('usuario', +data.id).then(item => {
+            indexedDBCtrl.getPorId('usuario', +data.id).then(item => {
+                setTimeout(function () {
+                    // reset response
+                    usuarioDAO.reset();
+
                     if (item){
                         usuarioDAO.response.set(true, 'Dado encontrado', item);
+                        console.log(item);
                         resolve(usuarioDAO.response);
                     }else{
                         usuarioDAO.response.set(false, 'Usuário não encontado!', item);
                         resolve(usuarioDAO.response);
                     }
-                });
+                },500);
             });
         });
     },
