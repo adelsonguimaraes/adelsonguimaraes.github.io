@@ -11,8 +11,8 @@ if (!window.indexedDB) {
     console.log("Your browser doesn't support a stable version of IndexedDB.");
 }
 
-var db;
-var request;
+let db;
+let request;
 
 const indexedDBCtrl = {
     "name":"cfp", // nome do banco
@@ -78,145 +78,101 @@ const indexedDBCtrl = {
             ]
         }
     ],
-    "init": function () {
-        
-        // Handle the prefix of Chrome to IDBTransaction/IDBKeyRange.
-        if ('webkitIndexedDB' in window) {
-            window.IDBTransaction = window.webkitIDBTransaction;
-            window.IDBKeyRange = window.webkitIDBKeyRange;
-        }
-
-        indexedDB.db = null;
-        // Hook up the errors to the console so we could see it.
-        // In the future, we need to push these messages to the user.
-        indexedDB.onerror = function(e) {
-            console.log('error', e);
-        };
-    },
     "start": function () {
-        // abre o banco
-        var ctrl = this;
-        var request = indexedDB.open(ctrl.name, ctrl.version);
-        
-        // reset variáveis
-        ctrl.reset();
-
-        request.onerror = function(event) {
-            ctrl.response.set(false, "Erro ao tentar conectar ao banco de dados "+ ctrl.name, "");
-            // console.log("Erro ao tentar conectar com o banco de dados "+ ctrl.name);
-        };
-         
-        request.onsuccess = function(event) {
-            db = request.result;
-            ctrl.response.set(true, "Conexão com banco de dados "+ ctrl.name + " iniciada!", "");
-            // console.log("Conexão com banco de dados "+ ctrl.name +" iniciada!" );
-        }
-        
-        request.onupgradeneeded = function(e) {
+        return new Promise (resolve => {
+            // abre o banco
+            request = indexedDB.open(indexedDBCtrl.name, indexedDBCtrl.version);
             
-            db = request.result;
-            for(var t in ctrl.tables) {
-                var table = ctrl.tables[t];
-                var store = db.createObjectStore(table.name, {keyPath: "id"});
-                for(var i in table.indexes){
-                    var index = table.indexes[i];
-                    store.createIndex(index.description, index.index, {unique: index.unique});
+            // reset variáveis
+            indexedDBCtrl.reset();
+
+            request.onsuccess = function(event) {
+                db = request.result;
+                indexedDBCtrl.response.set(true, "Conexão com banco de dados "+ indexedDBCtrl.name + " iniciada!", "");
+            };           
+            
+            request.onupgradeneeded = function(e) {
+                
+                db = request.result;
+                for(var t in indexedDBCtrl.tables) {
+                    var table = indexedDBCtrl.tables[t];
+                    var store = db.createObjectStore(table.name, {keyPath: "id"});
+                    for(var i in table.indexes){
+                        var index = table.indexes[i];
+                        store.createIndex(index.description, index.index, {unique: index.unique});
+                    }
                 }
-            }
-            
-        };
-
-
-        return ctrl.response;
+            };
+            resolve(indexedDBCtrl.response);
+        });
     },
     "getObjectStore": function (table) {
         return db.transaction([table], "readwrite")
         .objectStore(table);
     },
     "add": function (table, data) {
-        var ctrl = this;
-        
-        var request = ctrl.getObjectStore(table)
-        .add(data);
-        
-        // reset variáveis
-        ctrl.reset();
-
-        request.onsuccess = function(event) {
-            db = request.result;
-            ctrl.response.set(true, "Dados adicionados com sucesso!", data);
-        }
-
-        request.onerror = function(event) {
-            ctrl.response.set(false, "Não foi possível adicionar ao banco de dados", "");
-        };
-        return ctrl.response;
+        return new Promise (resolve => {
+            // adicionando ao banco de dados
+            var request = indexedDBCtrl.getObjectStore(table).add(data);
+            
+            indexedDBCtrl.reset();
+    
+            request.onsuccess = function(event) {
+                // db = request.result;
+                indexedDBCtrl.response.set(true, "Dados adicionados com sucesso!", data);
+                resolve(indexedDBCtrl.response);
+            }
+        });
     },
     "getPorId": function (table, id) {
-        var ctrl = this;
+        return new Promise (resolve => {
+            request = indexedDBCtrl.getObjectStore(table).get(+id);
         
-        var request = ctrl.getObjectStore(table).get(+id);
-        
-        // reset variáveis
-        ctrl.reset();
-
-        request.onsuccess = function(event) {
-            ctrl.selectedItem = request.result;
-            ctrl.response.set(true, "Get realizado com sucesso!", ctrl.selectedItem);
-        };
-        
-        request.onerror = function(event) {
-            ctrl.response.set(false, "Não foi possível localizar o dado no banco de dados!", "");
-        }
-        return ctrl.response;
-    },
-    "getAll": function (table) {
-        // var ctrl = this;
-        return new Promise (function (resolve, reject) {
-
-            var request = indexedDBCtrl.getObjectStore(table).openCursor();
             // reset variáveis
             indexedDBCtrl.reset();
 
             request.onsuccess = function(event) {
-                var cursor = event.target.result;
-                if(cursor) {
-                    indexedDBCtrl.listItem.push(cursor.value);
-                    cursor.continue();
-                } else {
-                    // no more results
-                }
-                indexedDBCtrl.response.set(true, "Listagem realizada com sucesso!", indexedDBCtrl.listItem);
-                resolve(indexedDBCtrl.response);
-            }
-            request.onerror = function(event) {
-                indexedDBCtrl.response.set(false, "Erro ao tentar listar!", '');
-                // console.log("Não foi possível localizar o dado no banco de dados! ");
+                indexedDBCtrl.selectedItem = request.result;
+                // indexedDBCtrl.response.set(true, "Get realizado com sucesso!", indexedDBCtrl.selectedItem);
+                resolve(indexedDBCtrl.selectedItem);
             };
         });
-        // return ctrl.response;
+    },
+    "getAll": function (table) {
+        return new Promise (resolve => {
+            request = this.getObjectStore(table).openCursor();
+            request.onsuccess = (event) => {
+                cursor = event.target.result;
+                if (cursor) {
+                    this.listItem.push(cursor.value);
+                    cursor.continue();
+                }else{
+                    // no more results
+                }
+                resolve(this.listItem);
+            };
+        });
     },
     "update": function (table, data, metodo) {
-        var ctrl = this;
-        
-        ctrl.getPorId(table, +data.id);
-        
-        // reset variáveis
-        ctrl.reset();
-        
-        if ( ctrl.selectedItem ) {
-            var request = ctrl.getObjectStore(table).put(data);
-            
-            request.onsuccess = function(event) {
-                var request = ctrl.getObjectStore(table).put(data);
-                ctrl.response.set(true, 'Dados atualizados com sucesso!', data);
-            };
-            
-            request.onerror = function(event) {
-                ctrl.response.set(false, 'Não foi possível atualizar no banco de dados!', '');
-            }
-        };
-        return ctrl.response;
+        return new Promise (resolve => {
+            indexedDBCtrl.getPorId(table, +data.id).then(selectItem => {   
+                
+                // reset variáveis
+                indexedDBCtrl.reset();
+                if ( indexedDBCtrl.selectedItem ) {
+                    request = indexedDBCtrl.getObjectStore(table).put(data);
+                    
+                    request.onsuccess = function(event) {
+                        request = indexedDBCtrl.getObjectStore(table).put(data);
+                        indexedDBCtrl.response.set(true, 'Dados atualizados com sucesso!', data);
+                        resolve(indexedDBCtrl.response);
+                    };
+                }else{
+                    indexedDBCtrl.response.set(false, 'Este dado não foi encontrado!', data);
+                    resolve(indexedDBCtrl.response);
+                }
+            });
+        });
         
     },
     "delete": function (table, data) {
@@ -243,4 +199,4 @@ const indexedDBCtrl = {
 };
 
 // starta conexão
-indexedDBCtrl.start();
+indexedDBCtrl.start(response => {/*staratando o DB*/});

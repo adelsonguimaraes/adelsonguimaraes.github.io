@@ -9,23 +9,23 @@ const usuarioDAO = {
             usuarioDAO.data = d;
         }
     },
-    "data":[
-        'id',
-        'nome',
-        'email',
-        'senha',
-        'perfil',
-        'datacadastro',
-        'dataedicao'
-    ],
+    "data":{
+        'id':'',
+        'nome':'',
+        'email':'',
+        'senha':'',
+        'perfil':'',
+        'datacadastro':'',
+        'dataedicao':''
+    },
     "setData": function (id, nome, email, senha, perfil, datacastro, dataedicao) {
-        this.data.id = (id != undefined) ? id : null;
-        this.data.nome = (nome != undefined) ? nome : null;
-        this.data.email = (email != undefined) ? email : null;
-        this.data.senha = (senha != undefined) ? senha : null;
-        this.data.perfil = (perfil != undefined) ? perfil : null;
-        this.data.datacastro = (datacastro != undefined) ? datacastro : null;
-        this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
+        usuarioDAO.data.id = (id != undefined) ? id : null;
+        usuarioDAO.data.nome = (nome != undefined) ? nome : null;
+        usuarioDAO.data.email = (email != undefined) ? email : null;
+        usuarioDAO.data.senha = (senha != undefined) ? senha : null;
+        usuarioDAO.data.perfil = (perfil != undefined) ? perfil : null;
+        usuarioDAO.data.datacastro = (datacastro != undefined) ? datacastro : null;
+        usuarioDAO.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
     "reset": function () {
         usuarioDAO.response.success = "";
@@ -33,30 +33,58 @@ const usuarioDAO = {
         usuarioDAO.response.data = "";
     },
     "cadastrar": function (data) {
-        // reset response
-        usuarioDAO.reset();
+        return new Promise (resolve => {
+            // reset response
+            usuarioDAO.reset();
 
-        // seta os atributos
-        usuarioDAO.setData(
-            usuarioDAO.autoIncrementID(), // id
-            data.nome, // nome 
-            data.email, // email
-            data.senha, // senha
-            data.perfil, // perfil
-            data.datacadastro, // datacadastro
-            null // dataedicao
-        );
-
-        var resp = indexedDBCtrl.add('usuario', data)
-        
-        return resp;
+            // auto incrementa
+            usuarioDAO.autoIncrementID().then(idIncrementado => {
+                setTimeout(function (){
+                    // seta os atributos
+                    usuarioDAO.setData(
+                        idIncrementado, // id
+                        data.nome, // nome 
+                        data.email, // email
+                        data.senha, // senha
+                        data.perfil, // perfil
+                        (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                        (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
+                    );
+                    indexedDBCtrl.add('usuario', usuarioDAO.data).then(response => {
+                        if (response) {
+                            usuarioDAO.response.set(true, 'Cadastrado com Sucesso!', response.data);
+                        }
+                        resolve(usuarioDAO.response);
+                    });
+                });
+            });
+        });
     },
     "atualizar": function (data) {
-        // reset response
-        usuarioDAO.reset();
-        
-        var resp = indexedDBCtrl.update('usuario', data)
-        return resp;
+        return new Promise (resolve => {
+           setTimeout(function (){
+                // reset response
+                usuarioDAO.reset();
+                // seta os atributos
+                usuarioDAO.setData(
+                    data.id, // id
+                    data.nome, // nome 
+                    data.email, // email
+                    data.senha, // senha
+                    data.perfil, // perfil
+                    data.datacadastro, // datacadastro
+                    (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                );
+                indexedDBCtrl.update('usuario', usuarioDAO.data).then(response => {
+                    if (response.success) {
+                        usuarioDAO.response.set(true, 'Dados atualizados', response.data);
+                        resolve(usuarioDAO.response);
+                    }else{
+                        resolve(response);
+                    }
+                });
+            });
+        });
     },
     "buscarPorId": function (data) {
         // reset response
@@ -73,28 +101,17 @@ const usuarioDAO = {
     },
     "autoIncrementID": function () {
         // var response = indexedDBCtrl.getAll('usuario');
-        var ultimo = 0;
-        
-        indexedDBCtrl.getAll('usuario')
-        .then(function resolve(result){
-            if (result.data.length > 0) {
-                for (var x in result.data) {
-                    ultimo = result.data[x].id;
-                    console.log(result.data[x].id);
-                }
-            }
-        },function reject(result){
-            //
+        return new Promise (resolve => {
+            setTimeout(function (){
+                var ultimo = 0;
+                indexedDBCtrl.getAll('usuario').then(listItem => {
+                    for (var x in listItem) {
+                        ultimo = listItem[x].id; //  recebe todos até o último
+                    }
+                    resolve(ultimo+1);
+                });
+            });
         });
-        // setTimeout(function () {
-        //     if (response.success === false) return response;
-        //     if (response.data.length > 0) {
-        //         for (var x in response.data) {
-        //             ultimo = response.data[x].id;
-        //         }
-        //     }
-        // }, 100);
-        return ultimo+1;
     },
     "authentication": function (data) {
         // reset response

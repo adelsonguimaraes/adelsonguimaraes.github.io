@@ -8,7 +8,20 @@ var menupageCtrl = function ( $rootScope, $scope, $location ) {
 	};
 
 	$scope.clickMenu = function (item) {
-		console.log(usuarioDAO.autoIncrementID());
+		var data = {
+			'id':58,
+			'nome': 'Nilton C. Jr',
+			'email': 'niltonbox@gmail.com',
+			'senha':MD5('741'),
+			'perfil':'USUARIO',
+		};
+		usuarioDAO.atualizar(data).then(response => {
+			if (response) {
+				console.log(response);
+			}else{
+				console.log('error');
+			}
+		});
 	};
 };
 
