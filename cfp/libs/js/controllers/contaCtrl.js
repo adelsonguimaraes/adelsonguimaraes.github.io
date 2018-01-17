@@ -66,23 +66,35 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         $scope.listarContasPorUsuario($scope.page);
 
         var listarCategorias = function (page) {
-            var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
+            var tipo = (page === 'apagar') ? 'APAGAR' : 'ARECEBER';
             
-            var data = {
-                "metodo":metodo,
-                "class":"categoria"
-            };
-            genericAPI.generic(data)
-            .then(function successCallback(response) {
-                if( response.data.success === true ){
-                    $scope.categorias = response.data.data;
-                    $scope.conta.idcategoria = $scope.categorias[0].id;
-                }else{
-                    console.log( response.data.msg );
-                }
-            }, function errorCallback(response) {
-                //error
-            });	
+            // listando localmente
+            categoriaDAO.listarPorTipo(tipo).then(response => {
+                    if (response.success) {
+                        $scope.categorias = response.data;
+                        if ($scope.categorias.length > 0) {
+                            $scope.conta.idcategoria = $scope.categorias[0].id;
+                        }else{
+                                var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
+                                var data = {
+                                    "metodo":metodo,
+                                    "class":"categoria"
+                                };
+                                genericAPI.generic(data)
+                                .then(function successCallback(response) {
+                                    if( response.data.success === true ){
+                                        $scope.categorias = response.data.data;
+                                        $scope.conta.idcategoria = $scope.categorias[0].id;
+                                    }else{
+                                        console.log( response.data.msg );
+                                    }
+                                }, function errorCallback(response) {
+                                    //error
+                                });	
+                            }
+                        }
+                
+            });
         }
         listarCategorias($scope.page);
         

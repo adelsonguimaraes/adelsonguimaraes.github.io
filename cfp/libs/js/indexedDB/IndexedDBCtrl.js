@@ -9,35 +9,13 @@ window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.ms
 
 if (!window.indexedDB) {
     console.log("Your browser doesn't support a stable version of IndexedDB.");
+    indexedDBCtrl.support = false;
 }
 
-let db;
-let request;
+let request, db;
 
 const indexedDBCtrl = {
-    "name":"cfp", // nome do banco
-    "version":1, // versão do banco
-    "con":"", // conexao
-    "selectedItem":[],
-    "listItem":"",
-    "response":{
-        "success":false,
-        "msg":"",
-        "data":"",
-        "set": function (s, m, d) {
-            this.success = s;
-            this.msg = m;
-            this.data = d;
-        }
-    },
-    "reset": function () {
-        // reset response
-        this.response.set(false, "Ocorreu um erro!", "");
-        // reset selectItem
-        this.selectedItem = "";
-        // reset listItem
-        this.listItem =[];
-    },
+    "support": true,
     "tables":[
         {
             'name':'categoria',
@@ -78,24 +56,19 @@ const indexedDBCtrl = {
             ]
         }
     ],
-    "start": function () {
-        return new Promise (resolve => {
-            // abre o banco
-            request = indexedDB.open(indexedDBCtrl.name, indexedDBCtrl.version);
+    start() {
+        return new Promise (resolve => { 
             
-            // reset variáveis
-            indexedDBCtrl.reset();
+            if (!this.support) return false;
 
-            request.onsuccess = function(event) {
+            request = indexedDB.open('cfp', 1);
+            request.onsuccess = (event) => {
                 db = request.result;
-                indexedDBCtrl.response.set(true, "Conexão com banco de dados "+ indexedDBCtrl.name + " iniciada!", "");
-            };           
-            
-            request.onupgradeneeded = function(e) {
-                
-                db = request.result;
-                for(var t in indexedDBCtrl.tables) {
-                    var table = indexedDBCtrl.tables[t];
+                resolve(this);
+            };
+            request.onupgradeneeded = (event) => {
+                for(var t in this.tables) {
+                    var table = this.tables[t];
                     var store = db.createObjectStore(table.name, {keyPath: "id"});
                     for(var i in table.indexes){
                         var index = table.indexes[i];
@@ -103,99 +76,59 @@ const indexedDBCtrl = {
                     }
                 }
             };
-            resolve(indexedDBCtrl.response);
         });
     },
-    "getObjectStore": function (table) {
-        return db.transaction([table], "readwrite")
-        .objectStore(table);
+    getObjectStore(table) {
+        return db.transaction([table], "readwrite").objectStore(table);
     },
-    "add": function (table, data) {
-
+    add(table, data) {
         return new Promise (resolve => {
-            // adicionando ao banco de dados
-            request = indexedDBCtrl.getObjectStore(table).add(data);
-            
-            indexedDBCtrl.reset();
-    
-            request.onsuccess = function(event) {
-                console.log( data );
-                // db = request.result;
-                indexedDBCtrl.response.set(true, "Dados adicionados com sucesso!", data);
-                resolve(indexedDBCtrl.response);
-            }
-
-            request.onerror = function(event) {
-                console.log( event );
-            }
-        });
-    },
-    "getPorId": function (table, id) {
-        return new Promise (resolve => {
-            request = indexedDBCtrl.getObjectStore(table).get(+id);
-        
-            var item = null;
-
-            // reset variáveis
-            indexedDBCtrl.reset();
-
-            request.onsuccess = function(event) {
-                item = request.result;
-                resolve(item);
-            };
-        });
-    },
-    "getAll": function (table) {
-        return new Promise (resolve => {
-            request = indexedDBCtrl.getObjectStore(table).openCursor();
+            request = this.getObjectStore(table).add(data);
             request.onsuccess = (event) => {
-            
-                indexedDBCtrl.reset();
-            
+                resolve(data);
+            }
+        });
+    },
+    update(table, data) {
+        return new Promise (resolve => {
+            request = this.getObjectStore(table).put(data);
+            request.onsuccess = (event) => {
+                resolve(data);
+            }
+        });
+    },
+    get(table, id) {
+        return new Promise (resolve => {
+            request = this.getObjectStore(table).get(id);
+            request.onsuccess = (event) => {
+                resolve(request.result);
+            }
+        });
+    },
+    getAll(table) {
+        return new Promise (resolve => {
+            var list = [];
+            request = this.getObjectStore(table).openCursor();
+            request.onsuccess = (event) => {
                 cursor = event.target.result;
                 if (cursor) {
-                    indexedDBCtrl.listItem.push(cursor.value);
+                    list.push(cursor.value);
                     cursor.continue();
-                }else{
-                    // no more results
                 }
-                resolve(indexedDBCtrl.listItem);
-            };
-        });
-    },
-    "update": function (table, data, metodo) {
-        return new Promise (resolve => {
-            request = indexedDBCtrl.getObjectStore(table).put(data);
-                
-            request.onsuccess = function(event) {
-                request = indexedDBCtrl.getObjectStore(table).put(data);
-                resolve(data);
-            };
-        });
-        
-    },
-    "delete": function (table, data) {
-        var ctrl = this;
-        
-        // reset variáveis
-        ctrl.reset();
-        
-        // if ( ctrl.selectedItem ) {
-            var request = this.getObjectStore(table).delete(+data.id);
-            
-            request.onsuccess = function(event) {
-                ctrl.response.set(true, 'Dados deletados com sucesso!', data);
-                success(ctrl.response);
-            };
-            
-            request.onerror = function(event) {
-                ctrl.response.set(false, 'Não foi possível deletar no banco de dados!', data);
-                error(ctrl.response);
+                resolve(list);
             }
-        // }
-        return ctrl.response;
+        });
+    },
+    remove(table, id) {
+        return new Promise (resolve => {
+            request = this.getObjectStore(table).delete(id);
+            request.onsuccess = (event) => {
+                resolve(this.getAll(table));
+            }
+        });
     }
-};
+}
 
-// starta conexão
-indexedDBCtrl.start(response => {/*staratando o DB*/});
+indexedDBCtrl.start().then(db => {
+    console.warn('Conexão com IndexedDB iniciada!', db);
+});

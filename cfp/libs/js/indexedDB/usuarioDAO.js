@@ -1,14 +1,4 @@
 const usuarioDAO = {
-    "response":{
-        "success":false,
-        "msg":"",
-        "data":"",
-        "set": function (s, m, d) {
-            usuarioDAO.success = s;
-            usuarioDAO.msg = m;
-            usuarioDAO.data = d;
-        }
-    },
     "data":{
         'id':'',
         'nome':'',
@@ -18,159 +8,145 @@ const usuarioDAO = {
         'datacadastro':'',
         'dataedicao':''
     },
-    "setData": function (id, nome, email, senha, perfil, datacastro, dataedicao) {
-        usuarioDAO.data.id = (id != undefined) ? id : null;
-        usuarioDAO.data.nome = (nome != undefined) ? nome : null;
-        usuarioDAO.data.email = (email != undefined) ? email : null;
-        usuarioDAO.data.senha = (senha != undefined) ? senha : null;
-        usuarioDAO.data.perfil = (perfil != undefined) ? perfil : null;
-        usuarioDAO.data.datacastro = (datacastro != undefined) ? datacastro : null;
-        usuarioDAO.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
+    setData (id, nome, email, senha, perfil, datacastro, dataedicao) {
+        this.data.id = (id != undefined) ? id : null;
+        this.data.nome = (nome != undefined) ? nome : null;
+        this.data.email = (email != undefined) ? email : null;
+        this.data.senha = (senha != undefined) ? senha : null;
+        this.data.perfil = (perfil != undefined) ? perfil : null;
+        this.data.datacastro = (datacastro != undefined) ? datacastro : null;
+        this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
-    "reset": function () {
-        usuarioDAO.response.success = "";
-        usuarioDAO.response.msg = "";
-        usuarioDAO.response.data = "";
-    },
-    "cadastrar": function (data) {
+    cadastrar (data) {
         return new Promise (resolve => {
-            // reset response
-            usuarioDAO.reset();
-
+            var response = {success:false, msg:'default', data: ''};
             // auto incrementa
-            usuarioDAO.autoIncrementID().then(idIncrementado => {
-                setTimeout(function (){
-                    // seta os atributos
-                    usuarioDAO.setData(
-                        idIncrementado, // id
-                        data.nome, // nome 
-                        data.email, // email
-                        data.senha, // senha
-                        data.perfil, // perfil
-                        (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
-                        (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
-                    );
-                    indexedDBCtrl.add('usuario', usuarioDAO.data).then(response => {
-                        console.log(idIncrementado);
-                        
-                        if (response) {
-                            usuarioDAO.response.set(true, 'Cadastrado com Sucesso!', response.data);
-                            console.log(response.data);
-                        }
-                        resolve(usuarioDAO.response);
+            this.autoIncrementID().then(idIncrementado => {
+                // seta os atributos
+                usuarioDAO.setData(
+                    idIncrementado, // id
+                    data.nome, // nome 
+                    data.email, // email
+                    data.senha, // senha
+                    data.perfil, // perfil
+                    (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                    (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
+                );
+                indexedDBCtrl.start().then(db => {
+                    db.add('usuario', this.data).then(data => {
+                            response.success = true; 
+                            response.msg = 'Cadastrado com sucesso!';
+                            response.data = data;
+                            resolve(response);
                     });
                 });
             });
         });
     },
-    "atualizar": function (data) {
+    atualizar (data) {
         return new Promise (resolve => {
-           setTimeout(function (){
-                // buscamos por ID para verificar se o usuário existe    
-                usuarioDAO.buscarPorId(data).then(response => {
+            var response = {success:false, msg:'default', data: ''};
+            // buscamos por ID para verificar se o usuário existe    
+            this.buscarPorId(data).then(resp => {
 
-                    // reset response
-                    usuarioDAO.reset();
-                    
-                    // se haver sucesso
-                    if (response.success) {
+                // se haver sucesso
+                if (resp.success) {
 
-                        // verificamos se a data tem tamnho maior que 0
-                        if (response.data.length > 0) {
-                            // seta os atributos
-                            usuarioDAO.setData(
-                                data.id, // id
-                                data.nome, // nome 
-                                data.email, // email
-                                data.senha, // senha
-                                data.perfil, // perfil
-                                data.datacadastro, // datacadastro
-                                (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
-                            );
-                            indexedDBCtrl.update('usuario', usuarioDAO.data).then(data => {
-                                usuarioDAO.response.set(true, 'Dados atualizados', response.data);
-                                resolve(usuarioDAO.response);
+                    // verificamos se a data tem tamanho maior que 0
+                    if (resp.data != '') {
+                        // seta os atributos
+                        this.setData(
+                            data.id, // id
+                            data.nome, // nome 
+                            data.email, // email
+                            data.senha, // senha
+                            data.perfil, // perfil
+                            data.datacadastro, // datacadastro
+                            (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                        );
+                        indexedDBCtrl.start().then(db => {
+                            db.update('usuario', this.data).then(data => {
+                                response.success = true; 
+                                response.msg = 'Atualizado com sucesso!';
+                                response.data = data;
+                                resolve(response);
                             });   
-                        }else{
-                            usuarioDAO.response.set(true, 'Usuário não encontrado!', '');
-                            resolve(usuarioDAO.response);
-                        }
-
-                    }
-                });
-            });
-        });
-    },
-    "buscarPorId": function (data) {
-        return new Promise (resolve => {
-            indexedDBCtrl.getPorId('usuario', +data.id).then(item => {
-                setTimeout(function () {
-                    // reset response
-                    usuarioDAO.reset();
-
-                    if (item){
-                        usuarioDAO.response.set(true, 'Dado encontrado', item);
-                        console.log(item);
-                        resolve(usuarioDAO.response);
+                        });   
                     }else{
-                        usuarioDAO.response.set(false, 'Usuário não encontado!', item);
-                        resolve(usuarioDAO.response);
+                        response.msg = 'Usuário não encontrado!';
+                        resolve(response);
                     }
-                },500);
+                }else{
+                    resolve(resp);
+                }
             });
         });
     },
-    "listarTodos": function () {
+    buscarPorId (data) {
         return new Promise (resolve => {
-            setTimeout(function () {
-                // reset response
-                usuarioDAO.reset();
-                indexedDBCtrl.getAll('usuario').then(listItem => {
-                    usuarioDAO.response.set(true, 'Listagem com sucesso', listItem);
-                    resolve(usuarioDAO.response);
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.get('usuario', +data.id).then(item => {
+                    if (item){
+                        response.success = true; 
+                        response.msg = 'Buscado com sucesso!';
+                        response.data = item;
+                        resolve(response);
+                    }else{
+                        response.msg = 'Usuário não encontrado!';
+                        resolve(response);
+                    }
                 });
             });
         });
     },
-    "autoIncrementID": function () {
+    listarTodos () {
         return new Promise (resolve => {
-            setTimeout(function (){
-                var ultimo = 0;
-                indexedDBCtrl.getAll('usuario').then(listItem => {
-                    for (var x in listItem) {
-                        ultimo = listItem[x].id; //  recebe todos até o último
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.getAll('usuario').then(list => {
+                    response.success = true; 
+                    response.msg = 'Listagem com sucesso!';
+                    response.data = list;
+                    resolve(response);
+                });
+            });
+        });
+    },
+    autoIncrementID() {
+        return new Promise (resolve => {
+            var ultimo = 0;
+            indexedDBCtrl.start().then(db => {
+                db.getAll('usuario').then(list => {
+                    for (var i in list) {
+                        ultimo = list[i].id; //  recebe todos até o último
                     }
                     resolve(ultimo+1);
                 });
             });
         });
     },
-    "authentication": function (data) {
+    auth(data) {
         return new Promise (resolve => {
-            setTimeout(function(){
-            
-                // reset response
-                usuarioDAO.reset();
-                
-                var usuario = null;
-
-                indexedDBCtrl.getAll('usuario').then(listItem =>{
-                    if (listItem.length>1) {
-                        for (var i in listItem) {
-                            if (listItem[i].email === data.email && listItem[i].senha === data.senha) {
-                                usuario = listItem[i];
-                            }
+            var session = '';
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.getAll('usuario').then(list => {
+                    for (var i in list) {
+                        if (list[i].email === data.email && list[i].senha === data.senha) {
+                            session = list[i];
                         }
                     }
-                    if (usuario !== null) {
-                        usuarioDAO.response.set(true, 'Logado com sucesso!', usuario);
+                    if (session != '') {
+                        response.success = true; 
+                        response.msg = 'Logado com sucesso!';
+                        response.data = session;
                     }else{
-                        usuarioDAO.response.set(true, 'Login ou Senha inválidos!', '');
+                        response.msg = 'Email ou Senha inválidos!';
                     }
-                    resolve(usuarioDAO.response);
+                    resolve(response);
                 });
             });
-                     
-        });        
+        });
     }
 }
