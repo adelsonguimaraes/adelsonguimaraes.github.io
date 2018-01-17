@@ -73,7 +73,8 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     if (response.success) {
                         $scope.categorias = response.data;
                         if ($scope.categorias.length > 0) {
-                            $scope.conta.idcategoria = $scope.categorias[0].id;
+                            console.log(response.data);
+                            $scope.conta.idcategoria = $scope.categorias[0].nuvem;
                         }else{
                                 var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
                                 var data = {

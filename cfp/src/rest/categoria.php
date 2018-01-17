@@ -52,7 +52,7 @@ function buscarPorId () {
 	echo json_encode($response);
 }
 function listar () {
-	$control = new CategoriaControl(new Categoria);
+	$control = new CategoriaControl();
 	$response = $control->listar();
 	echo json_encode($response);
 }

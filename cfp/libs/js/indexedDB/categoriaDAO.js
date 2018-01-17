@@ -1,40 +1,38 @@
 const categoriaDAO = {
     "data":{
         'id':'',
-        'nome':'',
-        'email':'',
-        'senha':'',
-        'perfil':'',
+        'idnuvem': '',
+        'descricao':'',
+        'tipo':'',
         'datacadastro':'',
         'dataedicao':''
     },
-    setData (id, nome, email, senha, perfil, datacastro, dataedicao) {
+    setData (id, idnuvem, descricao, tipo, datacastro, dataedicao) {
         this.data.id = (id != undefined) ? id : null;
-        this.data.descicao = (descicao != undefined) ? descicao : null;
+        this.data.idnuvem = (idnuvem != undefined) ? idnuvem : null;
+        this.data.descricao = (descricao != undefined) ? descricao : null;
         this.data.tipo = (tipo != undefined) ? tipo : null;
         this.data.datacastro = (datacastro != undefined) ? datacastro : null;
         this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
     cadastrar (data) {
         return new Promise (resolve => {
-            var response = {success:false, msg:'default', data: ''};
-            // auto incrementa
-            this.autoIncrementID().then(idIncrementado => {
-                // seta os atributos
-                categoriaDAO.setData(
-                    idIncrementado, // id
-                    data.descricao, // descricao 
-                    data.tipo, // tipo
-                    (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
-                    (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
-                );
-                indexedDBCtrl.start().then(db => {
-                    db.add('categoria', this.data).then(data => {
-                            response.success = true; 
-                            response.msg = 'Cadastrado com sucesso!';
-                            response.data = data;
-                            resolve(response);
-                    });
+        var response = {success:false, msg:'default', data: ''};
+            // seta os atributos
+            categoriaDAO.setData(
+                new Date().getTime(), // id increment
+                data.id, // nuvem
+                data.descricao, // descricao 
+                data.tipo, // tipo
+                (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
+            );
+            indexedDBCtrl.start().then(db => {
+                db.add('categoria', this.data).then(data => {
+                        response.success = true; 
+                        response.msg = 'Cadastrado com sucesso!';
+                        response.data = data;
+                        resolve(response);
                 });
             });
         });
@@ -53,6 +51,7 @@ const categoriaDAO = {
                         // seta os atributos
                         this.setData(
                             data.id, // id
+                            data.idnuvem, // nuvem
                             data.descricao, // descricao 
                             data.tipo, // tipo
                             data.datacadastro, // datacadastro
@@ -110,34 +109,65 @@ const categoriaDAO = {
     listarPorTipo (tipo) {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
-            var l = [];
-            indexedDBCtrl.start().then(db => {
-                db.getAll('categoria').then(list => {
-                    for (var i in list) {
-                        if (list[i].tipo === tipo) {
-                            l.push(list[i]);
+            var array = [];
+            // indexedDBCtrl.start().then(db => {
+            //     db.getAll('categoria').then(list => {
+            //         for (var i in list) {
+            //             if (list[i].tipo === 'tipo' || list[i].tipo === 'AMBOS') {
+            //                 l.push(list[i]);
+            //             }
+            //         }
+            //         response.success = true; 
+            //         response.msg = 'Listagem com sucesso!';
+            //         response.data = l;
+            //         resolve(response);
+            //     });
+            // });
+            this.listarTodos().then(response => {
+                if (response.success) {
+                    // console.log(lista);
+                    // var l = [];
+                    // for (var i in lista) {
+                    //     if (lista[i].tipo === tipo || lista[i].tipo === 'AMBOS') {
+                    //         l.push(lista[i]);
+                    //     }
+                    // }
+                    percorreArray = function(l, t, p) {
+                        console.log(p + ' _ ' + t);
+                        if (t < p) {
+                            if (l[p].tipo === tipo || l[p].tipo === 'AMBOS') {
+                                araay.push(l[i]);
+                            }   
+                            percorreArray (l, l.length, p+1);
+                        }else{
+                            response.success = true; 
+                            response.msg = 'Listagem com sucesso!';
+                            response.data = array;
+                            resolve(response);
                         }
-                    }
-                    response.success = true; 
-                    response.msg = 'Listagem com sucesso!';
-                    response.data = l;
-                    resolve(response);
-                });
-            });
-        });
-    },
-    autoIncrementID() {
-        return new Promise (resolve => {
-            var ultimo = 0;
-            indexedDBCtrl.start().then(db => {
-                db.getAll('categoria').then(list => {
-                    for (var i in list) {
-                        ultimo = list[i].id; //  recebe todos até o último
-                    }
-                    resolve(ultimo+1);
-                });
+                    };
+                    percorreArray (response.data, response.data.length, 0);
+                    // response.success = true; 
+                    // response.msg = 'Listagem com sucesso!';
+                    // response.data = l;
+                    // resolve(response);
+                };
             });
         });
     }
+    // autoIncrementID() {
+    //     return new Promise (resolve => {
+    //         var ultimo = 0;
+    //         indexedDBCtrl.start().then(db => {
+    //             db.getAll('categoria').then(list => {
+    //                 for (var i in list) {
+    //                     ultimo = list[i].id; //  recebe todos até o último
+    //                 }
+    //                 console.log(utltimo+1);
+    //                 resolve(ultimo+1);
+    //             });
+    //         });
+    //     });
+    // }
     
 }

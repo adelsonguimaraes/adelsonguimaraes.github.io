@@ -16,6 +16,8 @@ let request, db;
 
 const indexedDBCtrl = {
     "support": true,
+    "dbName": 'cfp',
+    "dbVersion": 1,
     "tables":[
         {
             'name':'categoria',
@@ -61,7 +63,7 @@ const indexedDBCtrl = {
             
             if (!this.support) return false;
 
-            request = indexedDB.open('cfp', 1);
+            request = indexedDB.open(this.dbName, this.dbVersion);
             request.onsuccess = (event) => {
                 db = request.result;
                 resolve(this);
@@ -86,6 +88,9 @@ const indexedDBCtrl = {
             request = this.getObjectStore(table).add(data);
             request.onsuccess = (event) => {
                 resolve(data);
+            };
+            request.onerror = (event) => {
+                console.log(event);
             }
         });
     },
@@ -130,5 +135,5 @@ const indexedDBCtrl = {
 }
 
 indexedDBCtrl.start().then(db => {
-    console.warn('Conexão com IndexedDB iniciada!', db);
+    console.warn('Conexão com IndexedDB estabelecida!');
 });
