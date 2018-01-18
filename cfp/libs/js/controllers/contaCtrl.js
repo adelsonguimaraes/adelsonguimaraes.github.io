@@ -66,30 +66,17 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         $scope.page = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
         $scope.listarContasPorUsuario($scope.page);
 
-        listarCategoriasDBLocal = function (tipo) {
-            // listando localmente
-            categoriaDAO.listarPorTipo(tipo.toUpperCase()).then(response => {
-                if (response.success) {
-                    $scope.categorias = response.data;
-                    if ($scope.categorias.length > 0) {
-                        $scope.conta.idcategoria = $scope.categorias[0].id;
-                    }else{
-                        // listarCategorias(tipo);
-                    }
-                }
-            });
-        };
-        listarCategoriasDBLocal($scope.page);
         listarCategorias = function (page) {
             var tipo = (page === 'apagar') ? 'APAGAR' : 'ARECEBER';
             
             // listando localmente
             categoriaDAO.listarPorTipo(tipo).then(response => {
-                    // if (response.success) {
-                    //     $scope.categorias = response.data;
-                    //     if ($scope.categorias.length > 0) {
-                    //         $scope.conta.idcategoria = $scope.categorias[0].id;
-                    //     }else{
+                    if (response.success) {
+                        $scope.categorias = response.data;
+                        if ($scope.categorias.length > 0) {
+                            $scope.conta.idcategoria = $scope.categorias[0].id;
+                        }else{
+                            // listagem pela nuvem
                             var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
                             var data = {
                                 "metodo":metodo,
@@ -106,12 +93,12 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                             }, function errorCallback(response) {
                                 //error
                             });	
-                        // }
-            //         }
+                        }
+                    }
                 
             });
         }
-        // listarCategorias($scope.page);
+        listarCategorias($scope.page);
 
         $scope.editar = function (obj) {
             obj.datavencimento = moment(obj.datavencimento).format('DD/MM/YYYY');

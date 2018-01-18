@@ -15,6 +15,9 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
         // se off-line ou navegador sem suport a indexedDB
         if (!navigator.onLine || !indexedDBCtrl.support) return false;
 
+        // só faz a sincronização para usuários logados
+        if(!$rootScope.usuario) return false;
+
         // categoria
         function categoria() {
             var dbNuvem = [];

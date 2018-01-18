@@ -52,7 +52,15 @@ function logar() {
                 $result = array(
                     "success"   => true,
                     "msg"       => "logado",
-                    "data"      => $usuario = array('idusuario'=>$row['id'],'email'=>$row['email'], 'nome'=> $row['nome'], 'inatividade'=>'ativo')
+                    "data"      => $usuario = array(
+                                    'idusuario'=>$row['id'],
+                                    'email'=>$row['email'], 
+                                    'nome'=> $row['nome'], 
+                                    'senha'=> $row['senha'], 
+                                    'perfil'=> $row['perfil'], 
+                                    'ativo'=> $row['ativo'], 
+                                    'inatividade'=>'ativo'
+                                    )
                 );
             }   
         } else {

@@ -9,6 +9,19 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 		return false;
 	}
 	
+	/*
+		Function que adiciona o usuário ao db local.
+		Quando o usuário não existe em DB local o Sistema Recorre a Nuvem.
+		Após o 1o login via Nuvem o sistema registra o usuário localmente.
+	*/
+	adicionaUsuarioDBLocal = function (data) {
+		usuarioDAO.cadastrar(data).then(response => {
+			if (response.success) {
+				console.log('Usuário adicionado ao DBLocal');
+			}
+		});
+	};
+
 	$scope.logar = function (obj) {
 		// Encrypt senha
 		obj.senha = MD5(obj.senha);
@@ -28,6 +41,7 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 				//redirecionamos para home
 				$location.path('/menu');
 				window.location.replace('#/menu');
+				$rootScope.syncDB();
 			}else{
 				if (navigator.onLine) {
 					authenticationAPI.authentication(data)
@@ -40,6 +54,8 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 							$scope.login.error = false;
 							//redirecionamos para home
 							$location.path('/menu');
+							$rootScope.syncDB();
+							adicionaUsuarioDBLocal(response.data.data);
 						}else{
 							//ativamos o login error com true
 							$scope.login.error = true;
