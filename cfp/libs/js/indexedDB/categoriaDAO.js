@@ -1,41 +1,41 @@
 const categoriaDAO = {
     "data":{
         'id':'',
-        'idnuvem': '',
         'descricao':'',
         'tipo':'',
         'datacadastro':'',
-        'dataedicao':''
+        'dataedicao':'',
+        'sync':''
     },
     "lista":[],
-    setData (keypath, id, descricao, tipo, datacastro, dataedicao) {
-        this.data.keypath = (keypath != undefined) ? keypath : null;
+    setData (id, descricao, tipo, sync, datacadastro, dataedicao) {
         this.data.id = (id != undefined) ? id : null;
         this.data.descricao = (descricao != undefined) ? descricao : null;
         this.data.tipo = (tipo != undefined) ? tipo : null;
-        this.data.datacastro = (datacastro != undefined) ? datacastro : null;
+        this.data.sync = (sync != undefined) ? sync : null;
+        this.data.datacadastro = (datacadastro != undefined) ? datacadastro : null;
         this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
     cadastrar (data) {
         return new Promise (resolve => {
-        var response = {success:false, msg:'default', data: ''};
+            var response = {success:false, msg:'default', data: ''};
             // seta os atributos
             categoriaDAO.setData(
-                new Date().getTime(), // id increment
-                data.id, // nuvem
+                +data.id, // nuvem
                 data.descricao, // descricao 
                 data.tipo, // tipo
+                (data.sync != undefined) ? data.sync : 'NAO',
                 (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
                 (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
             );
-            indexedDBCtrl.start().then(db => {
-                db.add('categoria', this.data).then(data => {
+            indexedDBCtrl.add('categoria', this.data).then(data => {
+                    setTimeout(() => {
                         response.success = true; 
                         response.msg = 'Cadastrado com sucesso!';
                         response.data = data;
                         resolve(response);
+                    }, 100);
                 });
-            });
         });
     },
     atualizar (data) {
@@ -43,68 +43,76 @@ const categoriaDAO = {
             var response = {success:false, msg:'default', data: ''};
             // buscamos por ID para verificar se o Categoria existe    
             this.buscarPorId(data).then(resp => {
+                setTimeout(() => {
+                    // se haver sucesso
+                    if (resp.success) {
 
-                // se haver sucesso
-                if (resp.success) {
-
-                    // verificamos se a data tem tamanho maior que 0
-                    if (resp.data != '') {
-                        // seta os atributos
-                        this.setData(
-                            data.keypath, // id
-                            data.id, // nuvem
-                            data.descricao, // descricao 
-                            data.tipo, // tipo
-                            data.datacadastro, // datacadastro
-                            (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
-                        );
-                        indexedDBCtrl.start().then(db => {
-                            db.update('categoria', this.data).then(data => {
-                                response.success = true; 
-                                response.msg = 'Atualizado com sucesso!';
-                                response.data = data;
-                                resolve(response);
+                        // verificamos se a data tem tamanho maior que 0
+                        if (resp.data != '') {
+                            // seta os atributos
+                            this.setData(
+                                +data.id, // nuvem
+                                data.descricao, // descricao 
+                                data.tipo, // tipo
+                                data.sync,
+                                data.datacadastro, // datacadastro
+                                (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                            );
+                            indexedDBCtrl.start().then(db => {
+                                db.update('categoria', this.data).then(data => {
+                                    response.success = true; 
+                                    response.msg = 'Atualizado com sucesso!';
+                                    response.data = data;
+                                    resolve(response);
+                                });   
                             });   
-                        });   
+                        }else{
+                            response.msg = 'Categoria não encontrado!';
+                            resolve(response);
+                        }
                     }else{
-                        response.msg = 'Categoria não encontrado!';
-                        resolve(response);
+                        resolve(resp);
                     }
-                }else{
-                    resolve(resp);
-                }
+                }, 100);
             });
         });
     },
     buscarPorId (data) {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
-            indexedDBCtrl.start().then(db => {
-                db.get('categoria', +data.id).then(item => {
-                    if (item){
-                        response.success = true; 
-                        response.msg = 'Buscado com sucesso!';
-                        response.data = item;
-                        resolve(response);
-                    }else{
-                        response.msg = 'Categoria não encontrado!';
-                        resolve(response);
-                    }
+            setTimeout(() => {
+                indexedDBCtrl.start().then(db => {
+                    db.get('categoria', +data.id).then(item => {
+                    
+                        if (item){
+                            response.success = true; 
+                            response.msg = 'Buscado com sucesso!';
+                            response.data = item;
+                            resolve(response);
+                        }else{
+                            response.msg = 'Categoria não encontrado!';
+                            resolve(response);
+                        }
+             
+                   });
                 });
-            });
+            }, 200);
         });
     },
     listarTodos () {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
-            indexedDBCtrl.start().then(db => {
-                db.getAll('categoria').then(list => {
-                    response.success = true; 
-                    response.msg = 'Listagem com sucesso!';
-                    response.data = list;
-                    resolve(response);
+            setTimeout(() => {
+                indexedDBCtrl.start().then(db => {
+                    db.getAll('categoria').then(list => {
+                        
+                            response.success = true; 
+                            response.msg = 'Listagem com sucesso!';
+                            response.data = list;
+                            resolve(response);
+                    });
                 });
-            });
+            }, 100);
         });
     },
     listarPorTipo (tipo) {
@@ -128,6 +136,20 @@ const categoriaDAO = {
                     };
                 }, 100);
             });
+        });
+    },
+    setIDNuvem (data, newID) {
+        return new Promise (resolve => {
+            setTimeout(() => {
+                indexedDBCtrl.remove('categoria', +data.id).then(list => {
+                    data.id = newID;
+                    this.cadastrar(data).then(response => {
+                        if (response.success) {
+                            resolve(response);
+                        }
+                    });
+                });
+            }, 100);
         });
     }
     // autoIncrementID() {

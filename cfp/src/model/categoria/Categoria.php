@@ -14,6 +14,7 @@ Class Categoria implements JsonSerializable {
 	private $id;
 	private $descricao;
 	private $tipo;
+	private $sunc;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -23,6 +24,7 @@ Class Categoria implements JsonSerializable {
 		$id = NULL,
 		$descricao = NULL,
 		$tipo = NULL,
+		$sync = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
@@ -30,6 +32,7 @@ Class Categoria implements JsonSerializable {
 		$this->id	= $id;
 		$this->descricao	= $descricao;
 		$this->tipo	= $tipo;
+		$this->sync = $sync;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -56,6 +59,13 @@ Class Categoria implements JsonSerializable {
 		$this->tipo = $tipo;
 		return $this;
 	}
+	public function getSync() {
+		return $this->sync;
+	}
+	public function setSync($sync) {
+		$this->sync = $sync;
+		return $this;
+	}
 	public function getDatacadastro() {
 		return $this->datacadastro;
 	}
@@ -77,6 +87,7 @@ Class Categoria implements JsonSerializable {
 			"id"	=> $this->id,
 			"descricao"	=> $this->descricao,
 			"tipo"	=> $this->tipo,
+			"sync" => $this->sync,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];

@@ -24,7 +24,7 @@ const usuarioDAO = {
             this.autoIncrementID().then(idIncrementado => {
                 // seta os atributos
                 usuarioDAO.setData(
-                    idIncrementado, // id
+                    +data.id, // id
                     data.nome, // nome 
                     data.email, // email
                     data.senha, // senha
@@ -56,7 +56,7 @@ const usuarioDAO = {
                     if (resp.data != '') {
                         // seta os atributos
                         this.setData(
-                            data.id, // id
+                            +data.id, // id
                             data.nome, // nome 
                             data.email, // email
                             data.senha, // senha

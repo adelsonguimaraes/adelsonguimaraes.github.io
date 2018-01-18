@@ -39,7 +39,10 @@ function cadastrar () {
 	$obj = new Categoria(
 		NULL,
 		$data['descricao'],
-		$data['tipo']
+		$data['tipo'],
+		$data['sync'],
+		$data['datacadastro'],
+		$data['dataedicao']
 	);
 	$control = new CategoriaControl($obj);
 	$response = $control->cadastrar();
@@ -66,7 +69,10 @@ function atualizar () {
 	$obj = new Categoria(
 		$data['id'],
 		$data['descricao'],
-		$data['tipo']
+		$data['tipo'],
+		$data['sync'],
+		$data['datacadastro'],
+		$data['dataedicao']
 	);
 	$control = new CategoriaControl($obj);
 	$response = $control->atualizar();

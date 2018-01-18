@@ -22,10 +22,10 @@ const indexedDBCtrl = {
         {
             'name':'categoria',
             'indexes':[
-                {'description':'keypath', 'index':'keypath', 'unique':true},
                 {'description':'id', 'index':'id', 'unique':false},
                 {'description':'descricao', 'index':'descricao', 'unique':false},
                 {'description':'tipo', 'index':'tipo', 'unique':false},
+                {'description':'sync', 'index':'sync', 'unique':false},
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
                 {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
             ]
@@ -33,12 +33,12 @@ const indexedDBCtrl = {
         {
             'name':'usuario',
             'indexes':[
-                {'description':'keypath', 'index':'keypath', 'unique':true},
                 {'description':'id', 'index':'id', 'unique':false},
                 {'description':'nome', 'index':'nome', 'unique':false},
                 {'description':'email', 'index':'email', 'unique':false},
                 {'description':'senha', 'index':'senha', 'unique':false},
                 {'description':'perfil', 'index':'perfil', 'unique':false},
+                {'description':'sync', 'index':'sync', 'unique':false},
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
                 {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
             ]
@@ -46,7 +46,6 @@ const indexedDBCtrl = {
         {
             'name':'conta',
             'indexes':[
-                {'description':'keypath', 'index':'keypath', 'unique':true},
                 {'description':'id', 'index':'id','unique':false},
                 {'description':'idusuario', 'index':'idusuario','unique':false},
                 {'description':'idcategoria', 'index':'idcategoria','unique':false},
@@ -56,6 +55,7 @@ const indexedDBCtrl = {
                 {'description':'tipo', 'index':'tipo','unique':false},
                 {'description':'status', 'index':'status','unique':false},
                 {'description':'datavencimento', 'index':'datavencimento','unique':false},
+                {'description':'sync', 'index':'sync', 'unique':false},
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
                 {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
             ]
@@ -63,25 +63,26 @@ const indexedDBCtrl = {
     ],
     start() {
         return new Promise (resolve => { 
-            
-            if (!this.support) return false;
+            setTimeout(() => {
+                if (!this.support) return false;
 
-            request = indexedDB.open(this.dbName, this.dbVersion);
-            request.onsuccess = (event) => {
-                db = request.result;
-                resolve(this);
-            };
-            request.onupgradeneeded = (event) => {
-                db = event.target.result;
-                for(var t in this.tables) {
-                    var table = this.tables[t];
-                    var store = db.createObjectStore(table.name, {keyPath: "id"});
-                    for(var i in table.indexes){
-                        var index = table.indexes[i];
-                        store.createIndex(index.description, index.index, {unique: index.unique});
+                request = indexedDB.open(this.dbName, this.dbVersion);
+                request.onsuccess = (event) => {
+                    db = request.result;
+                    resolve(this);
+                };
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    for(var t in this.tables) {
+                        var table = this.tables[t];
+                        var store = db.createObjectStore(table.name, {keyPath: "id"});
+                        for(var i in table.indexes){
+                            var index = table.indexes[i];
+                            store.createIndex(index.description, index.index, {unique: index.unique});
+                        }
                     }
-                }
-            };
+                };
+            }, 100);
         });
     },
     getObjectStore(table) {

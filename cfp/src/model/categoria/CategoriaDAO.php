@@ -25,10 +25,14 @@ Class CategoriaDAO {
 
 	//cadastrar
 	function cadastrar (categoria $obj) {
-		$this->sql = sprintf("INSERT INTO categoria(descricao, tipo)
-		VALUES('%s', '%s')",
+		$this->sql = sprintf("INSERT INTO categoria(descricao, tipo, sync, datacastro, dataedicao)
+		VALUES('%s', '%s', '%s', '%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
-			mysqli_real_escape_string($this->con, $obj->getTipo()));
+			mysqli_real_escape_string($this->con, $obj->getTipo()),
+			mysqli_real_escape_string($this->con, $obj->getSync()),
+			mysqli_real_escape_string($this->con, ($obj->getDatacadastro()) ?? date('Y-m-d H:i:s')),
+			mysqli_real_escape_string($this->con, ($obj->getDataedicao()) ?? date('Y-m-d H:i:s'))
+		);
 
 		$this->superdao->resetResponse();
 
@@ -45,10 +49,11 @@ Class CategoriaDAO {
 
 	//atualizar
 	function atualizar (Categoria $obj) {
-		$this->sql = sprintf("UPDATE categoria SET descricao = '%s', tipo = '%s', dataedicao = '%s' WHERE id = %d ",
+		$this->sql = sprintf("UPDATE categoria SET descricao = '%s', tipo = '%s', sync = '%s', dataedicao = '%s' WHERE id = %d ",
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
 			mysqli_real_escape_string($this->con, $obj->getTipo()),
-			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
+			mysqli_real_escape_string($this->con, $obj->getSync()),
+			mysqli_real_escape_string($this->con, ($obj->getDataedicao()) ?? date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
 
@@ -110,7 +115,8 @@ Class CategoriaDAO {
 		if ( !$result ) {
 			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Categoria' , 'ListarPaginado' ) );
 		}else{
-			while ( $row = mysqli_fetch_assoc ( $result ) ) {				array_push( $this->lista, $row);
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
 			}
 
 			$this->superdao->setSuccess( true );			$this->superdao->setData( $this->lista );
