@@ -8,6 +8,8 @@
 */
 
 
+// setando o fuso horário
+date_default_timezone_set('America/Manaus');
 
 //Trata requisição
 if(!$_POST){
