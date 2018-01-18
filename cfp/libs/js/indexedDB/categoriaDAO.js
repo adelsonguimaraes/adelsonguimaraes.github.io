@@ -7,9 +7,10 @@ const categoriaDAO = {
         'datacadastro':'',
         'dataedicao':''
     },
-    setData (id, idnuvem, descricao, tipo, datacastro, dataedicao) {
+    "lista":[],
+    setData (keypath, id, descricao, tipo, datacastro, dataedicao) {
+        this.data.keypath = (keypath != undefined) ? keypath : null;
         this.data.id = (id != undefined) ? id : null;
-        this.data.idnuvem = (idnuvem != undefined) ? idnuvem : null;
         this.data.descricao = (descricao != undefined) ? descricao : null;
         this.data.tipo = (tipo != undefined) ? tipo : null;
         this.data.datacastro = (datacastro != undefined) ? datacastro : null;
@@ -50,8 +51,8 @@ const categoriaDAO = {
                     if (resp.data != '') {
                         // seta os atributos
                         this.setData(
-                            data.id, // id
-                            data.idnuvem, // nuvem
+                            data.keypath, // id
+                            data.id, // nuvem
                             data.descricao, // descricao 
                             data.tipo, // tipo
                             data.datacadastro, // datacadastro
@@ -110,48 +111,22 @@ const categoriaDAO = {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
             var array = [];
-            // indexedDBCtrl.start().then(db => {
-            //     db.getAll('categoria').then(list => {
-            //         for (var i in list) {
-            //             if (list[i].tipo === 'tipo' || list[i].tipo === 'AMBOS') {
-            //                 l.push(list[i]);
-            //             }
-            //         }
-            //         response.success = true; 
-            //         response.msg = 'Listagem com sucesso!';
-            //         response.data = l;
-            //         resolve(response);
-            //     });
-            // });
             this.listarTodos().then(response => {
-                if (response.success) {
-                    // console.log(lista);
-                    // var l = [];
-                    // for (var i in lista) {
-                    //     if (lista[i].tipo === tipo || lista[i].tipo === 'AMBOS') {
-                    //         l.push(lista[i]);
-                    //     }
-                    // }
-                    percorreArray = function(l, t, p) {
-                        console.log(p + ' _ ' + t);
-                        if (t < p) {
-                            if (l[p].tipo === tipo || l[p].tipo === 'AMBOS') {
-                                araay.push(l[i]);
-                            }   
-                            percorreArray (l, l.length, p+1);
-                        }else{
-                            response.success = true; 
-                            response.msg = 'Listagem com sucesso!';
-                            response.data = array;
-                            resolve(response);
+                setTimeout(() => {
+                    if (response.success) {
+                        this.lista = response.data;
+                        var l = [];
+                        for (var i in this.lista) {
+                            if (this.lista[i].tipo === tipo || this.lista[i].tipo === 'AMBOS') {
+                                l.push(this.lista[i]);
+                            }
                         }
+                        response.success = true; 
+                        response.msg = 'Listagem com sucesso!';
+                        response.data = l;
+                        resolve(response);
                     };
-                    percorreArray (response.data, response.data.length, 0);
-                    // response.success = true; 
-                    // response.msg = 'Listagem com sucesso!';
-                    // response.data = l;
-                    // resolve(response);
-                };
+                }, 100);
             });
         });
     }

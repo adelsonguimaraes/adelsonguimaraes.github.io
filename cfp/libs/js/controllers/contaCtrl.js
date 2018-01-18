@@ -23,8 +23,9 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                 "tipo":"APAGAR",
                 "status":"",
                 "datavencimento": new Date()
-            }
+            };
             $scope.nova = false;
+            $scope.categorias = [];
         }
         inciaScope();
     
@@ -65,40 +66,53 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         $scope.page = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
         $scope.listarContasPorUsuario($scope.page);
 
-        var listarCategorias = function (page) {
+        listarCategoriasDBLocal = function (tipo) {
+            // listando localmente
+            categoriaDAO.listarPorTipo(tipo.toUpperCase()).then(response => {
+                if (response.success) {
+                    $scope.categorias = response.data;
+                    if ($scope.categorias.length > 0) {
+                        $scope.conta.idcategoria = $scope.categorias[0].id;
+                    }else{
+                        // listarCategorias(tipo);
+                    }
+                }
+            });
+        };
+        listarCategoriasDBLocal($scope.page);
+        listarCategorias = function (page) {
             var tipo = (page === 'apagar') ? 'APAGAR' : 'ARECEBER';
             
             // listando localmente
             categoriaDAO.listarPorTipo(tipo).then(response => {
-                    if (response.success) {
-                        $scope.categorias = response.data;
-                        if ($scope.categorias.length > 0) {
-                            console.log(response.data);
-                            $scope.conta.idcategoria = $scope.categorias[0].nuvem;
-                        }else{
-                                var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
-                                var data = {
-                                    "metodo":metodo,
-                                    "class":"categoria"
-                                };
-                                genericAPI.generic(data)
-                                .then(function successCallback(response) {
-                                    if( response.data.success === true ){
-                                        $scope.categorias = response.data.data;
-                                        $scope.conta.idcategoria = $scope.categorias[0].id;
-                                    }else{
-                                        console.log( response.data.msg );
-                                    }
-                                }, function errorCallback(response) {
-                                    //error
-                                });	
-                            }
-                        }
+                    // if (response.success) {
+                    //     $scope.categorias = response.data;
+                    //     if ($scope.categorias.length > 0) {
+                    //         $scope.conta.idcategoria = $scope.categorias[0].id;
+                    //     }else{
+                            var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
+                            var data = {
+                                "metodo":metodo,
+                                "class":"categoria"
+                            };
+                            genericAPI.generic(data)
+                            .then(function successCallback(response) {
+                                if( response.data.success === true ){
+                                    $scope.categorias = response.data.data;
+                                    $scope.conta.idcategoria = $scope.categorias[0].id;
+                                }else{
+                                    console.log( response.data.msg );
+                                }
+                            }, function errorCallback(response) {
+                                //error
+                            });	
+                        // }
+            //         }
                 
             });
         }
-        listarCategorias($scope.page);
-        
+        // listarCategorias($scope.page);
+
         $scope.editar = function (obj) {
             obj.datavencimento = moment(obj.datavencimento).format('DD/MM/YYYY');
             obj.parcela = parseInt(obj.parcela);

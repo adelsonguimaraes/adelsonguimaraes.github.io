@@ -22,7 +22,8 @@ const indexedDBCtrl = {
         {
             'name':'categoria',
             'indexes':[
-                {'description':'id', 'index':'id', 'unique':true},
+                {'description':'keypath', 'index':'keypath', 'unique':true},
+                {'description':'id', 'index':'id', 'unique':false},
                 {'description':'descricao', 'index':'descricao', 'unique':false},
                 {'description':'tipo', 'index':'tipo', 'unique':false},
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
@@ -32,7 +33,8 @@ const indexedDBCtrl = {
         {
             'name':'usuario',
             'indexes':[
-                {'description':'id', 'index':'id', 'unique':true},
+                {'description':'keypath', 'index':'keypath', 'unique':true},
+                {'description':'id', 'index':'id', 'unique':false},
                 {'description':'nome', 'index':'nome', 'unique':false},
                 {'description':'email', 'index':'email', 'unique':false},
                 {'description':'senha', 'index':'senha', 'unique':false},
@@ -44,7 +46,8 @@ const indexedDBCtrl = {
         {
             'name':'conta',
             'indexes':[
-                {'description':'id', 'index':'id','unique':true},
+                {'description':'keypath', 'index':'keypath', 'unique':true},
+                {'description':'id', 'index':'id','unique':false},
                 {'description':'idusuario', 'index':'idusuario','unique':false},
                 {'description':'idcategoria', 'index':'idcategoria','unique':false},
                 {'description':'descricao', 'index':'descricao','unique':false},
@@ -69,6 +72,7 @@ const indexedDBCtrl = {
                 resolve(this);
             };
             request.onupgradeneeded = (event) => {
+                db = event.target.result;
                 for(var t in this.tables) {
                     var table = this.tables[t];
                     var store = db.createObjectStore(table.name, {keyPath: "id"});
