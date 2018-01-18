@@ -26,6 +26,7 @@ const indexedDBCtrl = {
                 {'description':'descricao', 'index':'descricao', 'unique':false},
                 {'description':'tipo', 'index':'tipo', 'unique':false},
                 {'description':'sync', 'index':'sync', 'unique':false},
+                {'description':'ativo', 'index':'ativo', 'unique':false},
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
                 {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
             ]
@@ -39,6 +40,7 @@ const indexedDBCtrl = {
                 {'description':'senha', 'index':'senha', 'unique':false},
                 {'description':'perfil', 'index':'perfil', 'unique':false},
                 {'description':'sync', 'index':'sync', 'unique':false},
+                {'description':'ativo', 'index':'ativo', 'unique':false},
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
                 {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
             ]

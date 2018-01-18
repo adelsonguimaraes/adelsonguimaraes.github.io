@@ -15,6 +15,7 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 		Após o 1o login via Nuvem o sistema registra o usuário localmente.
 	*/
 	adicionaUsuarioDBLocal = function (data) {
+		console.log(data);
 		usuarioDAO.cadastrar(data).then(response => {
 			if (response.success) {
 				console.log('Usuário adicionado ao DBLocal');

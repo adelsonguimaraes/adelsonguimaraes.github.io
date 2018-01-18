@@ -10,7 +10,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
 
-    $rootScope.syncDB = function () {
+    $rootScope.syncDB = function (classe) {
         
         // se off-line ou navegador sem suport a indexedDB
         if (!navigator.onLine || !indexedDBCtrl.support) return false;
@@ -18,47 +18,102 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
         // só faz a sincronização para usuários logados
         if(!$rootScope.usuario) return false;
 
-        // categoria
-        function categoriaSync() {
-            var dbNuvem = [];
-            var dbLocal = [];
-            var data = {
-                "metodo":'listar',
-                "class":"categoria"
-            };
-            genericAPI.generic(data)
-            .then(function successCallback(response) {
-                if( response.data.success === true ){
-                    categoriaDAO.listarTodos().then(resp=>{
-                        setTimeout(() => {
-                            if (resp.success) {
-                                dbNuvem = response.data.data;
-                                dbLocal = resp.data;
+        // configuracao
+        var dbNuvem = [];
+        var dbLocal = [];
+        var data = {
+            "metodo":'listar',
+            "class":classe
+        };
+        genericAPI.generic(data)
+        .then(function successCallback(response) {
+            if( response.data.success === true ){
+                eval(classe+'DAO').listarTodos().then(resp=>{
+                    setTimeout(() => {
+                        if (resp.success) {
+                            dbNuvem = response.data.data;
+                            dbLocal = resp.data;
+                            
+                            var f = []; // first
+                            var s = []; // second
+                            var d = ''; // destino (DbNuvem/DBLocal)
+
+                            // ordena pelo tamanho banco quem será o primeiro e quem será o segundo array (First/Second)
+                            (dbNuvem.length >= dbLocal.length) ? (f = dbNuvem, s = dbLocal, d = 'dbLocal') : (f = dbLocal, s = dbNuvem, d = 'dbNuvem');
+
+                            // verifica se o DB Secundário(de menor tamanho) está vazio e se DB Primário é > 0 se sim, cadastra todos os dados do DB primário(de maior tamanho)
+                            if (s.length === 0 && f.length > 0) {
+                                /*
+                                    Function necessário para fazer uma nova requisição a promise somente
+                                    quando ela estiver totalmente resolvida
+                                */ 
+                                percorreArray = function (array, length, pos) {
+                                    if (pos < length) {
+                                        // se o destino for o DBLocal, chamamos o metodo local
+                                        if (d === 'dbLocal') {
+                                            array[pos].sync = 'SIM'; // setamos sync como sim
+                                            eval(classe+'DAO').cadastrar(array[pos]).then(resp => {
+                                                if (resp.success){
+                                                    // setamos na Nuvem que este dado se encontra em sincronia
+                                                    var data = {
+                                                        "metodo":'atualizar',
+                                                        "class":classe,
+                                                        "data":array[pos]
+                                                    };
+                                                    genericAPI.generic(data)
+                                                    .then(function successCallback(response) {
+                                                        if (response.data.success) {
+                                                            percorreArray(array, array.length, pos+1);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        // senao o destino será o dbnuvem
+                                        }else{
+                                            array[pos].sync = 'SIM'; // setamos sync como sim
+                                            
+                                            var data = {
+                                                "metodo":'cadastrar',
+                                                "class":classe,
+                                                "data":array[pos]
+                                            };
+                                            genericAPI.generic(data)
+                                            .then(function successCallback(response) {
+                                                if (response.data.success) {
+                                                    eval(classe+'DAO').setIDNuvem(array[pos], response.data.data).then(response => {
+                                                        if (response.success) {
+                                                            percorreArray(array, array.length, pos+1);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                };
+                                percorreArray(f, f.length, 0);
+                                return false;
+                            
+                            // se os dois bancos estiverem com dados entramos na sincronização 
+                            }else if (dbNuvem.length > 0 && dbLocal.length > 0) {
                                 
-                                var f = []; // first
-                                var s = []; // second
-                                var d = ''; // destino (DbNuvem/DBLocal)
-
-                                // ordena pelo tamanho banco quem será o primeiro e quem será o segundo array (First/Second)
-                                (dbNuvem.length >= dbLocal.length) ? (f = dbNuvem, s = dbLocal, d = 'dbLocal') : (f = dbLocal, s = dbNuvem, d = 'dbNuvem');
-
-                                // verifica se o DB Secundário(de menor tamanho) está vazio e se DB Primário é > 0 se sim, cadastra todos os dados do DB primário(de maior tamanho)
-                                if (s.length === 0 && f.length > 0) {
                                     /*
-                                        Function necessário para fazer uma nova requisição a promise somente
-                                        quando ela estiver totalmente resolvida
-                                    */ 
-                                    percorreArray = function (array, length, pos) {
-                                        if (pos < length) {
-                                            // se o destino for o DBLocal, chamamos o metodo local
-                                            if (d === 'dbLocal') {
+                                        Cadastra todos os dados Nuvem sem sincronização no Local
+                                    */
+                                    SyncNuvemToLocal = function () {
+                                        percorreArray = function (array, length, pos) {
+                                            
+                                            // se posição atigiu o limite ele para
+                                            if (pos >= length) return false;
+
+                                            if (array[pos].sync === 'NAO') {
+
                                                 array[pos].sync = 'SIM'; // setamos sync como sim
-                                                categoriaDAO.cadastrar(array[pos]).then(resp => {
+                                                eval(classe+'DAO').cadastrar(array[pos]).then(resp => {
                                                     if (resp.success){
                                                         // setamos na Nuvem que este dado se encontra em sincronia
                                                         var data = {
                                                             "metodo":'atualizar',
-                                                            "class":"categoria",
+                                                            "class":classe,
                                                             "data":array[pos]
                                                         };
                                                         genericAPI.generic(data)
@@ -69,34 +124,49 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
                                                         });
                                                     }
                                                 });
-                                            // senao o destino será o dbnuvem
                                             }else{
+                                                percorreArray(array, array.length, pos+1);
+                                            }
+                                        };
+                                        percorreArray(dbNuvem, dbNuvem.length, 0);
+                                    };
+                                    SyncNuvemToLocal();
+
+                                    /*
+                                        Cadastra todos os dados locais sem sincronização na Nuvem
+                                    */
+                                    SyncLocalToNuvem = function () {
+                                        percorreArray = function (array, length, pos) {
+                                            
+                                            // se posição atigiu o limite ele para
+                                            if (pos >= length) return false;
+
+                                            if (array[pos].sync === 'NAO') {
                                                 array[pos].sync = 'SIM'; // setamos sync como sim
-                                                
                                                 var data = {
                                                     "metodo":'cadastrar',
-                                                    "class":"categoria",
+                                                    "class":classe,
                                                     "data":array[pos]
                                                 };
                                                 genericAPI.generic(data)
                                                 .then(function successCallback(response) {
                                                     if (response.data.success) {
-                                                        categoriaDAO.setIDNuvem(array[pos], response.data.data).then(response => {
+                                                        eval(classe+'DAO').setIDNuvem(array[pos], response.data.data).then(response => {
                                                             if (response.success) {
                                                                 percorreArray(array, array.length, pos+1);
                                                             }
                                                         });
                                                     }
                                                 });
+                                            }else{
+                                                percorreArray(array, array.length, pos+1);
                                             }
-                                        }
+                                        };
+                                        percorreArray(dbLocal, dbLocal.length, 0);
                                     };
-                                    percorreArray(f, f.length, 0);
-                                    return false;
-                                
-                                // se os dois bancos estiverem com dados entramos na sincronização 
-                                }else if (dbNuvem.length > 0 && dbLocal.length > 0) {
-                                    
+                                    SyncLocalToNuvem();
+
+                                    SyncFinal = function () {
                                         // laco de primário
                                         percorreArray = function (array, length, pos) {
                                             // se posição atigiu o limite ele para
@@ -108,11 +178,13 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
                                                 if (+array[pos].id === +dbLocal[x].id) {
                                                     if (array[pos].sync === 'SIM' && dbLocal[x].sync === 'SIM') { // se o dado já for um dado atualizado
                                                         // se a data de edição local é maior que a data da nuvem atualiza os dados da nuvem
-                                                        console.log(dbNuvem[x]);
-                                                        if (moment(dbLocal[x].dataedicao).valueOf() > moment(array[pos].dataedicao).valueOf()) {
+                                                        var deNuvem = (array[pos].dataedicao !== null) ? array[pos].dataedicao : '0000-00-00 00:00:00';
+                                                        var deLocal = (dbLocal[x].dataedicao !== null) ? dbLocal[x].dataedicao : '0000-00-00 00:00:00';
+
+                                                        if (moment(deLocal).valueOf() > moment(deNuvem).valueOf()) {
                                                             var data = {
                                                                 "metodo":'atualizar',
-                                                                "class":"categoria",
+                                                                "class":classe,
                                                                 "data":dbLocal[x]
                                                             };
                                                             genericAPI.generic(data)
@@ -125,36 +197,32 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
                                                         // senao atualiza os dados locais
                                                         }else{
                                                             array[pos].sync = 'SIM'; // adiciona o sync
-                                                            categoriaDAO.atualizar(array[pos]).then(response => {
+                                                            eval(classe+'DAO').atualizar(array[pos]).then(response => {
                                                                 if (response.success) {
                                                                     console.log('atualizado local', array[pos]);
                                                                     percorreArray(array, array.length, pos+1);
                                                                 }
                                                             });
                                                         }
-                                                    }else{ // cadastra na nuvem e sincroniza
-
                                                     }
-                                                    
                                                 }
                                             }
                                         }
                                         percorreArray(dbNuvem, dbNuvem.length, 0);
-                                    }
+                                    };
+                                    SyncFinal();
+                                }
 
-                            
-                            }
-                        }, 100);
-                    });
-                }else{
-                    console.log( response.data.msg );
-                }
-            });
-        }
-        categoriaSync();
-
+                        
+                        }
+                    }, 100);
+                });
+            }else{
+                console.log( response.data.msg );
+            }
+        });
     };
-    $rootScope.syncDB();
+    $rootScope.syncDB('categoria');
 }
 
 angular.module( 'cfp' )

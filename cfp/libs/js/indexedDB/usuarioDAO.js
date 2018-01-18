@@ -20,25 +20,22 @@ const usuarioDAO = {
     cadastrar (data) {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
-            // auto incrementa
-            this.autoIncrementID().then(idIncrementado => {
-                // seta os atributos
-                usuarioDAO.setData(
-                    +data.id, // id
-                    data.nome, // nome 
-                    data.email, // email
-                    data.senha, // senha
-                    data.perfil, // perfil
-                    (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
-                    (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
-                );
-                indexedDBCtrl.start().then(db => {
-                    db.add('usuario', this.data).then(data => {
-                            response.success = true; 
-                            response.msg = 'Cadastrado com sucesso!';
-                            response.data = data;
-                            resolve(response);
-                    });
+            // seta os atributos
+            usuarioDAO.setData(
+                +data.idusuario, // id
+                data.nome, // nome 
+                data.email, // email
+                data.senha, // senha
+                data.perfil, // perfil
+                (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
+            );
+            indexedDBCtrl.start().then(db => {
+                db.add('usuario', this.data).then(data => {
+                        response.success = true; 
+                        response.msg = 'Cadastrado com sucesso!';
+                        response.data = data;
+                        resolve(response);
                 });
             });
         });

@@ -41,6 +41,7 @@ function cadastrar () {
 		$data['descricao'],
 		$data['tipo'],
 		$data['sync'],
+		$data['ativo'],
 		$data['datacadastro'],
 		$data['dataedicao']
 	);
@@ -71,6 +72,7 @@ function atualizar () {
 		$data['descricao'],
 		$data['tipo'],
 		$data['sync'],
+		$data['ativo'],
 		$data['datacadastro'],
 		$data['dataedicao']
 	);

@@ -8,11 +8,12 @@ const categoriaDAO = {
         'sync':''
     },
     "lista":[],
-    setData (id, descricao, tipo, sync, datacadastro, dataedicao) {
+    setData (id, descricao, tipo, sync, ativo, datacadastro, dataedicao) {
         this.data.id = (id != undefined) ? id : null;
         this.data.descricao = (descricao != undefined) ? descricao : null;
         this.data.tipo = (tipo != undefined) ? tipo : null;
         this.data.sync = (sync != undefined) ? sync : null;
+        this.data.ativo = (ativo != undefined) ? ativo : null;
         this.data.datacadastro = (datacadastro != undefined) ? datacadastro : null;
         this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
@@ -25,6 +26,7 @@ const categoriaDAO = {
                 data.descricao, // descricao 
                 data.tipo, // tipo
                 (data.sync != undefined) ? data.sync : 'NAO',
+                (data.ativo != undefined) ? data.ativo : 'SIM',
                 (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
                 (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
             );
@@ -55,6 +57,7 @@ const categoriaDAO = {
                                 data.descricao, // descricao 
                                 data.tipo, // tipo
                                 data.sync,
+                                data.ativo,
                                 data.datacadastro, // datacadastro
                                 (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
                             );
