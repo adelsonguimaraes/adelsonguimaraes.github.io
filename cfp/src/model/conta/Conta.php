@@ -21,6 +21,7 @@ Class Conta implements JsonSerializable {
 	private $tipo;
 	private $status;
 	private $datavencimento;
+	private $sync;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -37,6 +38,7 @@ Class Conta implements JsonSerializable {
 		$tipo = NULL,
 		$status = NULL,
 		$datavencimento = NULL,
+		$sync = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
@@ -51,6 +53,7 @@ Class Conta implements JsonSerializable {
 		$this->tipo	= $tipo;
 		$this->status	= $status;
 		$this->datavencimento	= $datavencimento;
+		$this->sync = $sync;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -126,6 +129,13 @@ Class Conta implements JsonSerializable {
 		$this->datavencimento = $datavencimento;
 		return $this;
 	}
+	public function getSync() {
+		return $this->sync;
+	}
+	public function setSync($sync) {
+		$this->sync = $sync;
+		return $this;
+	}
 	public function getDatacadastro() {
 		return $this->datacadastro;
 	}
@@ -154,6 +164,7 @@ Class Conta implements JsonSerializable {
 			"tipo"	=> $this->tipo,
 			"status"	=> $this->status,
 			"datavencimento"	=> $this->datavencimento,
+			"sync" 	=> $this->sync,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];

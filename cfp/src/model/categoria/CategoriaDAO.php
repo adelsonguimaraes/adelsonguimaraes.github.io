@@ -29,8 +29,8 @@ Class CategoriaDAO {
 		VALUES('%s', '%s', '%s', '%s', '%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
 			mysqli_real_escape_string($this->con, $obj->getTipo()),
-			mysqli_real_escape_string($this->con, $obj->getSync()),
-			mysqli_real_escape_string($this->con, $obj->getAtivo()),
+			mysqli_real_escape_string($this->con, ($obj->sync()) ?? 'NAO'),
+			mysqli_real_escape_string($this->con, ($obj->ativo()) ?? 'SIM'),
 			mysqli_real_escape_string($this->con, ($obj->getDatacadastro()) ?? date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, ($obj->getDataedicao()) ?? date('Y-m-d H:i:s'))
 		);

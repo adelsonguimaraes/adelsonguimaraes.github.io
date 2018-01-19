@@ -23,6 +23,9 @@ switch ($_POST['metodo']) {
 	case 'listar':
 		listar();
 		break;
+	case 'listarContasPorUsuario':
+		listarContasPorUsuario();
+		break;
 	case 'listarContasAPagarPorUsuario':
 		listarContasAPagarPorUsuario();
 		break;
@@ -48,7 +51,10 @@ function cadastrar () {
 		$data['indeterminada'],
 		$data['tipo'],
 		$data['status'],
-		$data['datavencimento']
+		$data['datavencimento'],
+		$data['sync'],
+		$data['datacadastro'],
+		$data['dataedicao']
 	);
 	$control = new ContaControl($obj);
 	$response = $control->cadastrar();
@@ -63,6 +69,12 @@ function buscarPorId () {
 function listar () {
 	$control = new ContaControl(new Conta);
 	$response = $control->listar();
+	echo json_encode($response);
+}
+function listarContasPorUsuario() {
+	$usuario = $_POST['usuario'];
+	$control = new ContaControl();
+	$response = $control->listarContasPorUsuario($usuario['idusuario']);
 	echo json_encode($response);
 }
 function listarContasAPagarPorUsuario() {
@@ -83,7 +95,10 @@ function atualizar () {
 		$data['indeterminada'],
 		$data['tipo'],
 		$data['status'],
-		$data['datavencimento']
+		$data['datavencimento'],
+		$data['sync'],
+		$data['datacadastro'],
+		$data['dataedicao']
 	);
 	$control = new ContaControl($obj);
 	$response = $control->atualizar();

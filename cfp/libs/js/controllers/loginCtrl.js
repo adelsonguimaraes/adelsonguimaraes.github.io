@@ -35,13 +35,15 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 		usuarioDAO.auth(obj).then(response => {
 			if (response.success) {
 				//criamos a session
+				response.data.idusuario = response.data.id;
+				console.log(response.data);
 				authenticationAPI.createSession(response.data, obj.infinity);
 				//logion error é escondido
 				$scope.login.error = false;
 				//redirecionamos para home
 				$location.path('/menu');
 				window.location.replace('#/menu');
-				$rootScope.syncDB();
+				$rootScope.syncAllDB();
 			}else{
 				if (navigator.onLine) {
 					authenticationAPI.authentication(data)
@@ -54,7 +56,7 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 							$scope.login.error = false;
 							//redirecionamos para home
 							$location.path('/menu');
-							$rootScope.syncDB();
+							$rootScope.syncAllDB();
 							adicionaUsuarioDBLocal(response.data.data);
 						}else{
 							//ativamos o login error com true

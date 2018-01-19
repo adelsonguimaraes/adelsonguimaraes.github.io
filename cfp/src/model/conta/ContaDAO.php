@@ -25,8 +25,8 @@ Class ContaDAO {
 
 	//cadastrar
 	function cadastrar (conta $obj) {
-		$this->sql = sprintf("INSERT INTO conta(idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, datavencimento)
-		VALUES(%d, %d, '%s', %f, %d, '%s', '%s', '%s')",
+		$this->sql = sprintf("INSERT INTO conta(idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, datavencimento, sync, datacadastro, dataedicao)
+		VALUES(%d, %d, '%s', %f, %d, '%s', '%s', '%s', '%s', '%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
 			mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
@@ -34,8 +34,12 @@ Class ContaDAO {
 			mysqli_real_escape_string($this->con, $obj->getParcela()),
 			mysqli_real_escape_string($this->con, $obj->getIndeterminada()),
 			mysqli_real_escape_string($this->con, $obj->getTipo()),
-			// mysqli_real_escape_string($this->con, $obj->getStatus()),
-			mysqli_real_escape_string($this->con, substr($obj->getDatavencimento(),0,10) ));
+			mysqli_real_escape_string($this->con, ($obj->getStatus()) ?? 'EMABERTO' ),
+			mysqli_real_escape_string($this->con, substr($obj->getDatavencimento(),0,10) ),
+			mysqli_real_escape_string($this->con, ($obj->getSync()) ?? 'NAO'),
+			mysqli_real_escape_string($this->con, ($obj->getDatacadastro()) ?? date('Y-m-d H:i:s')),
+			mysqli_real_escape_string($this->con, ($obj->getDataedicao()) ?? date('Y-m-d H:i:s'))
+		);
 
 		$this->superdao->resetResponse();
 
@@ -53,17 +57,18 @@ Class ContaDAO {
 	//atualizar
 	function atualizar (Conta $obj) {
 		$this->sql = sprintf("UPDATE conta SET idusuario = %d, idcategoria = %d, descricao = '%s', valor = %f, parcela = %d, indeterminada = '%s', tipo = '%s', status = '%s', datavencimento = '%s', dataedicao = '%s' WHERE id = %d ",
-			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
-			mysqli_real_escape_string($this->con, $obj->getDescricao()),
-			mysqli_real_escape_string($this->con, $obj->getValor()),
-			mysqli_real_escape_string($this->con, $obj->getParcela()),
-			mysqli_real_escape_string($this->con, $obj->getIndeterminada()),
-			mysqli_real_escape_string($this->con, $obj->getTipo()),
-			mysqli_real_escape_string($this->con, $obj->getStatus()),
-			mysqli_real_escape_string($this->con, $obj->getDatavencimento()),
-			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
-			mysqli_real_escape_string($this->con, $obj->getId()));
+		mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
+		mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
+		mysqli_real_escape_string($this->con, $obj->getDescricao()),
+		mysqli_real_escape_string($this->con, $obj->getValor()),
+		mysqli_real_escape_string($this->con, $obj->getParcela()),
+		mysqli_real_escape_string($this->con, $obj->getIndeterminada()),
+		mysqli_real_escape_string($this->con, $obj->getTipo()),
+		mysqli_real_escape_string($this->con, $obj->getStatus()),
+		mysqli_real_escape_string($this->con, substr($obj->getDatavencimento(),0,10) ),
+		mysqli_real_escape_string($this->con, $obj->getSync()),
+		mysqli_real_escape_string($this->con, ($obj->getDataedicao()) ?? date('Y-m-d H:i:s')),
+		mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
 
 		if(!mysqli_query($this->con, $this->sql)) {
@@ -133,6 +138,28 @@ Class ContaDAO {
 		}
 
 		return $this->superdao->getResponse();
+	}
+
+	function listarContasPorUsuario($idusuario) {
+		$this->sql = "SELECT * from conta where idusuario = $idusuario";
+		
+				$result = mysqli_query ( $this->con, $this->sql );
+				
+				$this->superdao->resetResponse();
+		
+				if ( !$result ) {
+					$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'listarContasPorUsuario' ) );
+				}else{
+					while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+						array_push( $this->lista, $row);
+					}
+		
+					$this->superdao->setSuccess( true );			
+					$this->superdao->setData( $this->lista );
+					$this->superdao->setTotal( $this->qtdTotal() );
+				}
+		
+				return $this->superdao->getResponse();
 	}
 
 	function listarContasAPagarPorUsuario ($idusuario) {

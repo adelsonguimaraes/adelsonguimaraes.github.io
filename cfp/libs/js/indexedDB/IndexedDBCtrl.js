@@ -61,6 +61,18 @@ const indexedDBCtrl = {
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
                 {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
             ]
+        },
+        {
+            'name':'contamovimentacao',
+            'indexes':[
+                {'description':'id', 'index':'id','unique':false},
+                {'description':'idconta', 'index':'idconta','unique':false},
+                {'description':'valor', 'index':'valor','unique':false},
+                {'description':'datareferencia', 'index':'datareferencia','unique':false},
+                {'description':'sync', 'index':'sync', 'unique':false},
+                {'description':'datacadastro', 'index':'datacastro', 'unique':false},
+                {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
+            ]
         }
     ],
     start() {
@@ -70,7 +82,7 @@ const indexedDBCtrl = {
 
                 request = indexedDB.open(this.dbName, this.dbVersion);
                 request.onsuccess = (event) => {
-                    db = request.result;
+                    db = (db) ? db : request.result;
                     resolve(this);
                 };
                 request.onupgradeneeded = (event) => {
@@ -97,6 +109,7 @@ const indexedDBCtrl = {
                 resolve(data);
             };
             request.onerror = (event) => {
+                console.log(data);
                 console.log(event);
             }
         });

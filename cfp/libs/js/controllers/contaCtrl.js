@@ -21,7 +21,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                 "parcela":'INDETERMINADO',
                 "indeterminada":"NAO",
                 "tipo":"APAGAR",
-                "status":"",
+                "status":null,
                 "datavencimento": new Date()
             };
             $scope.nova = false;
@@ -45,24 +45,31 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
 
         $scope.listarContasPorUsuario = function (page) {
             
+            // listando do DBLocal
             var metodo = (page === 'apagar') ? 'listarContasAPagarPorUsuario' : 'listarContasAReceberPorUsuario';
 
-            var data = {
-                "metodo":metodo,
-                "class":"conta"
-            };
-            genericAPI.generic(data)
-            .then(function successCallback(response) {
-                if( response.data.success === true ){
-                    $scope.contas = response.data.data;
-                }else{
-                    console.log( response.data.msg );
+            contaDAO[metodo]($rootScope.usuario.id).then(response => {
+                if (response.success) {
+                    $scope.contas = response.data;
+                    if ($scope.contas.length === 0) {
+                        var data = {
+                            "metodo":metodo,
+                            "class":"conta"
+                        };
+                        genericAPI.generic(data)
+                        .then(function successCallback(response) {
+                            if( response.data.success === true ){
+                                $scope.contas = response.data.data;
+                            }else{
+                                console.log( response.data.msg );
+                            }
+                        }, function errorCallback(response) {
+                            //error
+                        });	
+                    } 
                 }
-            }, function errorCallback(response) {
-                //error
-            });	
-    
-        }
+            });
+        };
         $scope.page = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
         $scope.listarContasPorUsuario($scope.page);
 
@@ -110,12 +117,23 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         $scope.salvar = function (obj) {
             
             obj.idusuario = $rootScope.usuario.idusuario;
+            obj.valor = desformataValor(obj.valor);
+            console.log(obj.valor);
             
             var metodo = "cadastrar";
             if(obj.id) metodo = "atualizar";
             
-            // obj.datavencimento = obj.datavencimento.substr(6)+'-'+obj.datavencimento.substr(3,2)+'-'+obj.datavencimento.substr(0,2);
-    
+            if (indexedDBCtrl.support) {
+                contaDAO[metodo](obj).then(response => {
+                    if (response.success) {
+                        console.log('Conta cadastrada com sucesso!', obj);
+                    }
+                });
+                return false;
+            };
+
+            if (!navigator.onLine) return false;
+
             var data = {
                 "metodo":metodo,
                 "data":obj,
