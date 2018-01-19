@@ -1,12 +1,12 @@
 /*******************************************
 		Controller Main
 *******************************************/
-var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
+var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, genericAPI) {
 
     var root = $rootScope;
     
     root.usuario = ""; //startando variavel global usuario
-    root.syncStatus = false;
+    $scope.syncStatus = false;
 
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
@@ -234,7 +234,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
     // $rootScope.syncDB('categoria');
 
     $rootScope.syncAllDB = function () {
-        $rootScope.syncStatus = true;
+        $scope.syncStatus = true;
         var classes = [
             {classe:'conta', metodolistar:'listarContasPorUsuario'},
             {classe:'categoria', metodolistar:'listar'}
@@ -245,8 +245,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
                     percorreArrayClasse(array, length, pos+1);
                 });
             }else{
-                $rootScope.syncStatus = false;
-                window.location.replace('#/menupage');
+                $scope.syncStatus = false;
             }
         };
         percorreArrayClasse(classes, classes.length, 0);

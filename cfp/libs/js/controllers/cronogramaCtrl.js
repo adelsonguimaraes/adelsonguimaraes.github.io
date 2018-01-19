@@ -147,6 +147,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     var data = ''; // variavel data
     
                     var totalParcela = (conta.parcela<10) ? '0'+conta.parcela : conta.parcela;
+                    var valorParcela = (conta.valor/conta.parcela).toFixed();
 
                     // laco de parcelas da conta
                     for (var p=0; p<conta.parcela; p++) {
@@ -156,7 +157,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         
                         // caso o mes e ano da conta seja = ao mes e ano atual 
                         if (mes === month && ano === year) {
-                            data = {"data": mes+"/"+ano, "valor":conta.valor};
+                            data = {"data": mes+"/"+ano, "valor":valorParcela};//conta.valor};
                             // pegando a prestação atual
                             if (m === 0) { // m = o ( mes atual )
                                 var pa = ((p+1)<10)?'0'+(p+1):(p+1);
