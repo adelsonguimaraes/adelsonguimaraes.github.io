@@ -6,7 +6,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
     var root = $rootScope;
     
     root.usuario = ""; //startando variavel global usuario
-    root.syncStatus = true;
+    root.syncStatus = false;
 
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
@@ -234,7 +234,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
     // $rootScope.syncDB('categoria');
 
     $rootScope.syncAllDB = function () {
-
+        $rootScope.syncStatus = true;
         var classes = [
             {classe:'conta', metodolistar:'listarContasPorUsuario'},
             {classe:'categoria', metodolistar:'listar'}

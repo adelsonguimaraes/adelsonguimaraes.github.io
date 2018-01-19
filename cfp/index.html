@@ -24,12 +24,11 @@
     <meta name"theme-color" content="#607d8b">
 
 </head>
-<body ng-controller="mainCtrl">
+<body ng-controller="mainCtrl" ng-init="syncStatus=false">
 	<div class="logo" ng-if="syncStatus">
 			<br><br>
 			<br><br>
 			<br><br>
-			<!-- <h1> Sincronizando informações </h1> -->
 			<h3> Olá {{usuario.nome}} </h3>
 			<h3> Preparando o seu ambiente </h3>
 			<h4>Aguarde um momento</h4>
@@ -40,7 +39,7 @@
 			<br><br>
 			<br><br>
 			<h4> Estamos em Beta ;) </h4>
-		</div>
+	</div>
 	<div ui-view></div>
 
 	<!-- API -->
@@ -65,9 +64,9 @@
 
 	<!-- IndexDB Controller -->
 	<script type="text/javascript" src="libs/js/indexedDB/indexedDBCtrl.js"></script>
-	<script type="text/javascript" src="libs/js/indexedDB/UsuarioDAO.js"></script>
-	<script type="text/javascript" src="libs/js/indexedDB/CategoriaDAO.js"></script>
-	<script type="text/javascript" src="libs/js/indexedDB/ContaDAO.js"></script>
+	<script type="text/javascript" src="libs/js/indexedDB/usuarioDAO.js"></script>
+	<script type="text/javascript" src="libs/js/indexedDB/categoriaDAO.js"></script>
+	<script type="text/javascript" src="libs/js/indexedDB/contaDAO.js"></script>
 
 	<!-- App -->
 	<script type="text/javascript" src="libs/js/app.js"></script>
