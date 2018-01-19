@@ -2,7 +2,6 @@
 		Controller de Home
 *******************************************/
 var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
-    
         //verifica sessao
         if(!$rootScope.usuario) {
             $location.path('/login');
@@ -25,13 +24,13 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         ];
     
         $scope.contas = [
-            {"descricao":"Tênis", "valor":"90.00", "parcela":"5", "datavencimento":"2017-12-05"},
-            {"descricao":"Mouse Razor", "valor":"150", "parcela":"3", "datavencimento":"2018-01-05"},
-            {"descricao":"Carro", "valor":"450", "parcela":"25", "datavencimento":"2016-07-01"},
-            {"descricao":"Bolsa", "valor":"70", "parcela":"1", "datavencimento":"2016-07-08"},
-            {"descricao":"Oculos", "valor":"180", "parcela":"2", "datavencimento":"2016-07-20"},
-            {"descricao":"Notebook", "valor":"2000", "parcela":"10", "datavencimento":"2016-07-15"},
-            {"descricao":"Meia", "valor":"500", "parcela":"7", "datavencimento":"2016-09-15"}
+            // {"descricao":"Tênis", "valor":"90.00", "parcela":"5", "datavencimento":"2017-12-05"},
+            // {"descricao":"Mouse Razor", "valor":"150", "parcela":"3", "datavencimento":"2018-01-05"},
+            // {"descricao":"Carro", "valor":"450", "parcela":"25", "datavencimento":"2016-07-01"},
+            // {"descricao":"Bolsa", "valor":"70", "parcela":"1", "datavencimento":"2016-07-08"},
+            // {"descricao":"Oculos", "valor":"180", "parcela":"2", "datavencimento":"2016-07-20"},
+            // {"descricao":"Notebook", "valor":"2000", "parcela":"10", "datavencimento":"2016-07-15"},
+            // {"descricao":"Meia", "valor":"500", "parcela":"7", "datavencimento":"2016-09-15"}
         ];
 
         $scope.periodos = [
@@ -78,26 +77,37 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         };
         totaisValor();
     
-        $scope.listarContaPorUsuario = function () {
-            var data = {
-                "metodo":"listarPorUsuario",
-                "class":"conta"
-            };
-            genericAPI.generic(data)
-            .then(function successCallback(response) {
-                if( response.data.success === true ){
-                    $scope.contas = response.data.data;
+        $scope.listarContasPorUsuario = function () {
+            // listar localmente
+            contaDAO.listarContasPorUsuario($rootScope.usuario.id).then(response => {
+                if (response.success) {
+                    $scope.contas = response.data;
                     ordenaDatas( $scope.contas );
                     montaValorMes();
-                }else{
-                    console.log( response.data.msg );
+                };
+                if ($scope.contas.length <= 0) {
+                    // lista nuvem
+                    var data = {
+                        "metodo":"listarContasPorUsuario",
+                        "class":"conta"
+                    };
+                    genericAPI.generic(data)
+                    .then(function successCallback(response) {
+                        if( response.data.success === true ){
+                            $scope.contas = response.data.data;
+                            ordenaDatas( $scope.contas );
+                            montaValorMes();
+                        }else{
+                            console.log( response.data.msg );
+                        }
+                    }, function errorCallback(response) {
+                        //error
+                    });	
                 }
-            }, function errorCallback(response) {
-                //error
-            });	
-    
+                $scope.$apply();
+            });
         }
-        $scope.listarContaPorUsuario();
+        $scope.listarContasPorUsuario();
     
         function ordenaDatas (contas) {
             var datas = contas;

@@ -36,8 +36,8 @@ const contaDAO = {
                 // seta os atributos
                 contaDAO.setData(
                     +data.id, // id
-                    data.idusuario,
-                    data.idcategoria,
+                    +data.idusuario,
+                    +data.idcategoria,
                     data.descricao,
                     data.valor,
                     data.parcela,
@@ -73,8 +73,8 @@ const contaDAO = {
                             // seta os atributos
                             this.setData(
                                 +data.id, // id
-                                data.idusuario,
-                                data.idcategoria,
+                                +data.idusuario,
+                                +data.idcategoria,
                                 data.descricao,
                                 data.valor,
                                 data.parcela,
@@ -84,7 +84,7 @@ const contaDAO = {
                                 data.datavencimento,
                                 data.sync,
                                 data.datacadastro, // datacadastro
-                                (data.dataedicao != undefined  || data.dataedicao != null) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                                moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
                             );
                             indexedDBCtrl.start().then(db => {
                                 db.update('conta', this.data).then(data => {
@@ -140,6 +140,28 @@ const contaDAO = {
             });
         }, 100);
     },
+    listarContasPorUsuario(idusuario) {
+        return new Promise (resolve  => {
+            setTimeout(() => {
+                var response = {success:false, msg:'default', data: ''};
+                this.listarTodos().then(response => {
+                    if (response.success) {
+                        var lista = response.data;
+                        var l = [];
+                        for (var i in lista) {
+                            if (+lista[i].idusuario === +idusuario) {
+                                l.push(lista[i]);
+                            }
+                        }
+                        response.success = true; 
+                        response.msg = 'Listagem com sucesso!';
+                        response.data = l;
+                        resolve(response);
+                    }
+                });
+            }, 100);
+        });
+    },
     listarContasAPagarPorUsuario(idusuario) {
         return new Promise (resolve  => {
             setTimeout(() => {
@@ -149,7 +171,7 @@ const contaDAO = {
                         var lista = response.data;
                         var l = [];
                         for (var i in lista) {
-                            if (lista[i].tipo === 'APAGAR' && lista[i].idusuario === idusuario) {
+                            if (lista[i].tipo === 'APAGAR' && +lista[i].idusuario === +idusuario) {
                                 l.push(lista[i]);
                             }
                         }

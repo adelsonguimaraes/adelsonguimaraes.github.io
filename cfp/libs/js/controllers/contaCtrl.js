@@ -9,8 +9,6 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         	return false;
         }
 
-        $scope.dataatual = moment().format('YYYY-MM-DD');
-        
         function inciaScope () {
             $scope.conta = {
                 "id":"",
@@ -22,10 +20,10 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                 "indeterminada":"NAO",
                 "tipo":"APAGAR",
                 "status":null,
-                "datavencimento": new Date()
+                "datavencimento": moment()._d//new Date()
             };
+            $scope.dataatual = moment().format('YYYY-MM-DD');
             $scope.nova = false;
-            $scope.categorias = [];
         }
         inciaScope();
     
@@ -50,8 +48,9 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
 
             contaDAO[metodo]($rootScope.usuario.id).then(response => {
                 if (response.success) {
-                    $scope.contas = response.data;
-                    if ($scope.contas.length === 0) {
+                    if (response.data.length > 0) {
+                        $scope.contas = response.data;
+                    }else{
                         var data = {
                             "metodo":metodo,
                             "class":"conta"
@@ -68,48 +67,52 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         });	
                     } 
                 }
+                $scope.$apply();
             });
         };
         $scope.page = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
         $scope.listarContasPorUsuario($scope.page);
 
-        listarCategorias = function (page) {
+        $scope.listarCategorias = function (page) {
+            $scope.categorias = [];
+
             var tipo = (page === 'apagar') ? 'APAGAR' : 'ARECEBER';
             
             // listando localmente
             categoriaDAO.listarPorTipo(tipo).then(response => {
-                    if (response.success) {
-                        $scope.categorias = response.data;
-                        if ($scope.categorias.length > 0) {
-                            $scope.conta.idcategoria = $scope.categorias[0].id;
-                        }else{
-                            // listagem pela nuvem
-                            var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
-                            var data = {
-                                "metodo":metodo,
-                                "class":"categoria"
-                            };
-                            genericAPI.generic(data)
-                            .then(function successCallback(response) {
-                                if( response.data.success === true ){
-                                    $scope.categorias = response.data.data;
-                                    $scope.conta.idcategoria = $scope.categorias[0].id;
-                                }else{
-                                    console.log( response.data.msg );
-                                }
-                            }, function errorCallback(response) {
-                                //error
-                            });	
-                        }
+                if (response.success) {
+                    $scope.categorias = response.data;
+                    if ($scope.categorias.length > 0) {
+                        $scope.conta.idcategoria = $scope.categorias[0].id;
+                    }else{
+                        // listagem pela nuvem
+                        var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
+                        var data = {
+                            "metodo":metodo,
+                            "class":"categoria"
+                        };
+                        genericAPI.generic(data)
+                        .then(function successCallback(response) {
+                            if( response.data.success === true ){
+                                $scope.categorias = response.data.data;
+                                $scope.conta.idcategoria = $scope.categorias[0].id;
+                            }else{
+                                console.log( response.data.msg );
+                            }
+                        }, function errorCallback(response) {
+                            //error
+                        });	
                     }
-                
+                }
+                $scope.$apply();
             });
         }
-        listarCategorias($scope.page);
+        $scope.listarCategorias($scope.page);
 
         $scope.editar = function (obj) {
-            obj.datavencimento = moment(obj.datavencimento).format('DD/MM/YYYY');
+            obj.datavencimento = moment(obj.datavencimento)._d;
             obj.parcela = parseInt(obj.parcela);
+            $scope.dataatual = moment(obj.datavencimento).format('YYYY-MM-DD');
             $scope.conta = obj;
             $scope.novaConta();
         }
@@ -118,15 +121,19 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             
             obj.idusuario = $rootScope.usuario.idusuario;
             obj.valor = desformataValor(obj.valor);
-            console.log(obj.valor);
+
+            obj.datavencimento = moment(obj.datavencimento).format('YYYY-MM-DD');
             
             var metodo = "cadastrar";
-            if(obj.id) metodo = "atualizar";
+            if(obj.id) {
+                metodo = "atualizar";
+            }
             
             if (indexedDBCtrl.support) {
                 contaDAO[metodo](obj).then(response => {
                     if (response.success) {
-                        console.log('Conta cadastrada com sucesso!', obj);
+                        inciaScope();
+                        $scope.listarContasPorUsuario($scope.page);
                     }
                 });
                 return false;
@@ -143,7 +150,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                 .then(function successCallback(response) {
                     //success
                     inciaScope();
-                    $scope.listar();
+                    $scope.listarContasPorUsuario($scope.page);
                 }, function errorCallback(response) {
                     //error
                 });	

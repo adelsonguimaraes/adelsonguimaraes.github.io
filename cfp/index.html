@@ -25,7 +25,14 @@
 
 </head>
 <body ng-controller="mainCtrl">
-
+	<div class="logo" ng-if="syncStatus">
+			<br><br>
+			<br><br>
+			<br><br>
+			<!-- <h1> Sincronizando informações </h1> -->
+			<h3> Preparando o seu ambiente... </h1>
+			<h4>Aguarde um momento</h4>
+		</div>
 	<div ui-view></div>
 
 	<!-- API -->

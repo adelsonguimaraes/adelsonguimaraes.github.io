@@ -24,8 +24,11 @@
 							</div>
 						</div>
 					</div>
+					<div class="bg-warning btn-lg" ng-if="!contas.length">
+						<span class="text-warning"><b>Atenção:</b> Não há contas para montar seu cronograma!</span>
+					</div>
 					<div class="table-responsive">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover" ng-if="contas.length">
 						<!-- <thead>
 							<tr>
 								<td colspan="100">Head</td>

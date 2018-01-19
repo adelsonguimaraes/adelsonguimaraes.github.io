@@ -6,6 +6,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
     var root = $rootScope;
     
     root.usuario = ""; //startando variavel global usuario
+    root.syncStatus = true;
 
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
@@ -197,7 +198,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
                                                             genericAPI.generic(data)
                                                             .then(function successCallback(response) {
                                                                 if (response.data.success) {
-                                                                    console.log('atualiza nuvem', dbLocal[x]);
+                                                                    // console.log('atualiza nuvem', dbLocal[x]);
                                                                     percorreArray(array, array.length, pos+1);
                                                                 }
                                                             });    
@@ -206,7 +207,7 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
                                                             array[pos].sync = 'SIM'; // adiciona o sync
                                                             eval(classe+'DAO').atualizar(array[pos]).then(response => {
                                                                 if (response.success) {
-                                                                    console.log('atualizado local', array[pos]);
+                                                                    // console.log('atualizado local', array[pos]);
                                                                     percorreArray(array, array.length, pos+1);
                                                                 }
                                                             });
@@ -233,16 +234,19 @@ var mainCtrl = function ($location, $rootScope, authenticationAPI, genericAPI) {
     // $rootScope.syncDB('categoria');
 
     $rootScope.syncAllDB = function () {
+
         var classes = [
             {classe:'conta', metodolistar:'listarContasPorUsuario'},
             {classe:'categoria', metodolistar:'listar'}
         ];
         percorreArrayClasse = function (array, length, pos) {
             if (pos < length) {
-                console.log(array[pos]);
                 $rootScope.syncDB(array[pos].classe, array[pos].metodolistar).then(()=>{
                     percorreArrayClasse(array, length, pos+1);
                 });
+            }else{
+                $rootScope.syncStatus = false;
+                window.location.replace('#/menupage');
             }
         };
         percorreArrayClasse(classes, classes.length, 0);
