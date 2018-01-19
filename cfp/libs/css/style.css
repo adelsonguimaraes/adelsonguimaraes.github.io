@@ -79,7 +79,7 @@ body {
    font-family: "Comic Sans MS", "Comic Sans", cursive;
    background: black;
    background-image: url('https://artfiles.alphacoders.com/365/36568.gif');
-   background-size: 1200px;
+   background-size: 1500px;
    color: #a7bee2;
    width: 100%;
    height: 100%;
@@ -118,6 +118,10 @@ body {
 		width: 150px;
 		margin: 10px 12px;
 	}
+	.logo {
+		/* background: #e6e6e6;  */
+	   background-size: 1500px;
+	}
 }
 /*  Médio */
 @media (min-width: 768px) {
@@ -143,6 +147,10 @@ body {
 	.menu_page_content_footer {
 		font-size: 20px;
 	}
+	.logo {
+		/* background: #e6e6e6;  */
+	   background-size: 150%;
+	}
 }
 /*  Grande */
 @media (min-width: 992px) {
@@ -164,6 +172,10 @@ body {
 		width: 210px;
 		margin: 50px;
 		/* margin-top: 180px; */
+	}
+	.logo {
+		/* background: #e6e6e6;  */
+	   background-size: 130%;
 	}
 }
 /*  Muito Grande */
@@ -187,5 +199,9 @@ body {
 		width: 260px;
 		margin: 30px 55px;
 		/* margin-top: 180px; */
+	}
+	.logo {
+		/* background: #e6e6e6;  */
+	   background-size: 150%;
 	}
 }
