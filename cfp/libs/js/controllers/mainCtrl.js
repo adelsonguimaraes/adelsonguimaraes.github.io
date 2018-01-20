@@ -6,7 +6,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     var root = $rootScope;
     
     root.usuario = ""; //startando variavel global usuario
-    $scope.syncStatus = false;
+    root.syncStatus = false;
 
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
@@ -234,7 +234,8 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     // $rootScope.syncDB('categoria');
 
     $rootScope.syncAllDB = function () {
-        $scope.syncStatus = true;
+        // $scope.syncStatus = true;
+        document.getElementById('splash').style.display = 'inline-block';
         var classes = [
             {classe:'conta', metodolistar:'listarContasPorUsuario'},
             {classe:'categoria', metodolistar:'listar'}
@@ -245,12 +246,25 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                     percorreArrayClasse(array, length, pos+1);
                 });
             }else{
-                $scope.syncStatus = false;
+                // $rootScope.syncStatus = false;
+                document.getElementById('splash').style.display = 'none';
             }
         };
         percorreArrayClasse(classes, classes.length, 0);
     };
-    $rootScope.syncAllDB();
+
+    if ( root.usuario ) {
+        $rootScope.syncAllDB();
+    }
+
+    $scope.loader = 'libs/img/ajax_loader_blue.gif';
+
+    root.startLoad = function () {
+        document.getElementById('load').style.display = 'inline-block';
+    };
+    root.stopLoad = function () {
+        document.getElementById('load').style.display = 'none';
+    }
 }
 
 angular.module( 'cfp' )

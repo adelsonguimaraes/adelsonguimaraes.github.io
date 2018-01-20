@@ -42,7 +42,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         montaParcelas();
 
         $scope.listarContasPorUsuario = function (page) {
-            
+            $rootScope.startLoad();
             // listando do DBLocal
             var metodo = (page === 'apagar') ? 'listarContasAPagarPorUsuario' : 'listarContasAReceberPorUsuario';
 
@@ -50,6 +50,8 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                 if (response.success) {
                     if (response.data.length > 0) {
                         $scope.contas = response.data;
+                        $rootScope.stopLoad();
+                        $scope.$apply();
                     }else{
                         var data = {
                             "metodo":metodo,
@@ -58,7 +60,9 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         genericAPI.generic(data)
                         .then(function successCallback(response) {
                             if( response.data.success === true ){
-                                $scope.contas = response.data.data;
+                                $scope.contas = response.data.data;                                    
+                                $rootScope.stopLoad();
+                                $scope.$apply();
                             }else{
                                 console.log( response.data.msg );
                             }
@@ -67,7 +71,6 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         });	
                     } 
                 }
-                $scope.$apply();
             });
         };
         $scope.page = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
@@ -80,6 +83,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             
             // listando localmente
             categoriaDAO.listarPorTipo(tipo).then(response => {
+                $scope.$apply();
                 if (response.success) {
                     $scope.categorias = response.data;
                     if ($scope.categorias.length > 0) {
@@ -104,7 +108,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         });	
                     }
                 }
-                $scope.$apply();
+                
             });
         }
         $scope.listarCategorias($scope.page);
@@ -118,7 +122,8 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         }
     
         $scope.salvar = function (obj) {
-            
+            $rootScope.startLoad();
+
             obj.idusuario = $rootScope.usuario.idusuario;
             obj.valor = desformataValor(obj.valor);
 
@@ -134,6 +139,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     if (response.success) {
                         inciaScope();
                         $scope.listarContasPorUsuario($scope.page);
+                        $rootScope.stoptLoad();
                     }
                 });
                 return false;
@@ -151,6 +157,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     //success
                     inciaScope();
                     $scope.listarContasPorUsuario($scope.page);
+                    $rootScope.stoptLoad();
                 }, function errorCallback(response) {
                     //error
                 });	

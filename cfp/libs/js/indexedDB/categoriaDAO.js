@@ -31,12 +31,12 @@ const categoriaDAO = {
                 (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
             );
             indexedDBCtrl.add('categoria', this.data).then(data => {
-                    setTimeout(() => {
+                    //setTimeout(() => {
                         response.success = true; 
                         response.msg = 'Cadastrado com sucesso!';
                         response.data = data;
                         resolve(response);
-                    }, 100);
+                    //}, 100);
                 });
         });
     },
@@ -45,7 +45,7 @@ const categoriaDAO = {
             var response = {success:false, msg:'default', data: ''};
             // buscamos por ID para verificar se o Categoria existe    
             this.buscarPorId(data).then(resp => {
-                setTimeout(() => {
+                //setTimeout(() => {
                     // se haver sucesso
                     if (resp.success) {
 
@@ -76,14 +76,14 @@ const categoriaDAO = {
                     }else{
                         resolve(resp);
                     }
-                }, 100);
+                //}, 100);
             });
         });
     },
     buscarPorId (data) {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
-            setTimeout(() => {
+            //setTimeout(() => {
                 indexedDBCtrl.start().then(db => {
                     db.get('categoria', +data.id).then(item => {
                     
@@ -99,13 +99,13 @@ const categoriaDAO = {
              
                    });
                 });
-            }, 200);
+            //}, 200);
         });
     },
     listarTodos () {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
-            setTimeout(() => {
+            //setTimeout(() => {
                 indexedDBCtrl.start().then(db => {
                     db.getAll('categoria').then(list => {
                         
@@ -115,7 +115,7 @@ const categoriaDAO = {
                             resolve(response);
                     });
                 });
-            }, 100);
+            //}, 100);
         });
     },
     listarPorTipo (tipo) {
@@ -123,7 +123,7 @@ const categoriaDAO = {
             var response = {success:false, msg:'default', data: ''};
             var array = [];
             this.listarTodos().then(response => {
-                setTimeout(() => {
+                //setTimeout(() => {
                     if (response.success) {
                         this.lista = response.data;
                         var l = [];
@@ -137,13 +137,13 @@ const categoriaDAO = {
                         response.data = l;
                         resolve(response);
                     };
-                }, 100);
+                //}, 100);
             });
         });
     },
     setIDNuvem (data, newID) {
         return new Promise (resolve => {
-            setTimeout(() => {
+            //setTimeout(() => {
                 indexedDBCtrl.remove('categoria', +data.id).then(list => {
                     data.id = newID;
                     this.cadastrar(data).then(response => {
@@ -152,7 +152,7 @@ const categoriaDAO = {
                         }
                     });
                 });
-            }, 100);
+            //}, 100);
         });
     }
     // autoIncrementID() {

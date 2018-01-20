@@ -78,14 +78,18 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         totaisValor();
     
         $scope.listarContasPorUsuario = function () {
+            $rootScope.startLoad();
             // listar localmente
             contaDAO.listarContasPorUsuario($rootScope.usuario.id).then(response => {
                 if (response.success) {
                     $scope.contas = response.data;
                     ordenaDatas( $scope.contas );
                     montaValorMes();
+                    $rootScope.stopLoad();
+                    $scope.$apply();
                 };
                 if ($scope.contas.length <= 0) {
+                    $rootScope.startLoad();
                     // lista nuvem
                     var data = {
                         "metodo":"listarContasPorUsuario",
@@ -97,6 +101,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                             $scope.contas = response.data.data;
                             ordenaDatas( $scope.contas );
                             montaValorMes();
+                            $rootScope.stopLoad();
+                            $scope.$apply();
                         }else{
                             console.log( response.data.msg );
                         }
@@ -104,7 +110,6 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         //error
                     });	
                 }
-                $scope.$apply();
             });
         }
         $scope.listarContasPorUsuario();
