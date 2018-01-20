@@ -8,6 +8,16 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     root.usuario = ""; //startando variavel global usuario
     root.syncStatus = false;
 
+    function testConnection () {
+        var http = new XMLHttpRequest();
+        http.open('HEAD', 'https://www.google.com.br/', false);
+        http.send();
+        if ( http.status != 404 ) {
+            $scope.onLine = true;
+        }
+    };
+    verifySrcExist();
+
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
 
@@ -253,7 +263,8 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
 
     if ( root.usuario ) {
         // se off-line ou navegador sem suport a indexedDB
-        if (!navigator.onLine || !indexedDBCtrl.support) return false;
+        console.log('Status de Internet', $scope.onLine);
+        if (!$scope.onLine || !indexedDBCtrl.support) return false;
         $rootScope.syncAllDB();
     }
 
