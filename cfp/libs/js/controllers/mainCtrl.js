@@ -10,7 +10,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
 
     function testConnection () {
         var http = new XMLHttpRequest();
-        http.open('HEAD', 'https://www.google.com.br/', false);
+        http.open('HEAD', window.location.origin, false);
         http.send();
         if ( http.status != 404 ) {
             $scope.onLine = true;
