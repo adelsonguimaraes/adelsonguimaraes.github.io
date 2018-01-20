@@ -51,7 +51,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     if (response.data.length > 0) {
                         $scope.contas = response.data;
                         $rootScope.stopLoad();
-                        $scope.$apply();
+                        // $scope.$apply();
                     }else{
                         var data = {
                             "metodo":metodo,
@@ -62,7 +62,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                             if( response.data.success === true ){
                                 $scope.contas = response.data.data;                                    
                                 $rootScope.stopLoad();
-                                $scope.$apply();
+                                // $scope.$apply();
                             }else{
                                 console.log( response.data.msg );
                             }
