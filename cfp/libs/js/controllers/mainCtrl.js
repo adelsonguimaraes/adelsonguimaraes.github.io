@@ -13,9 +13,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
 
     $rootScope.syncDB = function (classe, metodolistar) {
         return new Promise (resolve => {
-            // se off-line ou navegador sem suport a indexedDB
-            if (!navigator.onLine || !indexedDBCtrl.support) return false;
-
+            
             // só faz a sincronização para usuários logados
             if(!$rootScope.usuario) return false;
 
@@ -254,6 +252,8 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     };
 
     if ( root.usuario ) {
+        // se off-line ou navegador sem suport a indexedDB
+        if (!navigator.onLine || !indexedDBCtrl.support) return false;
         $rootScope.syncAllDB();
     }
 
