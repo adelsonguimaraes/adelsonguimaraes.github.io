@@ -86,7 +86,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     ordenaDatas( $scope.contas );
                     montaValorMes();
                     $rootScope.stopLoad();
-                    $scope.$apply();
+                    // $scope.$apply();
                 };
                 if ($scope.contas.length <= 0) {
                     $rootScope.startLoad();
@@ -102,7 +102,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                             ordenaDatas( $scope.contas );
                             montaValorMes();
                             $rootScope.stopLoad();
-                            $scope.$apply();
+                            // $scope.$apply();
                         }else{
                             console.log( response.data.msg );
                         }
