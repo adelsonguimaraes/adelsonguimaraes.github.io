@@ -16,7 +16,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
             $scope.onLine = true;
         }
     };
-    verifySrcExist();
+    testConnection();
 
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
