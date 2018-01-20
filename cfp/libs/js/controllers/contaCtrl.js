@@ -83,7 +83,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             
             // listando localmente
             categoriaDAO.listarPorTipo(tipo).then(response => {
-                $scope.$apply();
+                // $scope.$apply();
                 if (response.success) {
                     $scope.categorias = response.data;
                     if ($scope.categorias.length > 0) {

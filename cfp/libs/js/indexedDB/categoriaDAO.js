@@ -108,7 +108,6 @@ const categoriaDAO = {
             //setTimeout(() => {
                 indexedDBCtrl.start().then(db => {
                     db.getAll('categoria').then(list => {
-                        
                             response.success = true; 
                             response.msg = 'Listagem com sucesso!';
                             response.data = list;
@@ -123,7 +122,8 @@ const categoriaDAO = {
             var response = {success:false, msg:'default', data: ''};
             var array = [];
             this.listarTodos().then(response => {
-                //setTimeout(() => {
+                console.log(response);
+                setTimeout(() => {
                     if (response.success) {
                         this.lista = response.data;
                         var l = [];
@@ -137,13 +137,13 @@ const categoriaDAO = {
                         response.data = l;
                         resolve(response);
                     };
-                //}, 100);
+                }, 100);
             });
         });
     },
     setIDNuvem (data, newID) {
         return new Promise (resolve => {
-            //setTimeout(() => {
+            setTimeout(() => {
                 indexedDBCtrl.remove('categoria', +data.id).then(list => {
                     data.id = newID;
                     this.cadastrar(data).then(response => {
@@ -152,7 +152,7 @@ const categoriaDAO = {
                         }
                     });
                 });
-            //}, 100);
+            }, 100);
         });
     }
     // autoIncrementID() {
