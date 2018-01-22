@@ -1,7 +1,7 @@
 /*******************************************
 		Controller Main
 *******************************************/
-var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, genericAPI) {
+var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, genericAPI, $timeout) {
 
     var root = $rootScope;
     
@@ -22,10 +22,15 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     authenticationAPI.sessionCtrl();
 
     $rootScope.syncDB = function (classe, metodolistar) {
+        
         return new Promise (resolve => {
-            
             // só faz a sincronização para usuários logados
             if(!$rootScope.usuario) return false;
+
+            if (!$scope.onLine || !indexedDBCtrl.support) {
+                resolve();
+                return false;
+            }
 
             // configuracao
             var dbNuvem = [];
@@ -34,11 +39,16 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                 "metodo":metodolistar,
                 "class":classe
             };
+            var DAOJS = eval(classe+'DAO');
+
             genericAPI.generic(data)
             .then(function successCallback(response) {
                 if( response.data.success === true ){
-                    eval(classe+'DAO').listarTodos().then(resp=>{
-                        setTimeout(() => {
+
+
+                    
+                    DAOJS.listarTodos().then(resp=>{
+                        $timeout(() => {
                             if (resp.success) {
                                 dbNuvem = response.data.data;
                                 dbLocal = resp.data;
@@ -62,7 +72,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                             if (d === 'dbLocal') {
                                                 array[pos].sync = 'SIM'; // setamos sync como sim
                                                 console.log(array[pos]);
-                                                eval(classe+'DAO').cadastrar(array[pos]).then(resp => {
+                                                DAOJS.cadastrar(array[pos]).then(resp => {
                                                     if (resp.success){
                                                         // setamos na Nuvem que este dado se encontra em sincronia
                                                         var data = {
@@ -90,7 +100,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                                 genericAPI.generic(data)
                                                 .then(function successCallback(response) {
                                                     if (response.data.success) {
-                                                        eval(classe+'DAO').setIDNuvem(array[pos], response.data.data).then(response => {
+                                                        DAOJS.setIDNuvem(array[pos], response.data.data).then(response => {
                                                             if (response.success) {
                                                                 percorreArrayFirstSecond(array, array.length, pos+1);
                                                             }
@@ -107,21 +117,20 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                 
                                 // se os dois bancos estiverem com dados entramos na sincronização 
                                 }else if (dbNuvem.length > 0 && dbLocal.length > 0) {
-                                    
                                     /*
                                         Cadastra todos os dados Nuvem sem sincronização no Local
                                     */
-                                    SyncNuvemToLocal = function () {
+                                    SyncNuvemToLocal2 = function () {
                                         percorreArray = function (array, length, pos) {
                                             
                                             // se posição atigiu o limite ele para
                                             if (pos >= length) return false;
-
+                                            
                                             if (array[pos].sync === 'NAO') {
 
                                                 array[pos].sync = 'SIM'; // setamos sync como sim
                                                 console.log(array[pos]);
-                                                eval(classe+'DAO').cadastrar(array[pos]).then(resp => {
+                                                DAOJS.cadastrar(array[pos]).then(resp => {
                                                     if (resp.success){
                                                         // setamos na Nuvem que este dado se encontra em sincronia
                                                         var data = {
@@ -143,6 +152,51 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                         };
                                         percorreArray(dbNuvem, dbNuvem.length, 0);
                                     };
+                                    // SyncNuvemToLocal();
+
+                                    SyncNuvemToLocal = function () {
+                                        // percorreArray = function (array, length, pos) {
+                                            
+                                            /*
+                                                Listando todos as contas que já estão sincronizadas localmente
+                                            */
+                                            DAOJS.listarSync($rootScope.usuario.idusuario)
+                                            .then(response =>{
+                                                setTimeout(() => {
+                                                    if (response.success) {
+                                                        /*
+                                                            Listamos no DBNuvel todas as contas do usuário
+                                                            que tem ID diferente dos ids sincronizados local
+                                                        */
+                                                        var data = {
+                                                            "metodo":'listarNotIn',
+                                                            "class":classe,
+                                                            "data":response.data
+                                                        };
+                                                        // console.log(data);
+                                                        genericAPI.generic(data)
+                                                        .then(function successCallback(response) {
+                                                            if (response.data.success) {
+                                                                var lista = response.data.data;
+                                                                for (var i in lista) {
+                                                                    /*
+                                                                        Cadastramos cada um dos novos IDs local
+                                                                    */
+                                                                    DAOJS.cadastrar(lista[i]).then(resp => {
+                                                                        if (resp.success){
+                                                                            console.log('[info]: Item adicionado DBLoca', lista[i]);
+                                                                        }
+                                                                    });
+                                                                }
+                                                                // percorreArray(array, array.length, pos+1);
+                                                            }
+                                                        });
+                                                    }
+                                                }, 100);
+                                            });
+                                        // };
+                                        // percorreArray(dbNuvem, dbNuvem.length, 0);
+                                    };
                                     SyncNuvemToLocal();
 
                                     /*
@@ -153,7 +207,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                             
                                             // se posição atigiu o limite ele para
                                             if (pos >= length) return false;
-
+                                            
                                             if (array[pos].sync === 'NAO') {
                                                 array[pos].sync = 'SIM'; // setamos sync como sim
                                                 var data = {
@@ -183,45 +237,50 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                         // laco de primário
                                         percorreArray = function (array, length, pos) {
                                             // se posição atigiu o limite ele para
-                                            if (pos >= length) {
-                                                resolve();
-                                                return false;
-                                            }
-                                            
-                                            // laco do secundário
-                                            for (var x in dbLocal) {
-                                                // se o primaário for encontrado no secundário
-                                                if (+array[pos].id === +dbLocal[x].id) {
-                                                    if (array[pos].sync === 'SIM' && dbLocal[x].sync === 'SIM') { // se o dado já for um dado atualizado
-                                                        // se a data de edição local é maior que a data da nuvem atualiza os dados da nuvem
-                                                        var deNuvem = (array[pos].dataedicao !== null) ? array[pos].dataedicao : '0000-00-00 00:00:00';
-                                                        var deLocal = (dbLocal[x].dataedicao !== null) ? dbLocal[x].dataedicao : '0000-00-00 00:00:00';
+                                            if (pos < length) {
+                                                
+                                                // laco do secundário
+                                                for (var x in dbLocal) {
+                                                    // se o primaário for encontrado no secundário
+                                                    if (+array[pos].id === +dbLocal[x].id) {
+                                                        if (array[pos].sync === 'SIM' && dbLocal[x].sync === 'SIM') { // se o dado já for um dado atualizado
+                                                            // se a data de edição local é maior que a data da nuvem atualiza os dados da nuvem
+                                                            var deNuvem = (array[pos].dataedicao !== null) ? array[pos].dataedicao : '0000-00-00 00:00:00';
+                                                            var deLocal = (dbLocal[x].dataedicao !== null) ? dbLocal[x].dataedicao : '0000-00-00 00:00:00';
 
-                                                        if (moment(deLocal).valueOf() > moment(deNuvem).valueOf()) {
-                                                            var data = {
-                                                                "metodo":'atualizar',
-                                                                "class":classe,
-                                                                "data":dbLocal[x]
-                                                            };
-                                                            genericAPI.generic(data)
-                                                            .then(function successCallback(response) {
-                                                                if (response.data.success) {
-                                                                    // console.log('atualiza nuvem', dbLocal[x]);
-                                                                    percorreArray(array, array.length, pos+1);
-                                                                }
-                                                            });    
-                                                        // senao atualiza os dados locais
-                                                        }else{
-                                                            array[pos].sync = 'SIM'; // adiciona o sync
-                                                            eval(classe+'DAO').atualizar(array[pos]).then(response => {
-                                                                if (response.success) {
-                                                                    // console.log('atualizado local', array[pos]);
-                                                                    percorreArray(array, array.length, pos+1);
-                                                                }
-                                                            });
+                                                            if (moment(deLocal).valueOf() > moment(deNuvem).valueOf()) {
+                                                                var data = {
+                                                                    "metodo":'atualizar',
+                                                                    "class":classe,
+                                                                    "data":dbLocal[x]
+                                                                };
+                                                                genericAPI.generic(data)
+                                                                .then(function successCallback(response) {
+                                                                    if (response.data.success) {
+                                                                        // console.log('atualiza nuvem', dbLocal[x]);
+                                                                        percorreArray(array, array.length, pos+1);
+                                                                    }
+                                                                });    
+                                                            // senao atualiza os dados locais
+                                                            }else{
+                                                                array[pos].sync = 'SIM'; // adiciona o sync
+                                                                eval(classe+'DAO').atualizar(array[pos]).then(response => {
+                                                                    if (response.success) {
+                                                                        // console.log('atualizado local', array[pos]);
+                                                                        percorreArray(array, array.length, pos+1);
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    }else{
+                                                        // caso não haja dados iguais para sync, seguimos o array
+                                                        if (parseInt(x) === parseInt(dbLocal.length-1) ) {
+                                                            percorreArray(array, array.length, pos+1);
                                                         }
                                                     }
                                                 }
+                                            }else{
+                                                resolve();
                                             }
                                         }
                                         percorreArray(dbNuvem, dbNuvem.length, 0);
@@ -231,11 +290,15 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                     resolve();
                                 }
                             }
-                        }, 100);
+                        }, 500);
                     });
                 }else{
-                    console.log( response.data.msg );
+                    console.error('[ERRO]:', response.data );
+                    resolve();
                 }
+            },function errorCallback (response) {
+                console.error('Erro:', response);
+                resolve();
             });
         });
     };
@@ -244,6 +307,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     $rootScope.syncAllDB = function () {
         // $scope.syncStatus = true;
         document.getElementById('splash').style.display = 'inline-block';
+        console.log('[Splash]: Start!');
         var classes = [
             {classe:'conta', metodolistar:'listarContasPorUsuario'},
             {classe:'categoria', metodolistar:'listar'}
@@ -256,6 +320,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
             }else{
                 // $rootScope.syncStatus = false;
                 document.getElementById('splash').style.display = 'none';
+                console.log('[Splash]: Finish!');
             }
         };
         percorreArrayClasse(classes, classes.length, 0);

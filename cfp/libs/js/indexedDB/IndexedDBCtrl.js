@@ -82,11 +82,12 @@ const indexedDBCtrl = {
 
                 request = indexedDB.open(this.dbName, this.dbVersion);
                 request.onsuccess = (event) => {
-                    db = (db) ? db : request.result;
+                    // db = (db) ? db : request.result;
+                    db = (db) ? db : event.target.result;
                     resolve(this);
                 };
                 request.onupgradeneeded = (event) => {
-                    db = event.target.result;
+                    db = (db) ? db : event.target.result;
                     for(var t in this.tables) {
                         var table = this.tables[t];
                         var store = db.createObjectStore(table.name, {keyPath: "id"});
@@ -116,32 +117,31 @@ const indexedDBCtrl = {
     },
     update(table, data) {
         return new Promise (resolve => {
-            request = this.getObjectStore(table).put(data);
-            request.onsuccess = (event) => {
-                resolve(data);
-            }
+            setTimeout(() => {
+                request = this.getObjectStore(table).put(data);
+                request.onsuccess = (event) => {
+                    resolve(data);
+                };
+            }, 100)
         });
     },
     get(table, id) {
         return new Promise (resolve => {
-            request = this.getObjectStore(table).get(id);
-            request.onsuccess = (event) => {
-                resolve(request.result);
-            }
+            setTimeout(() => {
+                request = this.getObjectStore(table).get(id);
+                request.onsuccess = (event) => {
+                    // console.log(request.result);
+                    // resolve(request.result);
+                    resolve(event.target.result)
+                }
+            }, 100);
         });
     },
     getAll(table) {
         return new Promise (resolve => {
             var list = [];
             request = this.getObjectStore(table).openCursor();
-            request.onsuccess = (event) => {
-                cursor = event.target.result;
-                if (cursor) {
-                    list.push(cursor.value);
-                    cursor.continue();
-                }
-                resolve(list);
-            }
+            resolve(request);
         });
     },
     remove(table, id) {

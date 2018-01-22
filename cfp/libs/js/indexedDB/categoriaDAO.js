@@ -104,17 +104,76 @@ const categoriaDAO = {
     },
     listarTodos () {
         return new Promise (resolve => {
-            var response = {success:false, msg:'default', data: ''};
             //setTimeout(() => {
+                var response = {success:false, msg:'default', data: ''};
+                var list = [];
+                
                 indexedDBCtrl.start().then(db => {
-                    db.getAll('categoria').then(list => {
+                    db.getAll('categoria').then(resquest => {
+                        request.onsuccess = (event) => {
+                            cursor = event.target.result;
+                            if (cursor) {
+                                list.push(cursor.value);
+                                cursor.continue();
+                            }
                             response.success = true; 
                             response.msg = 'Listagem com sucesso!';
                             response.data = list;
                             resolve(response);
+                        }
                     });
                 });
-            //}, 100);
+            });
+        //}, 100);
+    },
+    /*
+        Listar todos os intens que já estão com status sincronizado
+    */
+    listarSync (idusuario) {
+        return new Promise (resolve => {
+            
+            var list = [];
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.getAll('categoria').then(resquest => {
+                    request.onsuccess = (event) => {
+                        cursor = event.target.result;
+                        if (cursor) {
+                            if (cursor.value.sync == 'SIM') {
+                                list.push(cursor.value);
+                            }
+                            cursor.continue();
+                        }
+                        response.success = true; 
+                        response.msg = 'Listagem Categoria com sucesso!';
+                        response.data = list;
+                        resolve(response);
+                    }
+                });
+            });
+        });
+    },
+    listarNoSync (idusuario) {
+        return new Promise (resolve => {
+            var list = [];
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.getAll('categoria').then(resquest => {
+                    request.onsuccess = (event) => {
+                        cursor = event.target.result;
+                        if (cursor) {
+                            if (cursor.value.sync == 'NAO') {
+                                list.push(cursor.value);
+                            }
+                            cursor.continue();
+                        }
+                        response.success = true; 
+                        response.msg = 'Listagem com sucesso!';
+                        response.data = list;
+                        resolve(response);
+                    }
+                });
+            });
         });
     },
     listarPorTipo (tipo) {
@@ -122,7 +181,6 @@ const categoriaDAO = {
             var response = {success:false, msg:'default', data: ''};
             var array = [];
             this.listarTodos().then(response => {
-                console.log(response);
                 setTimeout(() => {
                     if (response.success) {
                         this.lista = response.data;

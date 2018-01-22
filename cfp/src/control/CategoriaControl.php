@@ -32,6 +32,9 @@ Class CategoriaControl {
 	function listar () {
 		return $this->objDAO->listar();
 	}
+	function listarNotIn ($in) {
+		return $this->objDAO->listarNotIn($in);
+	}
 	function listarCategoriaContasAPagar () {
 		return $this->objDAO->listarCategoriaContasAPagar();
 	}

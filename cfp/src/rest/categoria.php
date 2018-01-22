@@ -23,6 +23,9 @@ switch ($_POST['metodo']) {
 	case 'listar':
 		listar();
 		break;
+	case 'listarNotIn':
+		listarNotIn();
+		break;
 	case 'listarCategoriaContasAPagar':
 		listarCategoriaContasAPagar();
 		break;
@@ -58,6 +61,12 @@ function buscarPorId () {
 function listar () {
 	$control = new CategoriaControl();
 	$response = $control->listar();
+	echo json_encode($response);
+}
+function listarNotIn() {
+	$in = $_POST['data'];
+	$control = new CategoriaControl();
+	$response = $control->listarNotIn($in);
 	echo json_encode($response);
 }
 function listarCategoriaContasAPagar () {

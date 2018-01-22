@@ -100,13 +100,23 @@ const usuarioDAO = {
     listarTodos () {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
+            var list = [];
             indexedDBCtrl.start().then(db => {
-                db.getAll('usuario').then(list => {
-                    response.success = true; 
-                    response.msg = 'Listagem com sucesso!';
-                    response.data = list;
-                    resolve(response);
-                });
+                setTimeout(() => {
+                    db.getAll('usuario').then(resquest => {
+                        request.onsuccess = (event) => {
+                            cursor = event.target.result;
+                            if (cursor) {
+                                list.push(cursor.value);
+                                cursor.continue();
+                            }
+                            response.success = true; 
+                            response.msg = 'Listagem com sucesso!';
+                            response.data = list;
+                            resolve(response);
+                        }
+                    });
+                }, 100);
             });
         });
     },
@@ -125,24 +135,30 @@ const usuarioDAO = {
     },
     auth(data) {
         return new Promise (resolve => {
-            var session = '';
             var response = {success:false, msg:'default', data: ''};
+            var session = '';
             indexedDBCtrl.start().then(db => {
-                db.getAll('usuario').then(list => {
-                    for (var i in list) {
-                        if (list[i].email === data.email && list[i].senha === data.senha) {
-                            session = list[i];
+                setTimeout(() => {
+                    db.getAll('usuario').then(resquest => {
+                        request.onsuccess = (event) => {
+                            cursor = event.target.result;
+                            if (cursor) {
+                                if (cursor.value.email === data.email && cursor.value.senha === data.senha) {
+                                    session = cursor.value;
+                                }
+                                cursor.continue();
+                            }
+                            if (session != '') {
+                                response.success = true; 
+                                response.msg = 'Logado com sucesso!';
+                                response.data = session;
+                            }else{
+                                response.msg = 'Email ou Senha inválidos!';
+                            }
+                            resolve(response);
                         }
-                    }
-                    if (session != '') {
-                        response.success = true; 
-                        response.msg = 'Logado com sucesso!';
-                        response.data = session;
-                    }else{
-                        response.msg = 'Email ou Senha inválidos!';
-                    }
-                    resolve(response);
-                });
+                    });
+                }, 100);
             });
         });
     }

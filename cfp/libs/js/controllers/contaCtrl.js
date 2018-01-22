@@ -1,7 +1,7 @@
 /*******************************************
 		Controller de Conta
 *******************************************/
-var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
+var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
     
         //verifica sessao
         if(!$rootScope.usuario) {
@@ -47,30 +47,32 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             var metodo = (page === 'apagar') ? 'listarContasAPagarPorUsuario' : 'listarContasAReceberPorUsuario';
 
             contaDAO[metodo]($rootScope.usuario.id).then(response => {
-                if (response.success) {
-                    if (response.data.length > 0) {
-                        $scope.contas = response.data;
-                        $rootScope.stopLoad();
-                        // $scope.$apply();
-                    }else{
-                        var data = {
-                            "metodo":metodo,
-                            "class":"conta"
-                        };
-                        genericAPI.generic(data)
-                        .then(function successCallback(response) {
-                            if( response.data.success === true ){
-                                $scope.contas = response.data.data;                                    
-                                $rootScope.stopLoad();
-                                // $scope.$apply();
-                            }else{
-                                console.log( response.data.msg );
-                            }
-                        }, function errorCallback(response) {
-                            //error
-                        });	
-                    } 
-                }
+                $timeout(() => {
+                    if (response.success) {
+                        if (response.data.length > 0) {
+                            $scope.contas = response.data;
+                            $rootScope.stopLoad();
+                            $scope.$apply();
+                        }else{
+                            var data = {
+                                "metodo":metodo,
+                                "class":"conta"
+                            };
+                            genericAPI.generic(data)
+                            .then(function successCallback(response) {
+                                if( response.data.success === true ){
+                                    $scope.contas = response.data.data;                                    
+                                    $rootScope.stopLoad();
+                                    $scope.$apply();
+                                }else{
+                                    console.log( response.data.msg );
+                                }
+                            }, function errorCallback(response) {
+                                //error
+                            });	
+                        }
+                    }
+                }, 500);
             });
         };
         $scope.page = window.location.href.substring(window.location.href.lastIndexOf('/')+1);
@@ -83,7 +85,6 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
             
             // listando localmente
             categoriaDAO.listarPorTipo(tipo).then(response => {
-                // $scope.$apply();
                 if (response.success) {
                     $scope.categorias = response.data;
                     if ($scope.categorias.length > 0) {
@@ -108,7 +109,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         });	
                     }
                 }
-                
+                $scope.$apply(); 
             });
         }
         $scope.listarCategorias($scope.page);
@@ -139,7 +140,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     if (response.success) {
                         inciaScope();
                         $scope.listarContasPorUsuario($scope.page);
-                        $rootScope.stoptLoad();
+                        $rootScope.stopLoad();
                     }
                 });
                 return false;
@@ -157,7 +158,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     //success
                     inciaScope();
                     $scope.listarContasPorUsuario($scope.page);
-                    $rootScope.stoptLoad();
+                    $rootScope.stopLoad();
                 }, function errorCallback(response) {
                     //error
                 });	

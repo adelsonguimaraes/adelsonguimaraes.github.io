@@ -107,6 +107,39 @@ Class CategoriaDAO {
 		return $this->superdao->getResponse();
 	}
 
+	function listarNotIn ($in) {
+		
+		$s = '';
+		if (count($in) > 0) {
+			$s = 'where id not in(';
+			foreach ($in as $key) {
+				$s .= $key['id'] . ',';
+			}
+			$s = substr($s, 0, -1);
+			$s .= ')';
+		}
+		
+		$this->sql = "SELECT * from categoria $s";
+		
+		$result = mysqli_query ( $this->con, $this->sql );
+		
+		$this->superdao->resetResponse();
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Categoria' , 'listarPorNotIn' ) );
+		}else{
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
+			}
+
+			$this->superdao->setSuccess( true );			
+			$this->superdao->setData( $this->lista );
+			$this->superdao->setTotal( count($this->lista) );
+		}
+
+		return $this->superdao->getResponse();
+	}
+
 	//listar paginado
 	function listarPaginado($start, $limit) {
 		$this->sql = "SELECT * FROM categoria limit " . $start . ", " . $limit;

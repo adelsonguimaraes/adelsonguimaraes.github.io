@@ -35,6 +35,9 @@ Class ContaControl {
 	function listarContasPorUsuario ($idusuario) {
 		return $this->objDAO->listarContasPorUsuario($idusuario);
 	}
+	function listarNotIn ($in, $idusuario) {
+		return $this->objDAO->listarNotIn($in, $idusuario);
+	}
 	function listarContasAPagarPorUsuario ($idusuario) {
 		return $this->objDAO->listarContasAPagarPorUsuario($idusuario);
 	}

@@ -129,59 +129,121 @@ const contaDAO = {
         return new Promise (resolve => {
             //setTimeout(() => {
                 var response = {success:false, msg:'default', data: ''};
+                var list = [];
                 indexedDBCtrl.start().then(db => {
-                    db.getAll('conta').then(list => {
-                        response.success = true; 
-                        response.msg = 'Listagem com sucesso!';
-                        response.data = list;
-                        resolve(response);
+                    db.getAll('conta').then(resquest => {
+                        request.onsuccess = (event) => {
+                            cursor = event.target.result;
+                            if (cursor) {
+                                list.push(cursor.value);
+                                cursor.continue();
+                            }
+                            response.success = true; 
+                            response.msg = 'Listagem com sucesso!';
+                            response.data = list;
+                            resolve(response);
+                        }
                     });
                 });
             });
         //}, 100);
     },
-    listarContasPorUsuario(idusuario) {
-        return new Promise (resolve  => {
-            //setTimeout(() => {
-                var response = {success:false, msg:'default', data: ''};
-                this.listarTodos().then(response => {
-                    if (response.success) {
-                        var lista = response.data;
-                        var l = [];
-                        for (var i in lista) {
-                            if (+lista[i].idusuario === +idusuario) {
-                                l.push(lista[i]);
+    /*
+        Listar todos os intens que já estão com status sincronizado
+    */
+    listarSync (idusuario) {
+        return new Promise (resolve => {
+            var list = [];
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.getAll('conta').then(resquest => {
+                    request.onsuccess = (event) => {
+                        cursor = event.target.result;
+                        if (cursor) {
+                            if (+cursor.value.idusuario === +idusuario && cursor.value.sync == 'SIM') {
+                                list.push(cursor.value);
                             }
+                            cursor.continue();
                         }
                         response.success = true; 
-                        response.msg = 'Listagem com sucesso!';
-                        response.data = l;
+                        response.msg = 'Listagem Conta com sucesso!';
+                        response.data = list;
                         resolve(response);
                     }
                 });
-            //}, 100);
+            });
+        });
+    },
+    listarNoSync (idusuario) {
+        return new Promise (resolve => {
+            var list = [];
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.getAll('conta').then(resquest => {
+                    request.onsuccess = (event) => {
+                        cursor = event.target.result;
+                        if (cursor) {
+                            if (+cursor.value.idusuario === +idusuario && cursor.value.sync == 'NAO') {
+                                list.push(cursor.value);
+                            }
+                            cursor.continue();
+                        }
+                        response.success = true; 
+                        response.msg = 'Listagem Conta com sucesso!';
+                        response.data = list;
+                        resolve(response);
+                    }
+                });
+            });
+        });
+    },
+    listarContasPorUsuario(idusuario) {
+        return new Promise (resolve  => {
+            var list = [];
+            var response = {success:false, msg:'default', data: ''};
+            indexedDBCtrl.start().then(db => {
+                db.getAll('conta').then(resquest => {
+                    request.onsuccess = (event) => {
+                        cursor = event.target.result;
+                        if (cursor) {
+                            if (+cursor.value.idusuario === +idusuario) {
+                                list.push(cursor.value);
+                            }
+                            cursor.continue();
+                        }
+                        response.success = true; 
+                        response.msg = 'Listagem com sucesso!';
+                        response.data = list;
+                        resolve(response);
+                    }
+                });
+            });
         });
     },
     listarContasAPagarPorUsuario(idusuario) {
         return new Promise (resolve  => {
-            //setTimeout(() => {
+            setTimeout(() => {
+                var list = [];
                 var response = {success:false, msg:'default', data: ''};
-                this.listarTodos().then(response => {
-                    if (response.success) {
-                        var lista = response.data;
-                        var l = [];
-                        for (var i in lista) {
-                            if (lista[i].tipo === 'APAGAR' && +lista[i].idusuario === +idusuario) {
-                                l.push(lista[i]);
+                indexedDBCtrl.start().then(db => {
+                    db.getAll('conta').then(resquest => {
+                            request.onsuccess = (event) => {
+                                cursor = event.target.result;
+                                
+                                if (cursor) {
+                                    if (+cursor.value.idusuario === +idusuario) {
+                                        list.push(cursor.value);
+                                    }
+                                    cursor.continue();
+                                }
+                                response.success = true; 
+                                response.msg = 'Listagem com sucesso!';
+                                response.data = list;
+                                resolve(response);
                             }
-                        }
-                        response.success = true; 
-                        response.msg = 'Listagem com sucesso!';
-                        response.data = l;
-                        resolve(response);
-                    }
+                    });
                 });
-            //}, 100);
+            }, 100);
         });
     },
     setIDNuvem (data, newID) {
