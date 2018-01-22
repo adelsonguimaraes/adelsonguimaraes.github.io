@@ -144,23 +144,56 @@ Class ContaDAO {
 	function listarContasPorUsuario($idusuario) {
 		$this->sql = "SELECT * from conta where idusuario = $idusuario";
 		
-				$result = mysqli_query ( $this->con, $this->sql );
-				
-				$this->superdao->resetResponse();
+		$result = mysqli_query ( $this->con, $this->sql );
 		
-				if ( !$result ) {
-					$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'listarContasPorUsuario' ) );
-				}else{
-					while ( $row = mysqli_fetch_assoc ( $result ) ) {				
-						array_push( $this->lista, $row);
-					}
+		$this->superdao->resetResponse();
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'listarContasPorUsuario' ) );
+		}else{
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
+			}
+
+			$this->superdao->setSuccess( true );			
+			$this->superdao->setData( $this->lista );
+			$this->superdao->setTotal( $this->qtdTotal() );
+		}
+
+		return $this->superdao->getResponse();
+	}
+
+	function listarNotIn ($in, $idusuario) {
 		
-					$this->superdao->setSuccess( true );			
-					$this->superdao->setData( $this->lista );
-					$this->superdao->setTotal( $this->qtdTotal() );
-				}
+		$s = '';
+		if (count($in) > 0) {
+			$s = 'id not in(';
+			foreach ($in as $key) {
+				$s .= $key['id'] . ',';
+			}
+			$s = substr($s, 0, -1);
+			$s .= ') and';
+		}
 		
-				return $this->superdao->getResponse();
+		$this->sql = "SELECT * from conta where $s idusuario = $idusuario";
+
+		$result = mysqli_query ( $this->con, $this->sql );
+		
+		$this->superdao->resetResponse();
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'listarPorNotIn' ) );
+		}else{
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
+			}
+
+			$this->superdao->setSuccess( true );			
+			$this->superdao->setData( $this->lista );
+			$this->superdao->setTotal( count($this->lista) );
+		}
+
+		return $this->superdao->getResponse();
 	}
 
 	function listarContasAPagarPorUsuario ($idusuario) {

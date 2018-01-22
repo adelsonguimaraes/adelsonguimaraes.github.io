@@ -9,23 +9,25 @@
 	<link rel="stylesheet" href="libs/css/animate.css">
 	<!-- Font awesome -->
     <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="libs/css/style.css">
+	<link rel="stylesheet" href="libs/css/style.css">
+	
+	<link rel="manifest" href="manifest.json">
 	
 	<!-- apple -->
     <meta name"apple-mobile-web-app-capable" content="yes">
     <meta name"apple-mobile-web-app-status-bar-style" content="black">
     <meta name"apple-mobile-web-app-title" content="CPF">
-    <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" href="libs/img/icons/moneybreak-152x152.png">
 
     <!-- microsoft -->
-    <meta name"msapplication-TileImage" content="images/icons/icon-144x144.png">
+    <meta name"msapplication-TileImage" content="libs/img/icons/moneybreak-144x144.png">
     <meta name"msapllication-TileColor" content="#607d8b">
 
     <meta name"theme-color" content="#607d8b">
 
 </head>
-<body ng-controller="mainCtrl" ng-init="syncStatus=false">
-	<div class="logo" ng-if="syncStatus">
+<body ng-controller="mainCtrl">
+	<div id="splash" class="logo">
 			<br><br>
 			<br><br>
 			<br><br>
@@ -40,12 +42,17 @@
 			<br><br>
 			<h4> Estamos em Beta ;) </h4>
 	</div>
+
+	<div class="load" id="load">
+	    <img id="splashscreen" ng-src="{{loader}}">
+	</div>
+
 	<div ui-view></div>
 
 	<!-- API -->
 	<script type="text/javascript"> 
-		var api="";
-		// var api="https://adelsonguimaraes.000webhostapp.com/api/cfp/";
+		var api = "";
+		// var api="https://adelsonguimaraes.000webhostapp.com/cfp/";
 	</script>
 
 	<script src="libs/js/jquery-2.2.4.min.js"></script>

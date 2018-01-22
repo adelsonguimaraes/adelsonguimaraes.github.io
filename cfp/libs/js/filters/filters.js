@@ -77,6 +77,16 @@ function moeda () {
 	}
 }
 
+function indeterminado () {
+	return function (input) {
+		if(!input || typeof(input) === 'object') return input;
+		if (+input === 0) {
+			input = 'IND';
+		}
+		return input;
+	}
+}
+
 angular
 	.module('cfp')
 	.filter('nomeProprio', nomeProprio)
@@ -88,3 +98,4 @@ angular
 	.filter('cel', cel)
 	.filter('data', data)
 	.filter('moeda', moeda)
+	.filter('indeterminado', indeterminado)

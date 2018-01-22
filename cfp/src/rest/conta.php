@@ -26,6 +26,9 @@ switch ($_POST['metodo']) {
 	case 'listarContasPorUsuario':
 		listarContasPorUsuario();
 		break;
+	case 'listarNotIn':
+		listarNotIn();
+		break;
 	case 'listarContasAPagarPorUsuario':
 		listarContasAPagarPorUsuario();
 		break;
@@ -75,6 +78,13 @@ function listarContasPorUsuario() {
 	$usuario = $_POST['usuario'];
 	$control = new ContaControl();
 	$response = $control->listarContasPorUsuario($usuario['idusuario']);
+	echo json_encode($response);
+}
+function listarNotIn() {
+	$in = $_POST['data'];
+	$usuario = $_POST['usuario'];
+	$control = new ContaControl();
+	$response = $control->listarNotIn($in, $usuario['idusuario']);
 	echo json_encode($response);
 }
 function listarContasAPagarPorUsuario() {

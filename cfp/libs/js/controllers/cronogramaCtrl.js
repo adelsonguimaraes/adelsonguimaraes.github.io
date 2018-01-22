@@ -1,7 +1,7 @@
 /*******************************************
 		Controller de Home
 *******************************************/
-var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
+var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
         //verifica sessao
         if(!$rootScope.usuario) {
             $location.path('/login');
@@ -78,33 +78,40 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
         totaisValor();
     
         $scope.listarContasPorUsuario = function () {
+            $rootScope.startLoad();
             // listar localmente
             contaDAO.listarContasPorUsuario($rootScope.usuario.id).then(response => {
-                if (response.success) {
-                    $scope.contas = response.data;
-                    ordenaDatas( $scope.contas );
-                    montaValorMes();
-                };
-                if ($scope.contas.length <= 0) {
-                    // lista nuvem
-                    var data = {
-                        "metodo":"listarContasPorUsuario",
-                        "class":"conta"
+                $timeout(() => {
+                    if (response.success) {
+                        $scope.contas = response.data;
+                        ordenaDatas( $scope.contas );
+                        montaValorMes();
+                        $rootScope.stopLoad();
+                        // $scope.$apply();
                     };
-                    genericAPI.generic(data)
-                    .then(function successCallback(response) {
-                        if( response.data.success === true ){
-                            $scope.contas = response.data.data;
-                            ordenaDatas( $scope.contas );
-                            montaValorMes();
-                        }else{
-                            console.log( response.data.msg );
-                        }
-                    }, function errorCallback(response) {
-                        //error
-                    });	
-                }
-                $scope.$apply();
+                    if ($scope.contas.length <= 0) {
+                        $rootScope.startLoad();
+                        // lista nuvem
+                        var data = {
+                            "metodo":"listarContasPorUsuario",
+                            "class":"conta"
+                        };
+                        genericAPI.generic(data)
+                        .then(function successCallback(response) {
+                            if( response.data.success === true ){
+                                $scope.contas = response.data.data;
+                                ordenaDatas( $scope.contas );
+                                montaValorMes();
+                                $rootScope.stopLoad();
+                                // $scope.$apply();
+                            }else{
+                                console.log( response.data.msg );
+                            }
+                        }, function errorCallback(response) {
+                            //error
+                        });	
+                    }
+                }, 500);
             });
         }
         $scope.listarContasPorUsuario();
@@ -147,10 +154,18 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     var data = ''; // variavel data
     
                     var totalParcela = (conta.parcela<10) ? '0'+conta.parcela : conta.parcela;
-                    var valorParcela = (conta.valor/conta.parcela).toFixed();
+                    var valorParcela = (conta.valor/conta.parcela).toFixed(2);
+                    var contaparcela = conta.parcela;
+
+                    // se as parcelas forem indeterminadas
+                    if (+conta.parcela === 0) {
+                        totalParcela = 'IND';
+                        valorParcela = conta.valor;
+                        contaparcela = 12;
+                    }
 
                     // laco de parcelas da conta
-                    for (var p=0; p<conta.parcela; p++) {
+                    for (var p=0; p<contaparcela; p++) {
                         var dia = moment(conta.datavencimento).add(p, "M").date(); // dia da data conta + index
                         var mes = moment(conta.datavencimento).add(p, "M").month(); // mes data conta + index
                         var ano = moment(conta.datavencimento).add(p, "M").year(); // ano data conta + index
@@ -161,7 +176,13 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                             // pegando a prestação atual
                             if (m === 0) { // m = o ( mes atual )
                                 var pa = ((p+1)<10)?'0'+(p+1):(p+1);
-                                conta.parcelaAtual = pa+"/"+totalParcela;
+                                // indeterminado
+                                if (+conta.parcela === 0) {
+                                    conta.parcelaAtual = totalParcela;
+                                // com parcelas
+                                }else{
+                                    conta.parcelaAtual = pa+"/"+totalParcela;
+                                }
                             }
                         }
                     }
@@ -169,9 +190,17 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                     if (!conta.parcelaAtual) {
                         // se ano = atual mas mes menor ou ano menor
                         if ( (ano === year && mes < month) || (ano < year) ) {
-                            conta.parcelaAtual = totalParcela+"/"+totalParcela;
+                            if (+conta.parcela === 0) {
+                                conta.parcelaAtual = totalParcela;
+                            }else{
+                                conta.parcelaAtual = totalParcela+"/"+totalParcela;
+                            }
                         }else{
-                            conta.parcelaAtual = "00/"+totalParcela;
+                            // if (+conta.parcela === 0) {
+                            //     conta.parcelaAtual = totalParcela;
+                            // }else{
+                                conta.parcelaAtual = "00/"+totalParcela;
+                            // }
                         }
                     }
     
@@ -179,7 +208,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI) {
                         conta.pres.push({"data": "00/0000", "valor":"xxxx", "color":"background:#f0f5f5; color:#ccc;", "icon":"fa-trophyx"});
                     }else{
                         conta.pres.push(data);
-                        $scope.totais[m].valor += parseInt(conta.valor);
+                        // calculando o total mensal
+                        $scope.totais[m].valor = (+$scope.totais[m].valor + +valorParcela).toFixed(2);//parseInt(conta.valor);
                     }
                 }
     

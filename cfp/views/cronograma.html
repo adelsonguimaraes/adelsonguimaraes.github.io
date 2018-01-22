@@ -38,6 +38,7 @@
 							<tr>
 								<td style="background:#afc2f3;">Descrição</td>
 								<td style="background:#afc2f3;" width="60">Valor</td>
+								<!-- <td style="background:#afc2f3;">Categoria</td> -->
 								<td style="background:#afc2f3;">Venc</td>
 								<td style="background:#afc2f3;">Prest</td>
 								<td ng-repeat="mes in meses" style="background:#bce7e6;">{{mes.sigla}}/{{mes.ano}}</td>
@@ -45,6 +46,7 @@
 							</tr>
 							<tr ng-repeat="conta in contas">
 								<td ng-bind="conta.descricao"></td>
+								<!-- <td ng-bind="conta.categoria"></td> -->
 								<td ng-bind="conta.valor | moeda"></td>
 								<td ng-bind="conta.diavencimento"></td>
 								<td ng-bind="conta.parcelaAtual"></td>
