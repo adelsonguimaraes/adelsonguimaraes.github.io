@@ -246,6 +246,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                 });
             }else{
                 $scope.syncStatus = false;
+                window.location.replace('#/menupage');
             }
         };
         percorreArrayClasse(classes, classes.length, 0);
