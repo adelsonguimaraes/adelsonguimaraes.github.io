@@ -11,7 +11,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
 
         function inciaScope () {
             $scope.conta = {
-                "id":"",
+                "id":null,
                 "idusuario":"",
                 "idcategoria":"",
                 "descricao":"",
@@ -42,17 +42,15 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
         montaParcelas();
 
         $scope.listarContasPorUsuario = function (page) {
-            // $rootScope.startLoad();
+            $rootScope.startLoad();
             // listando do DBLocal
             var metodo = (page === 'apagar') ? 'listarContasAPagarPorUsuario' : 'listarContasAReceberPorUsuario';
 
-            contaDAO[metodo]($rootScope.usuario.id).then(response => {
+            contaDAO[metodo]($rootScope.usuario.idusuario).then(response => {
                 $timeout(() => {
-                    console.log(response);
                     if (response.success) {
                         if (response.data.length > 0) {
                             $scope.contas = response.data;
-                            console.log(response.data);
                             $rootScope.stopLoad();
                             $scope.$apply();
                         }else{
@@ -121,28 +119,33 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
         $scope.listarCategorias($scope.page);
 
         $scope.editar = function (obj) {
-            obj.datavencimento = moment(obj.datavencimento)._d;
-            obj.parcela = parseInt(obj.parcela);
-            $scope.dataatual = moment(obj.datavencimento).format('YYYY-MM-DD');
-            $scope.conta = obj;
+            
+            var newObj = angular.copy(obj);
+            
+            newObj.datavencimento = moment(newObj.datavencimento)._d;
+            newObj.parcela = (+newObj.parcela === 0) ? 'INDETERMINADO' : newObj.parcela;
+            $scope.dataatual = moment(newObj.datavencimento).format('YYYY-MM-DD');
+            $scope.conta = newObj;
             $scope.novaConta();
         }
     
         $scope.salvar = function (obj) {
             $rootScope.startLoad();
 
-            obj.idusuario = $rootScope.usuario.idusuario;
-            obj.valor = desformataValor(obj.valor);
+            var newObj = angular.copy(obj);
 
-            obj.datavencimento = moment(obj.datavencimento).format('YYYY-MM-DD');
+            newObj.idusuario = $rootScope.usuario.idusuario;
+            newObj.valor = desformataValor(newObj.valor);
+
+            newObj.datavencimento = moment(newObj.datavencimento).format('YYYY-MM-DD');
             
             var metodo = "cadastrar";
-            if(obj.id) {
+            if(newObj.id) {
                 metodo = "atualizar";
             }
             
             if (indexedDBCtrl.support) {
-                contaDAO[metodo](obj).then(response => {
+                contaDAO[metodo](newObj).then(response => {
                     if (response.success) {
                         inciaScope();
                         $scope.listarContasPorUsuario($scope.page);
@@ -156,7 +159,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
 
             var data = {
                 "metodo":metodo,
-                "data":obj,
+                "data":obnewObj,
                 "class":"conta"
             };
             genericAPI.generic(data)

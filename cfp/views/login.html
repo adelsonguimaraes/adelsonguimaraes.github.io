@@ -5,21 +5,22 @@
 			<i class="fa fa-user"></i>
 			 Acessar Sistema - CFP
 		</div>
-		<form class="form_login" ng-submit="logar(login)">
+		<form class="form_login" ng-submit="logar(login)" autocomplete="on">
 				<div class="form_login_error" ng-if="login.error">
 					<b>Atenção:</b> Usuário ou Senha Inválidos!
 				</div>
 				<div class="form-group">
 					<label>e-mail</label>
-					<input type="email" class="form-control" placeholder="Digite seu Email" ng-model="login.email" autocomplete="on">
+					<input type="email" class="form-control" placeholder="Digite seu Email" ng-model="login.email">
 				</div>
 				<div class="form-group">
 					<label>Senha</label>
-					<input type="password" class="form-control"  placeholder="Digite sua senha"  ng-model="login.senha">
+					<input type="password" class="form-control"  placeholder="Digite sua senha"  ng-model="login.senha"  autocomplete="off">
 				</div>
 				<button type="submit" class="btn btn-success pull-right" ng-disabled="!login.email || !login.senha">
-					logar
+					Acessar
 				</button>
+				<a href="" class="btn btn-default"><i class="fa fa-key"></i> Solicitar acesso</a>
 		</form>
 	</div>
 </div>

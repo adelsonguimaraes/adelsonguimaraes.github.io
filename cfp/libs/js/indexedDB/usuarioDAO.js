@@ -141,12 +141,11 @@ const usuarioDAO = {
                 setTimeout(() => {
                     db.getAll('usuario').then(resquest => {
                         request.onsuccess = (event) => {
-                            cursor = event.target.result;
-                            if (cursor) {
-                                if (cursor.value.email === data.email && cursor.value.senha === data.senha) {
-                                    session = cursor.value;
+                            var result = event.target.result;
+                            for (var i in result) {
+                                if ( result[i].email === data.email && result[i].senha === data.senha ) {
+                                    session = result[i];
                                 }
-                                cursor.continue();
                             }
                             if (session != '') {
                                 response.success = true; 

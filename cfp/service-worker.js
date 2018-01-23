@@ -1,4 +1,4 @@
-let cacheName = 'cfp-v.1.1.2';
+let cacheName = 'cfp-v.1.1.6';
 let filesToCache = [
     './',
     'index.html',
@@ -33,7 +33,14 @@ let filesToCache = [
     'libs/js/filters/filters.js',
     // images
     'libs/img/splash.gif',
+    'libs/img/moneyrain.gif',
     'libs/img/ajax_loader_blue.gif',
+    'libs/img/icons/moneybreak-128x128.png',
+    'libs/img/icons/moneybreak-144x144.png',
+    'libs/img/icons/moneybreak-152x152.png',
+    'libs/img/icons/moneybreak-192x192.png',
+    'libs/img/icons/moneybreak-256x256.png',
+    'libs/img/icons/moneybreak-512x512.png',
     // views
     'views/login.html',
     'views/menupage.html',

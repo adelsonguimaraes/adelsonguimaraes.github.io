@@ -80,7 +80,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
         $scope.listarContasPorUsuario = function () {
             $rootScope.startLoad();
             // listar localmente
-            contaDAO.listarContasPorUsuario($rootScope.usuario.id).then(response => {
+            contaDAO.listarContasPorUsuario($rootScope.usuario.idusuario).then(response => {
                 $timeout(() => {
                     if (response.success) {
                         $scope.contas = response.data;
@@ -113,7 +113,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
                             //error
                         });	
                     }
-                }, 500);
+                }, 0);
             });
         }
         $scope.listarContasPorUsuario();

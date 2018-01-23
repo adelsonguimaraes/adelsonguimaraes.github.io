@@ -8,6 +8,8 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     root.usuario = ""; //startando variavel global usuario
     root.onLine = navigator.onLine;
 
+    $scope.loader = 'libs/img/ajax_loader_blue.gif';
+
     $rootScope.startLoad = function () {
         document.getElementById('load').style.display = 'inline-block';
     };
@@ -329,8 +331,6 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
         if (!root.onLine || !indexedDBCtrl.support) return false;
         $rootScope.syncAllDB();
     }
-
-    $scope.loader = 'libs/img/ajax_loader_blue.gif';
 }
 
 angular.module( 'cfp' )

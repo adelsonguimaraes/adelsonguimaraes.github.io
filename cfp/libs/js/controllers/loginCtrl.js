@@ -17,7 +17,7 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 	adicionaUsuarioDBLocal = function (data) {
 		usuarioDAO.cadastrar(data).then(response => {
 			if (response.success) {
-				console.log('Usuário adicionado ao DBLocal', data);
+				// console.log('Usuário adicionado ao DBLocal', data);
 			}
 		});
 	};
@@ -28,21 +28,22 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 		//desaativamos o login error com true
 		$scope.login.error = false;
 
+		var newObj = angular.copy(obj);
+
 		// Encrypt senha
-		obj.senha = MD5(obj.senha);
+		newObj.senha = MD5(newObj.senha);
 		
 		var data = {
 			"metodo":"logar",
-			"data":obj
+			"data":newObj
 		};
 
 		// logando localmente 
-		usuarioDAO.auth(obj).then(response => {
+		usuarioDAO.auth(newObj).then(response => {
 			if (response.success) {
 				//criamos a session
 				response.data.idusuario = response.data.id;
-				console.log(response.data);
-				authenticationAPI.createSession(response.data, obj.infinity);
+				authenticationAPI.createSession(response.data, true);
 				//logion error é escondido
 				$scope.login.error = false;
 				//redirecionamos para home

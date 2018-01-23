@@ -111,11 +111,13 @@ const categoriaDAO = {
                 indexedDBCtrl.start().then(db => {
                     db.getAll('categoria').then(resquest => {
                         request.onsuccess = (event) => {
-                            cursor = event.target.result;
-                            if (cursor) {
-                                list.push(cursor.value);
-                                cursor.continue();
-                            }
+                            // cursor = event.target.result;
+                            // if (cursor) {
+                            //     list.push(cursor.value);
+                            //     cursor.continue();
+                            // }
+                            list = event.target.result;
+
                             response.success = true; 
                             response.msg = 'Listagem com sucesso!';
                             response.data = list;
@@ -137,12 +139,18 @@ const categoriaDAO = {
             indexedDBCtrl.start().then(db => {
                 db.getAll('categoria').then(resquest => {
                     request.onsuccess = (event) => {
-                        cursor = event.target.result;
-                        if (cursor) {
-                            if (cursor.value.sync == 'SIM') {
-                                list.push(cursor.value);
+                        // cursor = event.target.result;
+                        // if (cursor) {
+                        //     if (cursor.value.sync == 'SIM') {
+                        //         list.push(cursor.value);
+                        //     }
+                        //     cursor.continue();
+                        // }
+                        result = event.target.result;
+                        for(var i in result) {
+                            if (result[i].sync === 'SIM') {
+                                list.push(result[i]);
                             }
-                            cursor.continue();
                         }
                         response.success = true; 
                         response.msg = 'Listagem Categoria com sucesso!';
@@ -160,12 +168,18 @@ const categoriaDAO = {
             indexedDBCtrl.start().then(db => {
                 db.getAll('categoria').then(resquest => {
                     request.onsuccess = (event) => {
-                        cursor = event.target.result;
-                        if (cursor) {
-                            if (cursor.value.sync == 'NAO') {
-                                list.push(cursor.value);
+                        // cursor = event.target.result;
+                        // if (cursor) {
+                        //     if (cursor.value.sync == 'NAO') {
+                        //         list.push(cursor.value);
+                        //     }
+                        //     cursor.continue();
+                        // }
+                        result = event.target.result;
+                        for(var i in result) {
+                            if (result[i].sync === 'NAO') {
+                                list.push(result[i]);
                             }
-                            cursor.continue();
                         }
                         response.success = true; 
                         response.msg = 'Listagem com sucesso!';

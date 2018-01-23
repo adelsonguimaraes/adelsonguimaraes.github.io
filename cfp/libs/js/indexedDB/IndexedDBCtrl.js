@@ -140,7 +140,8 @@ const indexedDBCtrl = {
     getAll(table) {
         return new Promise (resolve => {
             var list = [];
-            request = this.getObjectStore(table).openCursor();
+            // request = this.getObjectStore(table).openCursor();
+            request = this.getObjectStore(table).getAll();
             resolve(request);
         });
     },

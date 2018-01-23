@@ -33,27 +33,30 @@ const contaDAO = {
         return new Promise (resolve => {
             //setTimeout(() => {
                 var response = {success:false, msg:'default', data: ''};
-                // seta os atributos
-                contaDAO.setData(
-                    +data.id, // id
-                    +data.idusuario,
-                    +data.idcategoria,
-                    data.descricao,
-                    data.valor,
-                    data.parcela,
-                    data.indeterminada,
-                    data.tipo,
-                    (data.status != undefined  || data.status != null) ? data.status : 'EMABERTO',
-                    data.datavencimento,
-                    (data.sync != undefined || data.sync != null) ? data.sync : 'NAO',
-                    (data.datacadastro != undefined || data.datacadastro != null) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
-                    (data.dataedicao != undefined || data.dataedicao != null) ? data.dataedicao : null // dataedicao
-                );
-                indexedDBCtrl.add('conta', this.data).then(data => {
-                    response.success = true; 
-                    response.msg = 'Cadastrado com sucesso!';
-                    response.data = data;
-                    resolve(response);
+                
+                this.autoIncrementID().then(idIncrementado => {
+                    // seta os atributos
+                    contaDAO.setData(
+                        (data.id != null) ? +data.id : +idIncrementado, // id
+                        +data.idusuario,
+                        +data.idcategoria,
+                        data.descricao,
+                        data.valor,
+                        data.parcela,
+                        data.indeterminada,
+                        data.tipo,
+                        (data.status != undefined  || data.status != null) ? data.status : 'EMABERTO',
+                        data.datavencimento,
+                        (data.sync != undefined || data.sync != null) ? data.sync : 'NAO',
+                        (data.datacadastro != undefined || data.datacadastro != null) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                        (data.dataedicao != undefined || data.dataedicao != null) ? data.dataedicao : null // dataedicao
+                    );
+                    indexedDBCtrl.add('conta', this.data).then(data => {
+                        response.success = true; 
+                        response.msg = 'Cadastrado com sucesso!';
+                        response.data = data;
+                        resolve(response);
+                    });
                 });
             //},100);
         });
@@ -133,11 +136,13 @@ const contaDAO = {
                 indexedDBCtrl.start().then(db => {
                     db.getAll('conta').then(resquest => {
                         request.onsuccess = (event) => {
-                            cursor = event.target.result;
-                            if (cursor) {
-                                list.push(cursor.value);
-                                cursor.continue();
-                            }
+                            // cursor = event.target.result;
+                            // if (cursor) {
+                            //     list.push(cursor.value);
+                            //     cursor.continue();
+                            // }
+                            list = event.target.result;
+                            
                             response.success = true; 
                             response.msg = 'Listagem com sucesso!';
                             response.data = list;
@@ -158,12 +163,18 @@ const contaDAO = {
             indexedDBCtrl.start().then(db => {
                 db.getAll('conta').then(resquest => {
                     request.onsuccess = (event) => {
-                        cursor = event.target.result;
-                        if (cursor) {
-                            if (+cursor.value.idusuario === +idusuario && cursor.value.sync == 'SIM') {
-                                list.push(cursor.value);
+                        // cursor = event.target.result;
+                        // if (cursor) {
+                        //     if (+cursor.value.idusuario === +idusuario && cursor.value.sync == 'SIM') {
+                        //         list.push(cursor.value);
+                        //     }
+                        //     cursor.continue();
+                        // }
+                        result = event.target.result;
+                        for(var i in result) {
+                            if (+result[i].idusuario === +idusuario && result[i].sync === 'SIM') {
+                                list.push(result[i]);
                             }
-                            cursor.continue();
                         }
                         response.success = true; 
                         response.msg = 'Listagem Conta com sucesso!';
@@ -204,12 +215,17 @@ const contaDAO = {
             indexedDBCtrl.start().then(db => {
                 db.getAll('conta').then(resquest => {
                     request.onsuccess = (event) => {
-                        cursor = event.target.result;
-                        if (cursor) {
-                            if (+cursor.value.idusuario === +idusuario) {
-                                list.push(cursor.value);
+                        result = event.target.result;
+                        // if (cursor) {
+                        //     if (+cursor.value.idusuario === +idusuario) {
+                        //         list.push(cursor.value);
+                        //     }
+                        //     cursor.continue();
+                        // }
+                        for(var i in result) {
+                            if (+result[i].idusuario === +idusuario) {
+                                list.push(result[i]);
                             }
-                            cursor.continue();
                         }
                         response.success = true; 
                         response.msg = 'Listagem com sucesso!';
@@ -225,31 +241,23 @@ const contaDAO = {
                 var list = [];
                 var response = {success:false, msg:'default', data: ''};
                 
-                setTimeout(() => {
-
                     indexedDBCtrl.start().then(db => {
                         db.getAll('conta').then(resquest => {
                             request.onsuccess = (event) => {
-                                
-                                        
-                                    cursor = event.target.result;
-                                    
-                                    if (cursor) {
-                                        if (+cursor.value.idusuario === +idusuario) {
-                                            list.push(cursor.value);
-                                        }
-                                        cursor.continue();
+                                var result = event.target.result;
+                                for (var i in result) {
+                                    if ( +result[i].idusuario === +idusuario) {
+                                        list.push(result[i]);
                                     }
-                                    response.success = true; 
-                                    response.msg = 'Listagem com sucesso!';
-                                    response.data = list;
-                                    resolve(response);
-                                
+                                }
+                                response.success = true; 
+                                response.msg = 'listarContasAPagarPorUsuario com sucesso!';
+                                response.data = list;
+                                resolve(response);
                             }
                         });
                             
                     });
-                }, 0);
         });
     },
     setIDNuvem (data, newID) {
@@ -272,10 +280,13 @@ const contaDAO = {
                 var ultimo = 0;
                 indexedDBCtrl.start().then(db => {
                     db.getAll('conta').then(list => {
-                        for (var i in list) {
-                            ultimo = list[i].id; //  recebe todos até o último
+                        request.onsuccess = (event) => {
+                            var result = event.target.result;
+                            for (var i in result) {
+                                ultimo = result[i].id;
+                            }
+                            resolve(ultimo+1);
                         }
-                        resolve(ultimo+1);
                     });
                 }); 
             //},100);
