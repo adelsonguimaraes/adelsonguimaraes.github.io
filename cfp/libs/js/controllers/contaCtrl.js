@@ -54,6 +54,8 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
                             $rootScope.stopLoad();
                             $scope.$apply();
                         }else{
+                            // verifica conectividade
+                            if (!$rootScope.onLine) return false;
                             var data = {
                                 "metodo":metodo,
                                 "class":"conta"
@@ -90,6 +92,8 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
                     if ($scope.categorias.length > 0) {
                         $scope.conta.idcategoria = $scope.categorias[0].id;
                     }else{
+                        // verifica conectividade
+                        if (!$rootScope.onLine) return false;
                         // listagem pela nuvem
                         var metodo = (page === 'apagar') ? 'listarCategoriaContasAPagar' : 'listarCategoriasContasAReceber';
                         var data = {

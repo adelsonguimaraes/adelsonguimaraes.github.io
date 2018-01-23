@@ -90,6 +90,8 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
                         // $scope.$apply();
                     };
                     if ($scope.contas.length <= 0) {
+                        // verificar se há conectividade
+                        if (!$rootScope.onLine) return false;
                         $rootScope.startLoad();
                         // lista nuvem
                         var data = {
