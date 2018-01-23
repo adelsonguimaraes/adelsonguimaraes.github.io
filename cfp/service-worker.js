@@ -1,4 +1,4 @@
-let cacheName = 'cfp-v.1.1.6';
+let cacheName = 'cfp-v.1.1.8';
 let filesToCache = [
     './',
     'index.html',
@@ -35,6 +35,10 @@ let filesToCache = [
     'libs/img/splash.gif',
     'libs/img/moneyrain.gif',
     'libs/img/ajax_loader_blue.gif',
+    'libs/img/img/financas.jpg',
+    'libs/img/cronograma.png',
+    'libs/img/despesa.png',
+    'libs/img/recebimento.png',
     'libs/img/icons/moneybreak-128x128.png',
     'libs/img/icons/moneybreak-144x144.png',
     'libs/img/icons/moneybreak-152x152.png',
