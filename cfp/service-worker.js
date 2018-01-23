@@ -1,4 +1,4 @@
-let cacheName = 'cfp-v.1.1.0';
+let cacheName = 'cfp-v.1.1.2';
 let filesToCache = [
     './',
     'index.html',
@@ -8,6 +8,11 @@ let filesToCache = [
     'libs/css/style.css',
     'libs/js/jquery-2.2.4.min.js',
     'libs/js/angular.min.js',
+    'libs/js/angular/angular-sanitize.js',
+    'libs/js/plugins/oclazyload/dist/ocLazyLoad.min.js',
+    'libs/js/ui-router/angular-ui-router.min.js',
+    'libs/js/plugins/angular-idle/angular-idle.js',
+    'libs/js/plugins/number-picker/angular-number-picker.min.js',
     'libs/js/bootstrap.min.js',
     'libs/js/MD5.js',
     'libs/js/plugins/moment/moment.min.js',
@@ -19,11 +24,6 @@ let filesToCache = [
     'libs/js/indexedDB/contaDAO.js',
     'libs/js/app.js',
     'libs/js/config.js',
-    'libs/js/angular/angular-sanitize.js',
-    'libs/js/plugins/oclazyload/dist/ocLazyLoad.min.js',
-    'libs/js/ui-router/angular-ui-router.min.js',
-    'libs/js/plugins/angular-idle/angular-idle.js',
-    'libs/js/plugins/number-picker/angular-number-picker.min.js',
     // directives
     'libs/js/directives/directives.js',
     // services
@@ -54,7 +54,7 @@ self.addEventListener('install', (e) => {
     console.log( '[ServiceWorker] Installer' );
     e.waitUntil(
         caches.open(cacheName).then((cache) =>{
-            console.log( '[ServiceWorker] Caching app shell' );
+            // console.log( '[ServiceWorker] Caching app shell' );
             return cache.addAll(filesToCache);
         })
     );
@@ -75,7 +75,7 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-    console.log( '[ServiceWorker] Fetch', e.request.url);
+    // console.log( '[ServiceWorker] Fetch', e.request.url);
     e.respondWith(
         caches.match(e.request).then((response) =>{
             return response || fetch(e.request);

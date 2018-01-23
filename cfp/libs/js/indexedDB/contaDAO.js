@@ -222,28 +222,34 @@ const contaDAO = {
     },
     listarContasAPagarPorUsuario(idusuario) {
         return new Promise (resolve  => {
-            setTimeout(() => {
                 var list = [];
                 var response = {success:false, msg:'default', data: ''};
-                indexedDBCtrl.start().then(db => {
-                    db.getAll('conta').then(resquest => {
+                
+                setTimeout(() => {
+
+                    indexedDBCtrl.start().then(db => {
+                        db.getAll('conta').then(resquest => {
                             request.onsuccess = (event) => {
-                                cursor = event.target.result;
                                 
-                                if (cursor) {
-                                    if (+cursor.value.idusuario === +idusuario) {
-                                        list.push(cursor.value);
+                                        
+                                    cursor = event.target.result;
+                                    
+                                    if (cursor) {
+                                        if (+cursor.value.idusuario === +idusuario) {
+                                            list.push(cursor.value);
+                                        }
+                                        cursor.continue();
                                     }
-                                    cursor.continue();
-                                }
-                                response.success = true; 
-                                response.msg = 'Listagem com sucesso!';
-                                response.data = list;
-                                resolve(response);
+                                    response.success = true; 
+                                    response.msg = 'Listagem com sucesso!';
+                                    response.data = list;
+                                    resolve(response);
+                                
                             }
+                        });
+                            
                     });
-                });
-            }, 100);
+                }, 0);
         });
     },
     setIDNuvem (data, newID) {

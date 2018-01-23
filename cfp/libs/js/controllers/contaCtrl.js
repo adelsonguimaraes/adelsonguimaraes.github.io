@@ -42,15 +42,17 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
         montaParcelas();
 
         $scope.listarContasPorUsuario = function (page) {
-            $rootScope.startLoad();
+            // $rootScope.startLoad();
             // listando do DBLocal
             var metodo = (page === 'apagar') ? 'listarContasAPagarPorUsuario' : 'listarContasAReceberPorUsuario';
 
             contaDAO[metodo]($rootScope.usuario.id).then(response => {
                 $timeout(() => {
+                    console.log(response);
                     if (response.success) {
                         if (response.data.length > 0) {
                             $scope.contas = response.data;
+                            console.log(response.data);
                             $rootScope.stopLoad();
                             $scope.$apply();
                         }else{
@@ -65,7 +67,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
                                 if( response.data.success === true ){
                                     $scope.contas = response.data.data;                                    
                                     $rootScope.stopLoad();
-                                    $scope.$apply();
+                                    // $scope.$apply();
                                 }else{
                                     console.log( response.data.msg );
                                 }
@@ -74,7 +76,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
                             });	
                         }
                     }
-                }, 500);
+                }, 0);
             });
         };
         $scope.page = window.location.href.substring(window.location.href.lastIndexOf('/')+1);

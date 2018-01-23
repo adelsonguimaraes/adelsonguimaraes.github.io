@@ -4,9 +4,16 @@
 var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, genericAPI, $timeout) {
 
     var root = $rootScope;
-    
+
     root.usuario = ""; //startando variavel global usuario
     root.onLine = navigator.onLine;
+
+    $rootScope.startLoad = function () {
+        document.getElementById('load').style.display = 'inline-block';
+    };
+    $rootScope.stopLoad = function () {
+        document.getElementById('load').style.display = 'none';
+    }
 
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
@@ -318,20 +325,12 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
 
     if ( root.usuario ) {
         // se off-line ou navegador sem suport a indexedDB
-        alert(navigator.onLine);
         console.log('Status de Internet navigator.onLine', root.onLine);
         if (!root.onLine || !indexedDBCtrl.support) return false;
         $rootScope.syncAllDB();
     }
 
     $scope.loader = 'libs/img/ajax_loader_blue.gif';
-
-    root.startLoad = function () {
-        document.getElementById('load').style.display = 'inline-block';
-    };
-    root.stopLoad = function () {
-        document.getElementById('load').style.display = 'none';
-    }
 }
 
 angular.module( 'cfp' )
