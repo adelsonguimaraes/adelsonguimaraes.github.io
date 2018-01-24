@@ -1,9 +1,10 @@
-let cacheName = 'cfp-v.1.1.8';
+let cacheName = 'cfp-v.1.1.10';
 let filesToCache = [
     './',
     'index.html',
     'libs/css/bootstrap.min.css',
     'libs/css/animate.css',
+    'libs/font-awesome/fonts/fontawesome-webfont.woff2',
     'libs/font-awesome/css/font-awesome.css',
     'libs/css/style.css',
     'libs/js/jquery-2.2.4.min.js',
@@ -35,7 +36,7 @@ let filesToCache = [
     'libs/img/splash.gif',
     'libs/img/moneyrain.gif',
     'libs/img/ajax_loader_blue.gif',
-    'libs/img/img/financas.jpg',
+    'libs/img/financas.jpg',
     'libs/img/cronograma.png',
     'libs/img/despesa.png',
     'libs/img/recebimento.png',

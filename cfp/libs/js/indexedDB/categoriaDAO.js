@@ -27,7 +27,7 @@ const categoriaDAO = {
                 data.tipo, // tipo
                 (data.sync != undefined) ? data.sync : 'NAO',
                 (data.ativo != undefined) ? data.ativo : 'SIM',
-                (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD HH:mm:ss'), // datacadastro
                 (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
             );
             indexedDBCtrl.add('categoria', this.data).then(data => {
@@ -59,7 +59,7 @@ const categoriaDAO = {
                                 data.sync,
                                 data.ativo,
                                 data.datacadastro, // datacadastro
-                                (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                                (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD HH:mm:ss') // dataedicao
                             );
                             indexedDBCtrl.start().then(db => {
                                 db.update('categoria', this.data).then(data => {

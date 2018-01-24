@@ -166,12 +166,19 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
                         contaparcela = 12;
                     }
 
+                    
+                    // if (totalParcela === undefined) {
+                    //     console.log(conta);
+                    // }
+
                     // laco de parcelas da conta
                     for (var p=0; p<contaparcela; p++) {
                         var dia = moment(conta.datavencimento).add(p, "M").date(); // dia da data conta + index
                         var mes = moment(conta.datavencimento).add(p, "M").month(); // mes data conta + index
                         var ano = moment(conta.datavencimento).add(p, "M").year(); // ano data conta + index
                         
+                        // console.log(dia + ' _ ' + mes + ' _ ' + ano);
+
                         // caso o mes e ano da conta seja = ao mes e ano atual 
                         if (mes === month && ano === year) {
                             data = {"data": mes+"/"+ano, "valor":valorParcela};//conta.valor};

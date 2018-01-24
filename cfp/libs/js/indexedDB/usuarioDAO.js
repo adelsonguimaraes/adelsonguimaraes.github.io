@@ -27,7 +27,7 @@ const usuarioDAO = {
                 data.email, // email
                 data.senha, // senha
                 data.perfil, // perfil
-                (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD HH:mm:ss'), // datacadastro
                 (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
             );
             indexedDBCtrl.start().then(db => {
@@ -59,7 +59,7 @@ const usuarioDAO = {
                             data.senha, // senha
                             data.perfil, // perfil
                             data.datacadastro, // datacadastro
-                            (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                            (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD HH:mm:ss') // dataedicao
                         );
                         indexedDBCtrl.start().then(db => {
                             db.update('usuario', this.data).then(data => {

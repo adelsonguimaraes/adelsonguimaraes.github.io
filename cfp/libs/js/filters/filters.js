@@ -82,6 +82,7 @@ function indeterminado () {
 		if(!input || typeof(input) === 'object') return input;
 		if (+input === 0) {
 			input = 'IND';
+			console.log('input é = 0');
 		}
 		return input;
 	}

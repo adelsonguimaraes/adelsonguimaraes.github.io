@@ -48,7 +48,7 @@ const contaDAO = {
                         (data.status != undefined  || data.status != null) ? data.status : 'EMABERTO',
                         data.datavencimento,
                         (data.sync != undefined || data.sync != null) ? data.sync : 'NAO',
-                        (data.datacadastro != undefined || data.datacadastro != null) ? data.datacadastro : moment().format('YYYY-MM-DD hh:mm:ss'), // datacadastro
+                        (data.datacadastro != undefined || data.datacadastro != null) ? data.datacadastro : moment().format('YYYY-MM-DD HH:mm:ss'), // datacadastro
                         (data.dataedicao != undefined || data.dataedicao != null) ? data.dataedicao : null // dataedicao
                     );
                     indexedDBCtrl.add('conta', this.data).then(data => {
@@ -87,8 +87,9 @@ const contaDAO = {
                                 data.datavencimento,
                                 data.sync,
                                 data.datacadastro, // datacadastro
-                                moment().format('YYYY-MM-DD hh:mm:ss') // dataedicao
+                                moment().format('YYYY-MM-DD HH:mm:ss') // dataedicao
                             );
+
                             indexedDBCtrl.start().then(db => {
                                 db.update('conta', this.data).then(data => {
                                     response.success = true; 

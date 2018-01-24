@@ -136,11 +136,11 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
 
             newObj.idusuario = $rootScope.usuario.idusuario;
             newObj.valor = desformataValor(newObj.valor);
-
+            newObj.parcela = (newObj.parcela === 'INDETERMINADO') ? 0 : newObj.parcela;
             newObj.datavencimento = moment(newObj.datavencimento).format('YYYY-MM-DD');
             
             var metodo = "cadastrar";
-            if(newObj.id) {
+            if(+newObj.id > 0) {
                 metodo = "atualizar";
             }
             
