@@ -1,4 +1,4 @@
-let cacheName = 'cfp-v.1.1.10';
+let cacheName = 'cfp-v.1.2.0';
 let filesToCache = [
     './',
     'index.html',

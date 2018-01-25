@@ -329,7 +329,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
         // se off-line ou navegador sem suport a indexedDB
         console.log('Status de Internet navigator.onLine', root.onLine);
         if (!root.onLine || !indexedDBCtrl.support) return false;
-        $rootScope.syncAllDB();
+        // $rootScope.syncAllDB();
     }
 }
 

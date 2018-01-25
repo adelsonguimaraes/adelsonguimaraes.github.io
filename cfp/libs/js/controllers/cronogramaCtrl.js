@@ -30,7 +30,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
             // {"descricao":"Bolsa", "valor":"70", "parcela":"1", "datavencimento":"2016-07-08"},
             // {"descricao":"Oculos", "valor":"180", "parcela":"2", "datavencimento":"2016-07-20"},
             // {"descricao":"Notebook", "valor":"2000", "parcela":"10", "datavencimento":"2016-07-15"},
-            // {"descricao":"Meia", "valor":"500", "parcela":"7", "datavencimento":"2016-09-15"}
+            // {"descricao":"Meia", "valor":"500", "parcela":"7", "datavencimento":"2018-01-31"}
         ];
 
         $scope.periodos = [
@@ -118,22 +118,35 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
         }
         $scope.listarContasPorUsuario();
     
+        /*
+            Está função ordena as contas por data
+        */
         function ordenaDatas (contas) {
-            var datas = contas;
-            var array = [];
-            while (datas.length > 0) {
-                var num = {"datavencimento":"9999/12/31"};
-                var pos = 0;
+            var datas = contas; // copiamos o array de contas para uma segunda variável
+            var array = []; // criamos um array temporário pra orgranizar as contas por ordem
+            
+            // o laco repetirá enquanto data for > 0
+            while (datas.length > 0) { 
+                // var num = {"datavencimento":"9999/12/31"}; // startamos a variável NUM com um valor alto
+                var num = {'diavencimento':'9999'};
+                var pos = 0; // startamos a variável pos com 0
+                
+                // criamos um laco de data para varrer a estrutura comparando as datas
                 for (var x in datas) {
-                    if (moment(datas[x].datavencimento).date() < moment(num.datavencimento).date()) {
-                        num = datas[x];
-                        num.diavencimento = num.datavencimento.substr(8,2);
-                        pos = x;
+                    // verificamos se a data atual é < que a antiga data se sim a data nova subistitui a antiga
+                    // na variável NUM, repetiremos até finalizar o laço
+                    // if (moment(datas[x].datavencimento).valueOf() < moment(num.datavencimento).valueOf()) {
+                    if (moment(datas[x].datavencimento).format('DD') < num.diavencimento) {
+                        num = datas[x]; // substituindo NUM com o valor da conta menor
+                        num.diavencimento = moment(num.datavencimento).format('DD'); // adicionando dia do vencimento a num
+                        pos = x; // passando a posição do item no array para a variável pos
                     }
                 }
-                array.push(num);
-                datas.splice( pos, 1 );
+                
+                array.push(num); // adicionando o item de menor data encontrado ao array temporário
+                datas.splice( pos, 1 ); // deletando o item do array datas para que ele não seja mais comparado, repete-se até zerar o array
             }
+            // ao finalizar repassamos array para $scope.contas
             $scope.contas = array;
         }
         
