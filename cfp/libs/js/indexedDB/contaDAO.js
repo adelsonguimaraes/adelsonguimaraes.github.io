@@ -247,7 +247,7 @@ const contaDAO = {
                             request.onsuccess = (event) => {
                                 var result = event.target.result;
                                 for (var i in result) {
-                                    if ( +result[i].idusuario === +idusuario) {
+                                    if ( +result[i].idusuario === +idusuario && result[i].tipo === 'APAGAR') {
                                         list.push(result[i]);
                                     }
                                 }
