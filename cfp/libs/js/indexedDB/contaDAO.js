@@ -261,6 +261,30 @@ const contaDAO = {
                     });
         });
     },
+    listarContasAReceberPorUsuario(idusuario) {
+        return new Promise (resolve  => {
+                var list = [];
+                var response = {success:false, msg:'default', data: ''};
+                
+                    indexedDBCtrl.start().then(db => {
+                        db.getAll('conta').then(resquest => {
+                            request.onsuccess = (event) => {
+                                var result = event.target.result;
+                                for (var i in result) {
+                                    if ( +result[i].idusuario === +idusuario && result[i].tipo === 'ARECEBER') {
+                                        list.push(result[i]);
+                                    }
+                                }
+                                response.success = true; 
+                                response.msg = 'listarContasAReceberPorUsuario com sucesso!';
+                                response.data = list;
+                                resolve(response);
+                            }
+                        });
+                            
+                    });
+        });
+    },
     setIDNuvem (data, newID) {
         return new Promise (resolve => {
             //setTimeout(() => {
