@@ -52,17 +52,40 @@
 								<td ng-bind="conta.valor | moeda"></td>
 								<td ng-bind="conta.diavencimento"></td>
 								<td ng-bind="conta.parcelaAtual"></td>
-								<td ng-repeat="pres in conta.pres" style="{{pres.color}}">
-									{{pres.valor | moeda}}
+								<td ng-repeat="pres in conta.pres" ng-class="pres.ngClass">
 									<i class="fa" ng-class="pres.icon"></i>
+									{{pres.valor | moeda}}
 								</td>
 							</tr>
+							<!-- Despesas -->
 							<tr>
-								<td style="background:#afc2f3;">Total</td>
-								<td style="background:#afc2f3;">{{totalgeral | moeda}}</td>
-								<td style="background:#afc2f3;"></td>
-								<td style="background:#afc2f3;"></td>
-								<td ng-repeat="total in totais" style="background:#f9e7aa;">
+								<td style="background:#fceaea;">Total Despesa</td>
+								<td style="background:#fceaea;">{{totalDespesa | moeda}}</td>
+								<td style="background:#fceaea;"></td>
+								<td style="background:#fceaea;"></td>
+								<td ng-repeat="total in totalMesDespesa" style="background:#fceaea;">
+									{{total.valor | moeda}}
+									<i class="fa" ng-class="total.icon"></i>
+								</td>
+							</tr>
+							<!-- Recebimentos -->
+							<tr>
+								<td style="background:#e5ffe5;">Total Recebimento</td>
+								<td style="background:#e5ffe5;">{{totalRecebimento | moeda}}</td>
+								<td style="background:#e5ffe5;"></td>
+								<td style="background:#e5ffe5;"></td>
+								<td ng-repeat="total in totalMesRecebimento" style="background:#e5ffe5;">
+									{{total.valor | moeda}}
+									<i class="fa" ng-class="total.icon"></i>
+								</td>
+							</tr>
+							<!-- Saldo -->
+							<tr>
+								<td style="background:#11143a; color:#fff;">Saldo</td>
+								<td style="background:#11143a; color:#fff;">{{totalSaldo | moeda}}</td>
+								<td style="background:#11143a; color:#fff;"></td>
+								<td style="background:#11143a; color:#fff;"></td>
+								<td ng-repeat="total in totalMesSaldo" ng-class="total.ngClass">
 									{{total.valor | moeda}}
 									<i class="fa" ng-class="total.icon"></i>
 								</td>
