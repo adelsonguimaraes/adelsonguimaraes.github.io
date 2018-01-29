@@ -20,6 +20,10 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     // authenticationAPI.verificaSessao();
     authenticationAPI.sessionCtrl();
 
+    if (root.usuario) {
+        $rootScope.usuario.nome = $rootScope.usuario.email.substr(0, $rootScope.usuario.email.indexOf('@'));
+    }
+
     $rootScope.syncDB = function (classe, metodolistar) {
         
         return new Promise (resolve => {

@@ -196,6 +196,11 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
         $scope.cancelar = function () {
             inciaScope();
         }
+
+        setTimeout(()=>{
+            var x = ($scope.page === 'apagar') ? 'despesa' : 'recebimento';
+            setActivatedMenu(document.getElementById('menu_'+x));
+        }, 100);
     }
     
     angular

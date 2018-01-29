@@ -260,6 +260,10 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
             montaValorMes();
         };
         $scope.changeTlMeses();
+
+        setTimeout(()=>{
+            setActivatedMenu(document.getElementById('menu_cronograma'));
+        }, 100);
     }
     
     
