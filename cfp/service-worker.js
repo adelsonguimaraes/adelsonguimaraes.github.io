@@ -1,4 +1,4 @@
-let cacheName = 'cfp-v.1.2.0';
+let cacheName = 'cfp-v.1.2.1';
 let filesToCache = [
     './',
     'index.html',
@@ -7,6 +7,8 @@ let filesToCache = [
     'libs/font-awesome/fonts/fontawesome-webfont.woff2',
     'libs/font-awesome/css/font-awesome.css',
     'libs/css/style.css',
+    'libs/css/style-cfp.css',
+    'libs/js/style-cfp.js',
     'libs/js/jquery-2.2.4.min.js',
     'libs/js/angular.min.js',
     'libs/js/angular/angular-sanitize.js',

@@ -111,7 +111,15 @@
 	            //         ]);
 	            //     }
 	            // }
-	        });
+			})
+			
+			.state('movimentacao', {
+				cache: false,
+				url: "/movimentacao",
+				templateUrl: "views/movimentacao.html",
+				controller: "movimentacaoCtrl",
+				data: { pageTitle: 'Movimentação', specialClass: 'gray-bg'}
+			})
 	}
 
 	angular

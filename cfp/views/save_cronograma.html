@@ -1,0 +1,80 @@
+<!-- Cronograma -->
+<div ng-include="'views/nav.html'"></div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Cronograma
+				</div>
+				<div class="panel-body">
+					<!-- <div class="form-group">
+						Selecione o escopo dos meses
+						<select class="form-control">
+							<option value="6">6</option>
+							<option value="12">12</option>
+						</select>
+					</div> -->
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+							 	<label class="label-control">Periodo</label>
+							 	<select class="form-control" ng-options="p as p for p in periodos" ng-model="tlmeses" ng-change="changeTlMeses()">
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="bg-warning btn-lg" ng-if="!contas.length">
+						<span class="text-warning"><b>Atenção:</b> Não há contas para montar seu cronograma!</span>
+					</div>
+					<div class="table-responsive">
+					<table class="table table-bordered table-hover" ng-if="contas.length">
+						<!-- <thead>
+							<tr>
+								<td colspan="100">Head</td>
+							</tr>
+						</thead> -->
+						<tbody>
+							<tr>
+								<td style="background:#afc2f3;">Descrição</td>
+								<td style="background:#afc2f3;" width="60">Valor</td>
+								<!-- <td style="background:#afc2f3;">Categoria</td> -->
+								<td style="background:#afc2f3;">Venc</td>
+								<td style="background:#afc2f3;">Prest</td>
+								<td ng-repeat="mes in meses" style="background:#bce7e6;">{{mes.sigla}}/{{mes.ano}}</td>
+								
+							</tr>
+							<tr ng-repeat="conta in contas">
+								<td ng-bind="conta.descricao"></td>
+								<!-- <td ng-bind="conta.categoria"></td> -->
+								<td ng-bind="conta.valor | moeda"></td>
+								<td ng-bind="conta.diavencimento"></td>
+								<td ng-bind="conta.parcelaAtual"></td>
+								<td ng-repeat="pres in conta.pres" style="{{pres.color}}">
+									{{pres.valor | moeda}}
+									<i class="fa" ng-class="pres.icon"></i>
+								</td>
+							</tr>
+							<tr>
+								<td style="background:#afc2f3;">Total</td>
+								<td style="background:#afc2f3;">{{totalgeral | moeda}}</td>
+								<td style="background:#afc2f3;"></td>
+								<td style="background:#afc2f3;"></td>
+								<td ng-repeat="total in totais" style="background:#f9e7aa;">
+									{{total.valor | moeda}}
+									<i class="fa" ng-class="total.icon"></i>
+								</td>
+							</tr>
+						</tbody>
+						<!-- <tfoot>
+							<tr>
+								<td colspan="100">Footer</td>
+							</tr>
+						</tfoot> -->
+					</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
