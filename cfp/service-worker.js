@@ -1,6 +1,6 @@
 importScripts('./libs/js/sw-cache-polyfill.js');
 
-let cacheName = 'cfp-v.1.3.0';
+let cacheName = 'cfp-v.1.3.1';
 let filesToCache = [
     './',
     'index.html',
@@ -27,7 +27,7 @@ let filesToCache = [
     'libs/js/indexedDB/usuarioDAO.js',
     'libs/js/indexedDB/categoriaDAO.js',
     'libs/js/indexedDB/contaDAO.js',
-    'libs/js/app.js',
+    'libs/js/app.js?',
     'libs/js/config.js',
     // directives
     'libs/js/directives/directives.js',
@@ -84,7 +84,7 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
     console.log( '[ServiceWorker] Activate' );
     e.waitUntil(
-        caches.keys().then((keyList) =>{
+        caches.keys().then((keyList) =>{  
             return Promise.all(keyList.map((key) => {
                 console.log( '[ServiceWorker] Old cache', key );
                 console.log( '[ServiceWorker] New cache', cacheName );
