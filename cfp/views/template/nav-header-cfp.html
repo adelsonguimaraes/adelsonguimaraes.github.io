@@ -5,8 +5,11 @@
                 <a href="./">CFP</a>
             </li>
             <li>
-                <a><i class="fa fa-user" aria-hidden="true"></i> {{usuario.nome}}</a>
+                <a ng-click="modalGeneric('Meus Dados', './views/template/usuario-modal-content.html')">
+                    <i class="fa fa-user" aria-hidden="true"></i> {{usuario.nome}}
+                </a>
             </li>
         </ul>
     </div>
 </nav>
+<div ng-include="'./views/template/modal.html'"></div>

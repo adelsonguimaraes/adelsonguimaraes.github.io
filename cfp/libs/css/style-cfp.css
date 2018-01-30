@@ -129,3 +129,27 @@
 	background:#7c1c1c; 
 	color:#fff;
 }
+
+/* usuario menu */
+.menu-usuario {
+	margin:0 auto;
+	width: 100%;
+}
+.menu-usuario ul {
+	margin:0 auto;
+	padding:0;
+}
+.menu-usuario ul li {
+	text-align: center;
+	list-style: none;
+}
+.menu-usuario ul li a {
+	color: black;
+}
+.menu-usuario > ul > li > span {
+	font-weight: bold;
+	font-size: 16px;
+}
+.menu-usuario > ul > li > i {
+	font-size: 56px;
+}

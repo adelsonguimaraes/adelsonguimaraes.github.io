@@ -97,6 +97,9 @@ const indexedDBCtrl = {
                         }
                     }
                 };
+                request.onerror = (event) => {
+                    console.error('[IndexedDBCtrl]:[ERROR]:', event);
+                }
             }, 100);
         });
     },

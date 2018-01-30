@@ -24,8 +24,18 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
         $rootScope.usuario.nome = $rootScope.usuario.email.substr(0, $rootScope.usuario.email.indexOf('@'));
     }
 
+    // modal para aplicação
+    $rootScope.modalGeneric = function (title, content) {
+        $scope.myModal = {
+            title: title,
+            content: content
+        };
+        $('#myModal').modal({
+            backdrop: 'static'
+        });
+    };
+
     $rootScope.syncDB = function (classe, metodolistar) {
-        
         return new Promise (resolve => {
             // só faz a sincronização para usuários logados
             if(!$rootScope.usuario) return false;
@@ -222,6 +232,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                                         eval(classe+'DAO').setIDNuvem(array[pos], response.data.data).then(response => {
                                                             if (response.success) {
                                                                 percorreArray(array, array.length, pos+1);
+                                                                console.log('[info]: Item adicionado DBNuven', array[pos]);
                                                             }
                                                         });
                                                     }

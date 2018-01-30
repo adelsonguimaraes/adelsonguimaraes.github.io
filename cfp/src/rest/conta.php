@@ -32,6 +32,9 @@ switch ($_POST['metodo']) {
 	case 'listarContasAPagarPorUsuario':
 		listarContasAPagarPorUsuario();
 		break;
+	case 'listarContasAReceberPorUsuario':
+		listarContasAReceberPorUsuario();
+		break;
 	case 'atualizar':
 		atualizar();
 		break;
@@ -91,6 +94,12 @@ function listarContasAPagarPorUsuario() {
 	$usuario = $_POST['usuario'];
 	$control = new ContaControl();
 	$response = $control->listarContasAPagarPorUsuario($usuario['idusuario']);
+	echo json_encode($response);
+}
+function listarContasAReceberPorUsuario() {
+	$usuario = $_POST['usuario'];
+	$control = new ContaControl();
+	$response = $control->listarContasAReceberPorUsuario($usuario['idusuario']);
 	echo json_encode($response);
 }
 function atualizar () {

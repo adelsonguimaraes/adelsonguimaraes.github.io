@@ -148,6 +148,9 @@ const contaDAO = {
                             response.msg = 'Listagem com sucesso!';
                             response.data = list;
                             resolve(response);
+                        };
+                        request.onerror = (event) => {
+                            console.error('[ContaDAO]:[ERROR]: ListarTodos', event);
                         }
                     });
                 });

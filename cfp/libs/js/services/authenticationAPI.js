@@ -122,7 +122,8 @@
 		        		window.localStorage.removeItem("sessionCFP");
 		        		$rootScope.usuario = "";
 						//delete $rootScope.menus;
-		        		$location.path("/login");
+						// $location.path("/login");
+						window.location.replace('./');
 		        	// }
 		        // });	
 	        };

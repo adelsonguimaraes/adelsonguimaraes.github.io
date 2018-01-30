@@ -1,6 +1,6 @@
 importScripts('./libs/js/sw-cache-polyfill.js');
 
-let cacheName = 'cfp-v.1.2.8';
+let cacheName = 'cfp-v.1.3.0';
 let filesToCache = [
     './',
     'index.html',
@@ -57,6 +57,11 @@ let filesToCache = [
     'views/cronograma.html',
     'views/contaapagar.html',
     'views/contaareceber.html',
+    // templates
+    'views/template/modal.html',
+    'views/template/nav-footer-cfp.html',
+    'views/template/nav-header-cfp.html',
+    'views/template/usuario-modal-content.html',
     // controllers
     'libs/js/controllers/mainCtrl.js',
     'libs/js/controllers/cronogramaCtrl.js',
@@ -80,7 +85,6 @@ self.addEventListener('activate', (e) => {
     console.log( '[ServiceWorker] Activate' );
     e.waitUntil(
         caches.keys().then((keyList) =>{
-            console.log(keyList);
             return Promise.all(keyList.map((key) => {
                 console.log( '[ServiceWorker] Old cache', key );
                 console.log( '[ServiceWorker] New cache', cacheName );

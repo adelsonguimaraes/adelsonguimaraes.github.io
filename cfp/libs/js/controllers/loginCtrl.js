@@ -79,7 +79,6 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 				}
 			}
 		});
-		
 	}
 }
 

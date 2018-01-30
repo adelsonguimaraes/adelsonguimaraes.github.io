@@ -210,12 +210,36 @@ Class ContaDAO {
 				array_push( $this->lista, $row);
 			}
 
-			$this->superdao->setSuccess( true );			$this->superdao->setData( $this->lista );
+			$this->superdao->setSuccess( true );			
+			$this->superdao->setData( $this->lista );
 			$this->superdao->setTotal( $this->qtdTotal() );
 		}
 
 		return $this->superdao->getResponse();
 	}
+
+	function listarContasAReceberPorUsuario ($idusuario) {
+		$this->sql = "SELECT * from conta where idusuario = $idusuario and tipo ='ARECEBER'";
+
+		$result = mysqli_query ( $this->con, $this->sql );
+		
+		$this->superdao->resetResponse();
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'listarContasAReceberPorUsuario' ) );
+		}else{
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
+			}
+
+			$this->superdao->setSuccess( true );			
+			$this->superdao->setData( $this->lista );
+			$this->superdao->setTotal( $this->qtdTotal() );
+		}
+
+		return $this->superdao->getResponse();
+	}
+	
 	//deletar
 	function deletar (Conta $obj) {
 		$this->superdao->resetResponse();
