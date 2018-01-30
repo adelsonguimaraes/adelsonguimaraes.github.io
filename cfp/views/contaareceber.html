@@ -1,105 +1,140 @@
-<!-- Recebimentos -->
-<div ng-include="'views/nav.html'"></div>
-<div class="container">
-	<div class="row">
-		<div class="col-md-12" ng-if="!novo">
+<!-- Recebimento -->
+<!-- <div ng-include="'views/nav.html'"></div> -->
+<div ng-include="'./views/template/nav-header-cfp.html'"></div>
+<!-- <div class="container"> -->
+<div class="wapp">
+	<!-- <div class="row">
+		<div class="col-md-12"> -->
+		<div ng-if="!nova">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3>Lista de Recebimentos<i class="fa fa-arrow-down pull-right"></i></h3>
+					<h3>Lista de Recebimentos</h3>
 				</div>
 				<div class="panel-body">
-					<div class="bg-danger btn-lg" ng-if="!recebimentos">
-						<span class="text-danger">Nenhum recebimento registrado</span>
-					</div>
-					<table class="table table-bordered table-striped"  ng-if="recebimentos">
-						<thead>
-							<tr>
-								<td>ID</td>
-								<td>Descrição</td>
-								<td>Valor</td>
-								<td>Tipo</td>
-								<td>Data Arrecadação</td>
-								<td>Ações</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="obj in recebimentos">
-								<td ng-bind="obj.id"></td>
-								<td ng-bind="obj.descricao"></td>
-								<td ng-bind="obj.valor"></td>
-								<td ng-bind="obj.tipo"></td>
-								<td ng-bind="obj.dataarrecadacao"></td>
-								<td>
-									<div class="btn-group">
-										<button class="btn btn-warning" type="button" ng-click="editar(obj)"><i class="fa fa-pencil"></i></button>
-										<button class="btn btn-danger" type="button" ng-click="deletar(obj)"><i class="fa fa-trash"></i></button>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="8">
-									<label class="label-control">Registros encontrados ({{recebimentos.length}})</label>
-									<button class="btn btn-default pull-right" type="button" ng-click="listar()">Refresh <i class="fa fa-refresh"></i></button>
-								</td>
-							</tr>
-						</tfoot>
-					</table>
-					<hr>
 					<button class="btn btn-primary" ng-click="novaConta()"><i class="fa fa-plus"></i> Novo Recebimento</button>
+					<hr>
+					<div class="bg-warning btn-lg" ng-if="!contas.length">
+						<span class="text-warning"><b>Atenção:</b> Você não tem recebimentos!</span>
+					</div>
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped table-hover"  ng-if="contas.length">
+							<thead>
+								<tr>
+									<!-- <td>ID</td> -->
+									<td>Descrição</td>
+									<td>Valor</td>
+									<td>Parcelas</td>
+									<td>Data Arrecadação</td>
+									<td>Ações</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="obj in contas">
+									<!-- <td ng-bind="obj.id"></td> -->
+									<td ng-bind="obj.descricao"></td>
+									<td ng-bind="obj.valor | moeda"></td>
+									<td ng-bind="obj.parcela | indeterminado"></td>
+									<td ng-bind="obj.datavencimento | data"></td>
+									<td>
+										<div class="btn-group">
+											<button class="btn btn-warning" type="button" ng-click="editar(obj)"><i class="fa fa-pencil"></i></button>
+											<button class="btn btn-danger" type="button" ng-click="deletar(obj)"><i class="fa fa-trash"></i></button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr><td colspan="8">
+									<label class="label-control">Registros encontrados ({{contas.length}})</label>
+									<button class="btn btn-default pull-right" type="button" ng-click="listarContasPorUsuario(page)">Refresh <i class="fa fa-refresh"></i></button>
+								</td></tr>
+							</tfoot>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-12" ng-if="novo">
+		<!-- <div class="col-md-12" ng-if="nova"> -->
+		<div ng-if="nova">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					Cadastro de Recebimentos
-					<i class="fa fa-arrow-up pull-right"></i>
+					Cadastro de Recebimento
 				</div>
 				<div class="panel-body">
+					<h3>Instruções</h3>
+					<hr>
+					<ul>
+						<li>
+							<b>Descrição:</b> 
+							Descreva seu recebimentos de maneira que fique fácil para você a identificação durante as consultas.
+						</li>
+						<li>
+							<b>Categoria:</b> 
+							Escolha a categoria que melhor identifique seu recebimento, isso ajudará para buscar por categoria.
+						</li>
+						<li>
+							<b>Valor:</b>
+							Coloque o valor total de seu recebimento atualizado.
+						</li>
+						<li>
+							<b>Parcela:</b> 
+							Indique as parcelas atualizadas de seu recebimento, o sistema irá calcular automaticamente o valor de cada parcela a partir do valor total informado,
+							com exceção de parcelas indefinidas, nesse caso o valor total será assumido em cada mês.
+						</li>
+						<li>
+							<b>Data Arrecadação:</b>
+							Informe a data atualizada da próxima arrecadação de sua despesa, com essa informação o sistema irá criar o cronograma de seu recebimento.
+						</li>
+					</ul>
+					<hr>
 					<form name="form" class="form" role="form">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
 								 	<label class="label-control">Descrição</label>
-									<input type="text" class="form-control" name="descricao" ng-model="recebimento.descricao" ng-required="true">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-2">
-								<div class="form-group">
-								 	<label class="label-control">Valor</label>
-									<input type="text" class="form-control" name="valor" ng-model="recebimento.valor">
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="form-group">
-								 	<label class="label-control">Tipo</label>
-								 	<select class="form-control" ng-model="recebimento.tipo">
-								 		<option value="UNICO">Único</option>
-								 		<option value="INDETERMINADO">Indeterminado</option>
-								 	</select>
-								</div>
-							</div>	
-							<div class="col-md-3">
-								<div class="form-group">
-								 	<label class="label-control">Data Arrecadacao</label>
-									<input type="text" class="form-control" name="dataarrecadacao" ng-model="recebimento.dataarrecadacao" ng-required="true">
+									<input type="text" placeholder="Descreva sua despesa." class="form-control" name="descricao" ng-model="conta.descricao" ng-required="true">
 								</div>
 							</div>
 						</div>
 
+						<div class="row">
+							<div class="col-md-2">
+								<div class="form-group">
+								 	<label class="label-control">Categoria</label>
+									<select class="form-control" name="categoria" ng-options="obj.id as obj.descricao for obj in categorias" ng-model="conta.idcategoria" ng-required="true">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+								 	<label class="label-control">Valor</label>
+									<input type="tel" class="form-control" name="valor" ng-model="conta.valor" ng-required="true" mascara-moeda>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="label-control">Parcela</label>
+									<select class="form-control" name="parcela" ng-options="obj as obj for obj in parcelas" ng-model="conta.parcela" ng-required="true">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+								 	<label class="label-control">Data Arrecadação</label>
+								 	<input type="date" min="{{dataatual}}" class="form-control" name="datavencimento" ng-model="conta.datavencimento" ng-required="true">
+								</div>
+							</div>	
+						</div>
+
 						<hr>
 						<div>
-							<button class="btn btn-success pull-rigth" type="button" ng-click="salvar(recebimento)" ng-disabled="form.$invalid">Salvar Despesa</button>
+							<button class="btn btn-success pull-rigth" type="button" ng-click="salvar(conta)" ng-disabled="form.$invalid">Salvar</button>
 							<button class="btn btn-danger pull-rigth" type="button" ng-click="cancelar()">Cancelar</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>	
-	</div>
-	
+	<!-- </div> -->
 </div>
+<div ng-include="'./views/template/nav-footer-cfp.html'"></div>

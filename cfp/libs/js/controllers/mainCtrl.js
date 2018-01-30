@@ -74,7 +74,6 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                             // se o destino for o DBLocal, chamamos o metodo local
                                             if (d === 'dbLocal') {
                                                 array[pos].sync = 'SIM'; // setamos sync como sim
-                                                console.log(array[pos]);
                                                 DAOJS.cadastrar(array[pos]).then(resp => {
                                                     if (resp.success){
                                                         // setamos na Nuvem que este dado se encontra em sincronia
@@ -132,7 +131,6 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                             if (array[pos].sync === 'NAO') {
 
                                                 array[pos].sync = 'SIM'; // setamos sync como sim
-                                                console.log(array[pos]);
                                                 DAOJS.cadastrar(array[pos]).then(resp => {
                                                     if (resp.success){
                                                         // setamos na Nuvem que este dado se encontra em sincronia
@@ -187,7 +185,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                                                                     */
                                                                     DAOJS.cadastrar(lista[i]).then(resp => {
                                                                         if (resp.success){
-                                                                            console.log('[info]: Item adicionado DBLoca', lista[i]);
+                                                                            console.log('[info]: Item adicionado DBLocal', lista[i]);
                                                                         }
                                                                     });
                                                                 }
@@ -331,7 +329,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
 
     if ( root.usuario ) {
         // se off-line ou navegador sem suport a indexedDB
-        console.log('Status de Internet navigator.onLine', root.onLine);
+        // console.log('Status de Internet navigator.onLine', root.onLine);
         if (!root.onLine || !indexedDBCtrl.support) return false;
         $rootScope.syncAllDB();
     }

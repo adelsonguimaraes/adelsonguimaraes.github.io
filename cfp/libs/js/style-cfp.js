@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function (event) {
-    console.log(document.getElementsByTagName('i'));
+    // console.log(document.getElementsByTagName('i'));
 });
 
 /*
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 var menus = document.getElementsByClassName('menu-cfp');
 for (var x in menus) {
-    console.log(menus[x]);
+    // console.log(menus[x]);
 }
 
 // função para seta o menu ativo

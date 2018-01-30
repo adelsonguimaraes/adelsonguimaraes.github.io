@@ -108,3 +108,24 @@
 	-moz-box-shadow: 0px -3px 1px -1px rgba(0,0,0,0.34);
 	box-shadow: 0px -3px 1px -1px rgba(0,0,0,0.34);
 }
+
+.entrada {
+	/* background: #6edb64; */
+	color:#018435;
+}
+.saida {
+	/* background: #ef8f8f; */
+	color:#b20000;
+}
+.neutro {
+	background:#f0f5f5;
+	color:#ccc;
+}
+.positivo {
+	background:#11143a; 
+	color:#fff;
+}
+.negativo {
+	background:#7c1c1c; 
+	color:#fff;
+}

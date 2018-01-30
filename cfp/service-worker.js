@@ -1,4 +1,6 @@
-let cacheName = 'cfp-v.1.2.1';
+importScripts('./libs/js/sw-cache-polyfill.js');
+
+let cacheName = 'cfp-v.1.2.8';
 let filesToCache = [
     './',
     'index.html',
@@ -78,7 +80,10 @@ self.addEventListener('activate', (e) => {
     console.log( '[ServiceWorker] Activate' );
     e.waitUntil(
         caches.keys().then((keyList) =>{
+            console.log(keyList);
             return Promise.all(keyList.map((key) => {
+                console.log( '[ServiceWorker] Old cache', key );
+                console.log( '[ServiceWorker] New cache', cacheName );
                 if (key !== cacheName) {
                     console.log( '[ServiceWorker] Removing old cache', key );
                     return caches.delete(key);
@@ -87,6 +92,7 @@ self.addEventListener('activate', (e) => {
         })
     );
 });
+
 
 self.addEventListener('fetch', (e) => {
     // console.log( '[ServiceWorker] Fetch', e.request.url);

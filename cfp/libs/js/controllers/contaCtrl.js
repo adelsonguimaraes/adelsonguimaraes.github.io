@@ -138,6 +138,9 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
             newObj.valor = desformataValor(newObj.valor);
             newObj.parcela = (newObj.parcela === 'INDETERMINADO') ? 0 : newObj.parcela;
             newObj.datavencimento = moment(newObj.datavencimento).format('YYYY-MM-DD');
+            if ($scope.page === 'areceber') {
+                newObj.tipo = 'ARECEBER';
+            }
             
             var metodo = "cadastrar";
             if(+newObj.id > 0) {
@@ -150,6 +153,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
                         inciaScope();
                         $scope.listarContasPorUsuario($scope.page);
                         $rootScope.stopLoad();
+                        // $rootScope.syncDB('conta', 'listarContasPorUsuario');
                     }
                 });
                 return false;
@@ -167,6 +171,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
                     //success
                     inciaScope();
                     $scope.listarContasPorUsuario($scope.page);
+                    // $rootScope.syncDB('conta', 'listarContasPorUsuario');
                     $rootScope.stopLoad();
                 }, function errorCallback(response) {
                     //error

@@ -69,10 +69,16 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
         carregaMeses ();
     
         function totaisValor () {
-            $scope.totais = [];
-            $scope.totalgeral = 0;
+            $scope.totalMesDespesa = []; // total mensal da despesa
+            $scope.totalMesRecebimento = []; // total mensal do recebimento
+            $scope.totalMesSaldo = [];
+            $scope.totalDespesa = 0; // total geral da despesa
+            $scope.totalRecebimento = 0; // total geral do recebimento
+            $scope.totalSaldo = 0;
             for ( var i=0; i<$scope.tlmeses; i++ ) {
-                $scope.totais.push({"valor":0});
+                $scope.totalMesDespesa.push({"valor":0});
+                $scope.totalMesRecebimento.push({"valor":0});
+                $scope.totalMesSaldo.push({"valor":0});
             }
         };
         totaisValor();
@@ -194,7 +200,11 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
 
                         // caso o mes e ano da conta seja = ao mes e ano atual 
                         if (mes === month && ano === year) {
-                            data = {"data": mes+"/"+ano, "valor":valorParcela};//conta.valor};
+                            if (conta.tipo === 'ARECEBER') {
+                                data = {"data": mes+"/"+ano, "valor":valorParcela, "icon":"fa fa-plus", "ngClass":"entrada"};//conta.valor};
+                            }else{
+                                data = {"data": mes+"/"+ano, "valor":valorParcela, "icon":"fa fa-minus", "ngClass":"saida"};//conta.valor};
+                            }
                             // pegando a prestação atual
                             if (m === 0) { // m = o ( mes atual )
                                 var pa = ((p+1)<10)?'0'+(p+1):(p+1);
@@ -227,27 +237,63 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
                     }
     
                     if ( data === '' ) {
-                        conta.pres.push({"data": "00/0000", "valor":"xxxx", "color":"background:#f0f5f5; color:#ccc;", "icon":"fa-trophyx"});
+                        conta.pres.push({"data": "00/0000", "valor":"xxxx", "ngClass":"neutro", "icon":"fa-trophyx"});
                     }else{
                         conta.pres.push(data);
                         // calculando o total mensal
-                        $scope.totais[m].valor = (+$scope.totais[m].valor + +valorParcela).toFixed(2);//parseInt(conta.valor);
+                        if (conta.tipo === 'APAGAR') {
+                            $scope.totalMesDespesa[m].valor = (+$scope.totalMesDespesa[m].valor + +valorParcela).toFixed(2);
+                        }else{
+                            $scope.totalMesRecebimento[m].valor = (+$scope.totalMesRecebimento[m].valor + +valorParcela).toFixed(2);
+                        }
+                        $scope.totalMesSaldo[m].valor = (+$scope.totalMesRecebimento[m].valor + -$scope.totalMesDespesa[m].valor).toFixed(2);
+
                     }
                 }
-    
-                $scope.totalgeral += parseFloat(conta.valor);
+                
+                if (conta.tipo === 'APAGAR') {
+                    $scope.totalDespesa = (+$scope.totalDespesa + +conta.valor).toFixed(2);
+                }else{
+                    $scope.totalRecebimento = (+$scope.totalRecebimento + +conta.valor).toFixed(2);
+                }
+                
+                $scope.totalSaldo = (+$scope.totalRecebimento - +$scope.totalDespesa).toFixed(2);
             }
             setUpDownMes();
         }
     
         function setUpDownMes () {
-            for (var m in $scope.totais) {
-                if($scope.totais[m-1] != undefined && $scope.totais[m].valor < $scope.totais[m-1].valor) {
-                    $scope.totais[m].icon = "fa-arrow-down";
-                }else if($scope.totais[m-1] != undefined && $scope.totais[m].valor > $scope.totais[m-1].valor) {
-                    $scope.totais[m].icon = "fa-arrow-up";
+            // despesas
+            for (var m in $scope.totalMesDespesa) {
+                if($scope.totalMesDespesa[m-1] != undefined && $scope.totalMesDespesa[m].valor < $scope.totalMesDespesa[m-1].valor) {
+                    $scope.totalMesDespesa[m].icon = "fa-arrow-down";
+                }else if($scope.totalMesDespesa[m-1] != undefined && $scope.totalMesDespesa[m].valor > $scope.totalMesDespesa[m-1].valor) {
+                    $scope.totalMesDespesa[m].icon = "fa-arrow-up";
                 }else{
-                    $scope.totais[m].icon = "fa-arrow-right";
+                    $scope.totalMesDespesa[m].icon = "fa-arrow-right";
+                }
+            }
+            // recebimentos
+            for (var m in $scope.totalMesRecebimento) {
+                if($scope.totalMesRecebimento[m-1] != undefined && $scope.totalMesRecebimento[m].valor < $scope.totalMesRecebimento[m-1].valor) {
+                    $scope.totalMesRecebimento[m].icon = "fa-arrow-down";
+                }else if($scope.totalMesRecebimento[m-1] != undefined && $scope.totalMesRecebimento[m].valor > $scope.totalMesRecebimento[m-1].valor) {
+                    $scope.totalMesRecebimento[m].icon = "fa-arrow-up";
+                }else{
+                    $scope.totalMesRecebimento[m].icon = "fa-arrow-right";
+                }
+            }
+            // saldos
+            for (var m in $scope.totalMesSaldo) {
+                if(+$scope.totalMesSaldo[m].valor === 0) {
+                    $scope.totalMesSaldo[m].icon = "";
+                    $scope.totalMesSaldo[m].ngClass = "positivo";
+                }else if(+$scope.totalMesSaldo[m].valor > 0) {
+                    $scope.totalMesSaldo[m].icon = "fa fa-star-o";
+                    $scope.totalMesSaldo[m].ngClass = "positivo";
+                }else{
+                    $scope.totalMesSaldo[m].icon = "fa fa-exclamation-circle";
+                    $scope.totalMesSaldo[m].ngClass = "negativo";
                 }
             }
         }
