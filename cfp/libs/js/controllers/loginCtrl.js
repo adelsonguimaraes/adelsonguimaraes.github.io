@@ -1,7 +1,7 @@
 /*******************************************
 		Controller de Login
 *******************************************/
-var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
+var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI, syncAPI) {
 
 	//verifica sessao
 	if($rootScope.usuario) {
@@ -49,7 +49,7 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 				//redirecionamos para home
 				$location.path('/menu');
 				window.location.replace('#/menu');
-				$rootScope.syncAllDB();
+				syncAPI.syncAllDB();
 				$rootScope.stopLoad();
 			}else{
 				if (navigator.onLine) {
@@ -63,7 +63,7 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI) {
 							$scope.login.error = false;
 							//redirecionamos para home
 							$location.path('/menu');
-							$rootScope.syncAllDB();
+							syncAPI.syncAllDB();
 							adicionaUsuarioDBLocal(response.data.data);
 						}else{
 							//ativamos o login error com true

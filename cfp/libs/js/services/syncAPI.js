@@ -16,6 +16,7 @@
                 var me = this;
                 var percorreArrayClasse = function (i) {
                     me.generic(classes[i]).then(result =>{
+                        console.log(result);
                         i++;
                         // se posição do array for indefinido para se não segue
                         if ( classes[i] !== undefined ) {
@@ -134,7 +135,9 @@
                                         // pois agora precisamos readicionar esses dados com os 
                                         // ids reais da nuvem
                                         if (response.data.data.length > 0) {
-                                            setInLocal.push({data:response.data.data, 'metodo':'atualizar'});
+                                            for (var i in response.data.data) {
+                                                setInLocal.push({data:response.data.data[i], 'metodo':'atualizar'});
+                                            }
                                         }
                                         // agora fazemos a sincronização local
                                         DAOJS.sync(setInLocal);
