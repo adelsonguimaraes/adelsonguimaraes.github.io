@@ -13,9 +13,9 @@ Class Conexao {
 	protected function __construct () {
 		// $this->con = mysqli_connect("localhost","root","", "cfp");
 		//homologacao
-		$this->con = mysqli_connect("xmysql1.adelsonguimaraes.com.br","adelsonguimarae1","Cfp@db2018", "adelsonguimaraes1");
+		// $this->con = mysqli_connect("xmysql1.adelsonguimaraes.com.br","adelsonguimarae1","Cfp@db2018", "adelsonguimaraes1");
 		//producao
-		// $this->con = mysqli_connect("xmysql.adelsonguimaraes.com.br","adelsonguimarae","Cfp@db2018", "adelsonguimaraes");
+		$this->con = mysqli_connect("xmysql.adelsonguimaraes.com.br","adelsonguimarae","Cfp@db2018", "adelsonguimaraes");
 		if (mysqli_connect_error()) {
 			echo "Falha na conexão com MySQL: " . mysqli_connect_error();
 		}
