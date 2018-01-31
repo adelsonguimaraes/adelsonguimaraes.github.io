@@ -80,6 +80,9 @@ const indexedDBCtrl = {
             setTimeout(() => {
                 if (!this.support) return false;
 
+                // se a conexão já estiver aberta
+                if (db) return resolve(this);
+
                 request = indexedDB.open(this.dbName, this.dbVersion);
                 request.onsuccess = (event) => {
                     // db = (db) ? db : request.result;
@@ -87,7 +90,7 @@ const indexedDBCtrl = {
                     resolve(this);
                 };
                 request.onupgradeneeded = (event) => {
-                    db = (db) ? db : event.target.result;
+                    let db = event.target.result;
                     for(var t in this.tables) {
                         var table = this.tables[t];
                         var store = db.createObjectStore(table.name, {keyPath: "id"});
@@ -100,7 +103,7 @@ const indexedDBCtrl = {
                 request.onerror = (event) => {
                     console.error('[IndexedDBCtrl]:[ERROR]:', event);
                 }
-            }, 100);
+            }, 0);
         });
     },
     getObjectStore(table) {
@@ -110,11 +113,11 @@ const indexedDBCtrl = {
         return new Promise (resolve => {
             request = this.getObjectStore(table).add(data);
             request.onsuccess = (event) => {
+                // console.log('[IndexedDBCtrl]:[Cadastrar]: Sucesso no Cadastro', data);
                 resolve(data);
             };
             request.onerror = (event) => {
-                console.log(data);
-                console.log(event);
+                console.error('[IndexedDBCtrl]:[Cadastrar]: Erro no Cadastro', event);
             }
         });
     },
@@ -131,7 +134,7 @@ const indexedDBCtrl = {
     get(table, id) {
         return new Promise (resolve => {
             setTimeout(() => {
-                request = this.getObjectStore(table).get(id);
+                request = this.getObjectStore(table).get(+id);
                 request.onsuccess = (event) => {
                     // console.log(request.result);
                     // resolve(request.result);
@@ -150,9 +153,13 @@ const indexedDBCtrl = {
     },
     remove(table, id) {
         return new Promise (resolve => {
-            request = this.getObjectStore(table).delete(id);
+            request = this.getObjectStore(table).delete(+id);
             request.onsuccess = (event) => {
-                resolve(this.getAll(table));
+                // console.log('[IndexedDBCtrl]:[Remove] Sucesso ao Remover', event);
+                resolve();
+            }
+            request.onerror = (event) => {
+                console.error('[IndexedDBCtrl]:[Remove] Erro ao remover', event);
             }
         });
     }

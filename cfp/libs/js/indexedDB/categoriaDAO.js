@@ -102,7 +102,7 @@ const categoriaDAO = {
             //}, 200);
         });
     },
-    listarTodos () {
+    listar () {
         return new Promise (resolve => {
             //setTimeout(() => {
                 var response = {success:false, msg:'default', data: ''};
@@ -194,7 +194,7 @@ const categoriaDAO = {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
             var array = [];
-            this.listarTodos().then(response => {
+            this.listar().then(response => {
                 setTimeout(() => {
                     if (response.success) {
                         this.lista = response.data;
@@ -226,7 +226,7 @@ const categoriaDAO = {
                 });
             }, 100);
         });
-    }
+    },
     // autoIncrementID() {
     //     return new Promise (resolve => {
     //         var ultimo = 0;
@@ -241,5 +241,48 @@ const categoriaDAO = {
     //         });
     //     });
     // }
+    sync(data) {
+        return new Promise (resolve => {
+            function percorreArraySync(i) {
+                if (data[i] != undefined) {
+                    switch (data[i].metodo) {
+                        case 'cadastrar': {
+                            categoriaDAO.cadastrar(data[i].data).then(response => {
+                                if (response.success){
+                                    percorreArraySync(i+1);
+                                    // console.log('[categoriaDAO]:[Sync] Cadastro com Sucesso', response.data);
+                                }
+                            });
+                            break;
+                        }
+                        case 'atualizar': {
+                            // deletamos o dado do banco e adicionamos novamente com o ID nuvem
+                            indexedDBCtrl.remove('categoria', data[i].data.id).then(() => {
+                                categoriaDAO.cadastrar(data[i].data).then(response => {
+                                    if (response.success){
+                                        percorreArraySync(i+1);
+                                        // console.log('[categoriaDAO]:[Sync] Atualizado com Sucesso', response.data);
+                                    }
+                                });
+                            });
+                            break;
+                        }
+                        case 'deletar': {
+                            indexedDBCtrl.remove('categoria', data[i].data.id).then(() => {
+                                i++;
+                                percorreArraySync(i+1);
+                                // console.log('[categoriaDAO]:[Sync] Deletado com Sucesso');
+                            });
+                            break;
+                        }
+                    }
+                }else{
+                    // se finalizou os dados
+                    resolve();
+                }
+            }
+            percorreArraySync(0);
+        });
+    }
     
 }

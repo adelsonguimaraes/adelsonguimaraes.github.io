@@ -35,6 +35,10 @@ switch ($_POST['metodo']) {
 	case 'deletar':
 		deletar();
 		break;
+	// metodo de sincronização
+	case 'sync':
+		sync();
+		break;
 }
 
 function cadastrar () {
@@ -50,6 +54,21 @@ function cadastrar () {
 	);
 	$control = new CategoriaControl($obj);
 	$response = $control->cadastrar();
+	echo json_encode($response);
+}
+function atualizar () {
+	$data = $_POST['data'];
+	$obj = new Categoria(
+		$data['id'],
+		$data['descricao'],
+		$data['tipo'],
+		$data['sync'],
+		$data['ativo'],
+		$data['datacadastro'],
+		$data['dataedicao']
+	);
+	$control = new CategoriaControl($obj);
+	$response = $control->atualizar();
 	echo json_encode($response);
 }
 function buscarPorId () {
@@ -74,21 +93,6 @@ function listarCategoriaContasAPagar () {
 	$response = $control->listarCategoriaContasAPagar();
 	echo json_encode($response);
 }
-function atualizar () {
-	$data = $_POST['data'];
-	$obj = new Categoria(
-		$data['id'],
-		$data['descricao'],
-		$data['tipo'],
-		$data['sync'],
-		$data['ativo'],
-		$data['datacadastro'],
-		$data['dataedicao']
-	);
-	$control = new CategoriaControl($obj);
-	$response = $control->atualizar();
-	echo json_encode($response);
-}
 function deletar () {
 	$data = $_POST['data'];
 	$banco = new Categoria();
@@ -97,6 +101,55 @@ function deletar () {
 	echo json_encode($control->deletar());
 }
 
+function sync () {
+	$data = $_POST['data'];
+	$cadastrados = array();
+	$response = array('success'=>true, 'msg'=>'[Categoria]: Syncronizado com Sucesso', 'data'=>[]);
+	foreach($data as $key) {
+		switch ($key['metodo']) {
+			case 'cadastrar': {
+				// chama cadastrar e recebe o response
+				$obj = new Categoria(
+					NULL,
+					$key['data']['descricao'],
+					$key['data']['tipo'],
+					$key['data']['sync'],
+					$key['data']['ativo'],
+					$key['data']['datacadastro'],
+					$key['data']['dataedicao']
+				);
+				$control = new CategoriaControl($obj);
+				$resp = $control->cadastrar();
+				// se retornar um erro
+				if ($resp['success'] === false) die (json_encode($resp));
+				//sob-escreve o id com o atualizado
+				$key['data']['id'] = $resp['data'];
+				// adiciona ao array de cadastrados
+				array_push($cadastrados, $key['data']);
+				break;
+			}
+			case 'atualizar': {
+				$obj = new Categoria(
+					$key['data']['id'],
+					$key['data']['descricao'],
+					$key['data']['tipo'],
+					$key['data']['sync'],
+					$key['data']['ativo'],
+					$key['data']['datacadastro'],
+					$key['data']['dataedicao']
+				);
+				$control = new CategoriaControl($obj);
+				$resp = $control->atualizar();
+				// se retornar um erro
+				if ($resp['success'] === false) die (json_encode($resp));
+				// se tudo ok segue o laço
+				break;
+			}
+		}
+	}
+	$response['data'] = $cadastrados;
+	echo json_encode($response);
+}
 
 // Classe gerada com BlackCoffeePHP 2.0 - by Adelson Guimarães
 ?>
