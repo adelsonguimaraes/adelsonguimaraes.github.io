@@ -134,7 +134,8 @@ Class ContaDAO {
 				array_push( $this->lista, $row);
 			}
 
-			$this->superdao->setSuccess( true );			$this->superdao->setData( $this->lista );
+			$this->superdao->setSuccess( true );			
+			$this->superdao->setData( $this->lista );
 			$this->superdao->setTotal( $this->qtdTotal() );
 		}
 
@@ -142,7 +143,10 @@ Class ContaDAO {
 	}
 
 	function listarContasPorUsuario($idusuario) {
-		$this->sql = "SELECT * from conta where idusuario = $idusuario";
+		$this->sql = "SELECT c.*, cat.descricao as 'categoria' 
+		from conta c
+		inner join categoria cat on cat.id = c.idcategoria
+		where c.idusuario = $idusuario";
 		
 		$result = mysqli_query ( $this->con, $this->sql );
 		

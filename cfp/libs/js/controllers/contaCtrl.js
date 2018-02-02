@@ -136,7 +136,17 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
 
             newObj.idusuario = $rootScope.usuario.idusuario;
             newObj.valor = desformataValor(newObj.valor);
-            newObj.parcela = (newObj.parcela === 'INDETERMINADO') ? 0 : newObj.parcela;
+            // calculando o valor total baseado nas parcelas
+            if ( newObj.parcela === 'INDETERMINADO' ) {
+                // caso a parcela seja indeterminada, o sistema seta para salvar em banco o valor 0;
+                // o valor total assume o valor da parcela informada
+                newObj.parcela = 0;
+            }else{
+                // caso a parcela seja diferente de 0
+                // o sistema multiplica o valor pela parcela para descubrir o valor total
+                newObj.valor = newObj.valor*newObj.parcela;
+            }
+            // newObj.parcela = (newObj.parcela === 'INDETERMINADO') ? 0 : newObj.parcela;
             newObj.datavencimento = moment(newObj.datavencimento).format('YYYY-MM-DD');
             if ($scope.page === 'areceber') {
                 newObj.tipo = 'ARECEBER';
@@ -205,7 +215,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
         setTimeout(()=>{
             var x = ($scope.page === 'apagar') ? 'despesa' : 'recebimento';
             setActivatedMenu(document.getElementById('menu_'+x));
-        }, 100);
+        }, 200);
     }
     
     angular
