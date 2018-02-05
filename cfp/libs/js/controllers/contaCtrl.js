@@ -190,6 +190,9 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
     
         $scope.deletar = function (obj) {
             
+            alert( '[AVISO]: A funcionalidade de Exclusão está passando por um processo de manutenção e será liberada em breve!' );
+            return false;
+
             var data = {
                 "metodo":"deletar",
                 "data":obj,

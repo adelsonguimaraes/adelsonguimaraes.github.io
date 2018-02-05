@@ -39,7 +39,8 @@ switch ($_POST['metodo']) {
 		atualizar();
 		break;
 	case 'deletar':
-		deletar();
+		echo json_encode(array('success'=>true, 'msg'=>'', 'data'=>''));
+		// deletar();
 		break;
 	// metodo de sincronização
 	case 'sync':
