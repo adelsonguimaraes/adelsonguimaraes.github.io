@@ -17,7 +17,7 @@ let request, db;
 const indexedDBCtrl = {
     "support": true,
     "dbName": 'cfp',
-    "dbVersion": 1,
+    "dbVersion": 2, // a versão sempre tem que ser incrementada pra Mais e nunca pra menos
     "tables":[
         {
             'name':'categoria',
@@ -58,6 +58,7 @@ const indexedDBCtrl = {
                 {'description':'status', 'index':'status','unique':false},
                 {'description':'datavencimento', 'index':'datavencimento','unique':false},
                 {'description':'sync', 'index':'sync', 'unique':false},
+                {'description':'ativo', 'index':'ativo', 'unique':false},
                 {'description':'datacadastro', 'index':'datacastro', 'unique':false},
                 {'description':'dataedicao', 'index':'dataedicao', 'unique':false}
             ]
@@ -90,15 +91,21 @@ const indexedDBCtrl = {
                     resolve(this);
                 };
                 request.onupgradeneeded = (event) => {
+                    
                     let db = event.target.result;
+                    
                     for(var t in this.tables) {
                         var table = this.tables[t];
-                        var store = db.createObjectStore(table.name, {keyPath: "id"});
+                        
+                        table.name = table.name + '_v' + this.dbVersion;
+                        let store = db.createObjectStore(table.name, {keyPath: "id"});
                         for(var i in table.indexes){
-                            var index = table.indexes[i];
+                            let index = table.indexes[i];
                             store.createIndex(index.description, index.index, {unique: index.unique});
                         }
                     }
+
+                    this.deleteOldVersions(db);
                 };
                 request.onerror = (event) => {
                     console.error('[IndexedDBCtrl]:[ERROR]:', event);
@@ -106,7 +113,18 @@ const indexedDBCtrl = {
             }, 0);
         });
     },
+    // deleta versões anteriores das tabelas
+    deleteOldVersions (db) {
+        // lista todas as stores / tabelas locais
+        for ( var i in db.objectStoreNames ) {
+            // caso a versão da tabela não seja a mais atualizada ele deleta a Store
+            if ( typeof(db.objectStoreNames[i]) === 'string' && db.objectStoreNames[i].toString().indexOf('_v'+this.dbVersion) === -1) {
+                db.deleteObjectStore(db.objectStoreNames[i]); // letando a store/tabela desatualizada
+            }
+        };
+    },
     getObjectStore(table) {
+        table = table + '_v' + this.dbVersion; // acionando a versão
         return db.transaction([table], "readwrite").objectStore(table);
     },
     add(table, data) {

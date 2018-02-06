@@ -25,8 +25,8 @@ Class ContaDAO {
 
 	//cadastrar
 	function cadastrar (conta $obj) {
-		$this->sql = sprintf("INSERT INTO conta(idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, status, datavencimento, sync, datacadastro, dataedicao)
-		VALUES(%d, %d, '%s', %f, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+		$this->sql = sprintf("INSERT INTO conta(idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, status, datavencimento, sync, ativo, datacadastro, dataedicao)
+		VALUES(%d, %d, '%s', %f, %d, '%s', '%s', '%s', '%s', '%s', '%s',  '%s', '%s')",
 			mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
 			mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
 			mysqli_real_escape_string($this->con, $obj->getDescricao()),
@@ -37,6 +37,7 @@ Class ContaDAO {
 			mysqli_real_escape_string($this->con, !empty($obj->getStatus()) ? $obj->getStatus() : 'EMABERTO' ),
 			mysqli_real_escape_string($this->con, substr($obj->getDatavencimento(),0,10) ),
 			mysqli_real_escape_string($this->con, !empty($obj->getSync()) ? $obj->getSync() : 'NAO'),
+			mysqli_real_escape_string($this->con, !empty($obj->getAtivo()) ? $obj->getAtivo() : 'SIM'),
 			mysqli_real_escape_string($this->con, !empty($obj->getDatacadastro()) ? $obj->getDatacadastro() : date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, !empty($obj->getDataedicao()) ? $obj->getDataedicao() : date('Y-m-d H:i:s'))
 		);
@@ -56,7 +57,7 @@ Class ContaDAO {
 
 	//atualizar
 	function atualizar (Conta $obj) {
-		$this->sql = sprintf("UPDATE conta SET idusuario = %d, idcategoria = %d, descricao = '%s', valor = %f, parcela = %d, indeterminada = '%s', tipo = '%s', status = '%s', datavencimento = '%s', sync = '%s', dataedicao = '%s' WHERE id = %d ",
+		$this->sql = sprintf("UPDATE conta SET idusuario = %d, idcategoria = %d, descricao = '%s', valor = %f, parcela = %d, indeterminada = '%s', tipo = '%s', status = '%s', datavencimento = '%s', sync = '%s', ativo = '%s', dataedicao = '%s' WHERE id = %d ",
 		mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
 		mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
 		mysqli_real_escape_string($this->con, $obj->getDescricao()),
@@ -67,6 +68,7 @@ Class ContaDAO {
 		mysqli_real_escape_string($this->con, $obj->getStatus()),
 		mysqli_real_escape_string($this->con, substr($obj->getDatavencimento(),0,10) ),
 		mysqli_real_escape_string($this->con, $obj->getSync()),
+		mysqli_real_escape_string($this->con, $obj->getAtivo()),
 		mysqli_real_escape_string($this->con, !empty($obj->getDataedicao()) ? $obj->getDataedicao() : date('Y-m-d H:i:s')),
 		mysqli_real_escape_string($this->con, $obj->getId()));
 

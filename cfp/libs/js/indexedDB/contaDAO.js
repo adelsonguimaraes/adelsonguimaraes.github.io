@@ -11,10 +11,11 @@ const contaDAO = {
         'status':'',
         'datavencimento':'',
         'sync':'',
+        'ativo':'',
         'datacadastro':'',
         'dataedicao':''
     },
-    setData (id, idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, status, datavencimento, sync, datacadastro, dataedicao) {
+    setData (id, idusuario, idcategoria, descricao, valor, parcela, indeterminada, tipo, status, datavencimento, sync, ativo, datacadastro, dataedicao) {
         this.data.id = (id != undefined) ? id : null;
         this.data.idusuario = (idusuario != undefined) ? idusuario : null;
         this.data.idcategoria = (idcategoria != undefined) ? idcategoria : null;
@@ -26,6 +27,7 @@ const contaDAO = {
         this.data.status = (status != undefined) ? status : null;
         this.data.datavencimento = (datavencimento != undefined) ? datavencimento : null;
         this.data.sync = (sync != undefined) ? sync : null;
+        this.data.ativo = (ativo != undefined) ? ativo : null;
         this.data.datacadastro = (datacadastro != undefined) ? datacadastro : null;
         this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
@@ -48,6 +50,7 @@ const contaDAO = {
                         (data.status != undefined  || data.status != null) ? data.status : 'EMABERTO',
                         data.datavencimento,
                         (data.sync != undefined || data.sync != null) ? data.sync : 'NAO',
+                        (data.ativo != undefined || data.ativo != null) ? data.ativo : 'SIM',
                         (data.datacadastro != undefined || data.datacadastro != null) ? data.datacadastro : moment().format('YYYY-MM-DD HH:mm:ss'), // datacadastro
                         (data.dataedicao != undefined || data.dataedicao != null) ? data.dataedicao : null // dataedicao
                     );
@@ -87,6 +90,7 @@ const contaDAO = {
                                 data.status,
                                 data.datavencimento,
                                 data.sync,
+                                data.ativo,
                                 data.datacadastro, // datacadastro
                                 moment().format('YYYY-MM-DD HH:mm:ss') // dataedicao
                             );
