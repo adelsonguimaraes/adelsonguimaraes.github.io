@@ -126,7 +126,7 @@ const contaDAO = {
                             response.data = item;
                             resolve(response);
                         }else{
-                            response.msg = 'Usuário não encontrado!';
+                            response.msg = 'Conta não encontrada!';
                             resolve(response);
                         }
                     });
@@ -218,34 +218,6 @@ const contaDAO = {
             });
         });
     },
-    listarContasPorUsuario(idusuario) {
-        return new Promise (resolve  => {
-            var list = [];
-            var response = {success:false, msg:'default', data: ''};
-            indexedDBCtrl.start().then(db => {
-                db.getAll('conta').then(resquest => {
-                    request.onsuccess = (event) => {
-                        result = event.target.result;
-                        // if (cursor) {
-                        //     if (+cursor.value.idusuario === +idusuario) {
-                        //         list.push(cursor.value);
-                        //     }
-                        //     cursor.continue();
-                        // }
-                        for(var i in result) {
-                            if (+result[i].idusuario === +idusuario) {
-                                list.push(result[i]);
-                            }
-                        }
-                        response.success = true; 
-                        response.msg = '[contaDAO]: listarContasPorUsuario com sucesso!';
-                        response.data = list;
-                        resolve(response);
-                    }
-                });
-            });
-        });
-    },
     listarContasAPagarPorUsuario(idusuario) {
         return new Promise (resolve  => {
                 var list = [];
@@ -256,7 +228,7 @@ const contaDAO = {
                             request.onsuccess = (event) => {
                                 var result = event.target.result;
                                 for (var i in result) {
-                                    if ( +result[i].idusuario === +idusuario && result[i].tipo === 'APAGAR') {
+                                    if ( +result[i].idusuario === +idusuario && result[i].tipo === 'APAGAR' && result[i].ativo === 'SIM') {
                                         list.push(result[i]);
                                     }
                                 }
@@ -287,7 +259,7 @@ const contaDAO = {
                             let contas = response.data;
                             let categorias = resp.data;
                             contas.forEach(function(conta) {
-                                if (+conta.idusuario === +idusuario) {
+                                if (+conta.idusuario === +idusuario  && conta.ativo === 'SIM') {
                                     // pegamos a categoria de cada conta
                                     categorias.forEach(function(categoria) {
                                         if (+conta.idcategoria === +categoria.id) {
@@ -364,6 +336,26 @@ const contaDAO = {
                     });
                 }); 
             //},100);
+        });
+    },
+    desativar(data) {
+        return new Promise (resolve => {
+            var response = {success:false, msg:'default', data: ''};
+
+            this.buscarPorId(data).then(resp => {
+                if ( resp.success ) {
+                    let obj = resp.data; // recebendo o obj
+                    obj.ativo = 'NAO'; // desativando
+                    this.atualizar(obj).then(resp => {
+                        if ( resp.success ) {
+                            response.success = true; 
+                            response.msg = '[ContaDAO][Desativar]: Desativado com Sucesso!';
+                            response.data = resp.data;
+                            resolve(response);
+                        }
+                    });
+                }
+            });
         });
     },
     sync(data) {

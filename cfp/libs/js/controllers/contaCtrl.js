@@ -9,7 +9,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
         	return false;
         }
 
-        function inciaScope () {
+        function iniciaScope () {
             $scope.conta = {
                 "id":null,
                 "idusuario":"",
@@ -24,8 +24,9 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
             };
             $scope.dataatual = moment().format('YYYY-MM-DD');
             $scope.nova = false;
+            
         }
-        inciaScope();
+        iniciaScope();
     
         $scope.novaConta = function () {
             $scope.nova = true;
@@ -160,7 +161,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
             if (indexedDBCtrl.support) {
                 contaDAO[metodo](newObj).then(response => {
                     if (response.success) {
-                        inciaScope();
+                        iniciaScope();
                         $scope.listarContasPorUsuario($scope.page);
                         $rootScope.stopLoad();
                         // $rootScope.syncDB('conta', 'listarContasPorUsuario');
@@ -179,7 +180,7 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
             genericAPI.generic(data)
                 .then(function successCallback(response) {
                     //success
-                    inciaScope();
+                    iniciaScope();
                     $scope.listarContasPorUsuario($scope.page);
                     // $rootScope.syncDB('conta', 'listarContasPorUsuario');
                     $rootScope.stopLoad();
@@ -190,29 +191,39 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
     
         $scope.deletar = function (obj) {
             
-            alert( '[AVISO]: A funcionalidade de Exclusão está passando por um processo de manutenção e será liberada em breve!' );
-            return false;
+            let = r = confirm('Deseja realmente desativar?');
+            if (!r) {
+                console.log('Cancelado');
+                return false;
+            }
 
-            var data = {
-                "metodo":"deletar",
-                "data":obj,
-                "class":"conta"
-            };
-            genericAPI.generic(data)
-                .then(function successCallback(response) {
-                    if( response.data.success === true ){
-                        inciaScope();
-                        $scope.listar();
-                    }else{
-                        alert( response.data.msg );
-                    }
-                }, function errorCallback(response) {
-                    //error
-                });	
+            contaDAO.desativar(obj).then(response => {
+                if (response) {
+                    iniciaScope();
+                    $scope.listarContasPorUsuario($scope.page);
+                }
+            });
+
+            // var data = {
+            //     "metodo":"deletar",
+            //     "data":obj,
+            //     "class":"conta"
+            // };
+            // genericAPI.generic(data)
+            //     .then(function successCallback(response) {
+            //         if( response.data.success === true ){
+            //             iniciaScope();
+            //             $scope.listar();
+            //         }else{
+            //             alert( response.data.msg );
+            //         }
+            //     }, function errorCallback(response) {
+            //         //error
+            //     });	
         }
     
         $scope.cancelar = function () {
-            inciaScope();
+            iniciaScope();
         }
 
         setTimeout(()=>{

@@ -90,6 +90,7 @@ function atualizar () {
 		$data['datacadastro'],
 		$data['dataedicao']
 	);
+
 	$control = new ContaControl($obj);
 	$response = $control->atualizar();
 	
@@ -159,6 +160,7 @@ function sync () {
 					$key['data']['status'],
 					$key['data']['datavencimento'],
 					$key['data']['sync'],
+					$key['data']['ativo'],
 					$key['data']['datacadastro'],
 					$key['data']['dataedicao']
 				);
@@ -186,6 +188,7 @@ function sync () {
 					$key['data']['status'],
 					$key['data']['datavencimento'],
 					$key['data']['sync'],
+					$key['data']['ativo'],
 					$key['data']['datacadastro'],
 					$key['data']['dataedicao']
 				);

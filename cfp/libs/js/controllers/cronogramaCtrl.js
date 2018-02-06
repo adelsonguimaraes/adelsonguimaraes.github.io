@@ -90,6 +90,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
                 $timeout(() => {
                     if (response.success) {
                         $scope.contas = response.data;
+                        console.log(response.data);
                         ordenaDatas( $scope.contas );
                         montaValorMes();
                         $rootScope.stopLoad();

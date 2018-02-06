@@ -57,6 +57,7 @@ Class ContaDAO {
 
 	//atualizar
 	function atualizar (Conta $obj) {
+
 		$this->sql = sprintf("UPDATE conta SET idusuario = %d, idcategoria = %d, descricao = '%s', valor = %f, parcela = %d, indeterminada = '%s', tipo = '%s', status = '%s', datavencimento = '%s', sync = '%s', ativo = '%s', dataedicao = '%s' WHERE id = %d ",
 		mysqli_real_escape_string($this->con, $obj->getObjusuario()->getId()),
 		mysqli_real_escape_string($this->con, $obj->getObjcategoria()->getId()),
