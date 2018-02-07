@@ -300,13 +300,22 @@ const contaDAO = {
                             let categorias = resp.data;
                             contas.forEach(function(conta) {
                                 if (+conta.idusuario === +idusuario  && conta.ativo === 'SIM') {
-                                    // pegamos a categoria de cada conta
-                                    categorias.forEach(function(categoria) {
-                                        if (+conta.idcategoria === +categoria.id) {
-                                            conta.categoria = categoria.descricao;
-                                            list.push(conta);
-                                        }
-                                    });
+
+                                    // verificando se a conta aind cai nesse mês
+                                    let p = conta.parcela - 1; // caso a parcela seja indeterminada
+                                    let vencimentoAtual = moment(conta.datavencimento).add(p, "M"); // desconta a 1a parcela
+                                    // se a data do último vencimento da conta, ainda estiver para chegar ou for hoje
+                                    // ou ainda a conta seja INDETERMINADA
+                                    // seguimos com o tratamento
+                                    if (+conta.parcela === 0 || vencimentoAtual.format('YYYY-MM-DD').valueOf() >= moment().format('YYYY-MM-DD').valueOf()) {
+                                        // pegamos a categoria de cada conta
+                                        categorias.forEach(function(categoria) {
+                                            if (+conta.idcategoria === +categoria.id) {
+                                                conta.categoria = categoria.descricao;
+                                                list.push(conta);
+                                            }
+                                        });
+                                    }
                                 }
                             });
                             // setamos o response
@@ -332,7 +341,7 @@ const contaDAO = {
                             request.onsuccess = (event) => {
                                 var result = event.target.result;
                                 for (var i in result) {
-                                    if ( +result[i].idusuario === +idusuario && result[i].tipo === 'ARECEBER') {
+                                    if ( +result[i].idusuario === +idusuario && result[i].tipo === 'ARECEBER' && result[i].ativo === 'SIM') {
                                         list.push(result[i]);
                                     }
                                 }

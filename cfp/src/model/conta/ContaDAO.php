@@ -170,6 +170,31 @@ Class ContaDAO {
 		return $this->superdao->getResponse();
 	}
 
+	function listarContasAtivasPorUsuario($idusuario) {
+		$this->sql = "SELECT c.*, cat.descricao as 'categoria' 
+		from conta c
+		inner join categoria cat on cat.id = c.idcategoria
+		where c.idusuario = $idusuario and c.ativo = 'SIM'";
+		
+		$result = mysqli_query ( $this->con, $this->sql );
+		
+		$this->superdao->resetResponse();
+
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Conta' , 'listarContasPorUsuario' ) );
+		}else{
+			while ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				array_push( $this->lista, $row);
+			}
+
+			$this->superdao->setSuccess( true );			
+			$this->superdao->setData( $this->lista );
+			$this->superdao->setTotal( $this->qtdTotal() );
+		}
+
+		return $this->superdao->getResponse();
+	}
+
 	function listarNotIn ($in, $idusuario) {
 		
 		$s = '';

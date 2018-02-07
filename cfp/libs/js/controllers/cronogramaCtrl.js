@@ -101,7 +101,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
                         $rootScope.startLoad();
                         // lista nuvem
                         var data = {
-                            "metodo":"listarContasPorUsuario",
+                            "metodo":"listarContasAtivasPorUsuario",
                             "class":"conta"
                         };
                         genericAPI.generic(data)
