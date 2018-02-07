@@ -25,15 +25,6 @@
 	            templateUrl: "views/home.html",
 	            controller: "homeCtrl",
 	            data: { pageTitle: 'Home', specialClass: 'gray-bg'}
-	            // resolve: {
-	            //     loadPlugin: function ($ocLazyLoad) {
-	            //         return $ocLazyLoad.load([
-	            //            	{
-	            //                 files: ['libs/js/plugins/moment/moment.min.js']
-	            //             }
-	            //         ]);
-	            //     }
-	            // }
 			})
 			.state('cronograma', {
 				cache: false,
