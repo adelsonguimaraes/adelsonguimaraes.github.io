@@ -5,8 +5,8 @@ var homeCtrl = function ($scope, $rootScope, $location, genericAPI) {
 
 	//verifica sessao
 	if(!$rootScope.usuario) {
-		$location.path('/login');
-		return false;
+		// $location.path('/login');
+		// return false;
 	}
 
 	// carosel
