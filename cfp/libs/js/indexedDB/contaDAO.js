@@ -259,6 +259,46 @@ const contaDAO = {
                             let contas = response.data;
                             let categorias = resp.data;
                             contas.forEach(function(conta) {
+                                if (+conta.idusuario === +idusuario) {
+                                    // pegamos a categoria de cada conta
+                                    categorias.forEach(function(categoria) {
+                                        if (+conta.idcategoria === +categoria.id) {
+                                            conta.categoria = categoria.descricao;
+                                            list.push(conta);
+                                        }
+                                    });
+                                }
+                            });
+                            // setamos o response
+                            response.success = true;
+                            response.msg = '[ContaDAO]:[ListaPorUsuario]: Sucesso na Listagem!';
+                            response.data = list;
+                            
+                            //resolvemos a promise
+                            resolve(response);
+                        }
+                    });
+                }
+            });
+        });
+    },
+    listarContasAtivasPorUsuario(idusuario) {
+        return new Promise (resolve  => {
+            var list = [];
+            var response = {success:false, msg:'default', data: ''};
+        
+            // listamos primeiro as categorias
+            categoriaDAO.listar().then(resp => {
+                // se tudo listar correto
+                if (resp.success) {
+                    // listamos as contas
+                    this.listarTodos().then(response => {
+                        // se listar as contas ok
+                        if (response.success) {
+                            // separamos só contas do usuário
+                            let contas = response.data;
+                            let categorias = resp.data;
+                            contas.forEach(function(conta) {
                                 if (+conta.idusuario === +idusuario  && conta.ativo === 'SIM') {
                                     // pegamos a categoria de cada conta
                                     categorias.forEach(function(categoria) {
@@ -272,7 +312,7 @@ const contaDAO = {
                             // setamos o response
                             response.success = true;
                             response.msg = '[ContaDAO]:[ListaPorUsuario]: Sucesso na Listagem!';
-                            response.success = list;
+                            response.data = list;
                             
                             //resolvemos a promise
                             resolve(response);

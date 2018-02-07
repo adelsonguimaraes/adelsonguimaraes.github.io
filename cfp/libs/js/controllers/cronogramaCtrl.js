@@ -83,14 +83,13 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
         };
         totaisValor();
     
-        $scope.listarContasPorUsuario = function () {
+        $scope.listarContasAtivasPorUsuario = function () {
             $rootScope.startLoad();
             // listar localmente
-            contaDAO.listarContasPorUsuario($rootScope.usuario.idusuario).then(response => {
+            contaDAO.listarContasAtivasPorUsuario($rootScope.usuario.idusuario).then(response => {
                 $timeout(() => {
                     if (response.success) {
                         $scope.contas = response.data;
-                        console.log(response.data);
                         ordenaDatas( $scope.contas );
                         montaValorMes();
                         $rootScope.stopLoad();
@@ -123,7 +122,7 @@ var cronogramaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeo
                 }, 0);
             });
         }
-        $scope.listarContasPorUsuario();
+        $scope.listarContasAtivasPorUsuario();
     
         /*
             Está função ordena as contas por data
