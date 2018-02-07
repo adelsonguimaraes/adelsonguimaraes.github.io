@@ -2,8 +2,9 @@
 <div ng-include="'./views/template/nav-header-cfp.html'"></div>
 <div class="wapp">
 	<section>
+		<h4>Novidades</h4>
 		<div class="min-card">
-			<div class="min-card-content">
+			<div class="min-card-content" ng-click="expand('card1')">
 				<div class="min-card-img">
 					<img src="http://s3.amazonaws.com/digitaltrends-uploads-prod/2017/12/God-of-War.jpg" alt="">
 				</div>
@@ -16,9 +17,29 @@
 					<i class="fa fa-angle-down"></i>
 				</div>
 			</div>
+			<div class="card" hidden='true' id="card1">
+				<div class="card-header">
+					<img src="./libs/img/icons/moneybreak-512x512.png" alt="">
+					<div>
+						<a>
+							Sistema de Controle Financeiro Pessoal
+						</a>
+						<small>07/02/2018 15:11:25</small>
+					</div>
+				</div>
+				<div class="card-divider"></div>
+				<div class="card-body">
+					<div>GOD OF WAR</div>
+					<p>
+						God of War é um jogo eletrônico de ação-aventura desenvolvido pela SIE Santa Monica Studio e será publicado pela Sony Interactive Entertainment para PlayStation 4 em 20 de abril de 2018.[1] Será o oitavo jogo da série God of War e a sequência dos eventos ocorridos em God of War III. O título será um recomeço para a franquia e vai levar a série para o mundo da mitologia nórdica (todos os jogos anteriores tinham como cenário a mitologia grega). Kratos retorna como o protagonista e agora tem ao seu lado um filho chamado Atreus. Kratos atua como um mentor e protetor de Atreus e tem de dominar a raiva que o impulsionou por muitos anos.
+					</p>
+					<img src="http://s3.amazonaws.com/digitaltrends-uploads-prod/2017/12/God-of-War.jpg" alt="">
+	
+				</div>
+			</div>
 		</div>
 		<div class="min-card">
-				<div class="min-card-content">
+				<div class="min-card-content"  ng-click="expand('card2')">
 					<div class="min-card-img">
 						<img src="http://static2.businessinsider.com/image/5a577eaba75e2025008b4df8-1440/screen%20shot%202018-01-11%20at%20100808%20am.png" alt="">
 					</div>
@@ -31,24 +52,67 @@
 						<i class="fa fa-angle-down"></i>
 					</div>
 				</div>
-			</div>
-			<div class="min-card">
-					<div class="min-card-content">
-						<div class="min-card-img">
-							<img src="http://sm.ign.com/ign_br/video/x/xbox-games/xbox-games-with-gold-for-february-2018-revealed-ign-news_t5mu.jpg" alt="">
-						</div>
-						<div class="min-card-body">
+				<div class="card" hidden='true' id="card2">
+					<div class="card-header">
+						<img src="./libs/img/icons/moneybreak-512x512.png" alt="">
+						<div>
 							<a>
-								<b>Asssassin's Creed 2018:</b>
-								Depois de uma semana cheia de rumores, a Ubisoft confirmou oficialmente...
+								Sistema de Controle Financeiro Pessoal
 							</a>
-							<small>Sistema CFP - 07/02/2018 15:11:25</small>
-							<i class="fa fa-angle-down"></i>
+							<small>07/02/2018 15:11:25</small>
 						</div>
 					</div>
+					<div class="card-divider"></div>
+					<div class="card-body">
+						<div>MÁRIO TÊNIS 2018</div>
+						<img src="http://static2.businessinsider.com/image/5a577eaba75e2025008b4df8-1440/screen%20shot%202018-01-11%20at%20100808%20am.png" alt="">
+						<p>
+							A Nintendo anunciou Mario Tennis Aces para o Switch em sua última Direct, conferência online em que revela novidades para seus produtos. O game chega ao console ainda no primeiro semestre e terá inúmeros cenários novos e um modo história.
+						</p>
+						
+
+					</div>
 				</div>
+			</div>
+			<div class="min-card">
+				<div class="min-card-content"  ng-click="expand('card3')">
+					<div class="min-card-img">
+						<img src="http://sm.ign.com/ign_br/video/x/xbox-games/xbox-games-with-gold-for-february-2018-revealed-ign-news_t5mu.jpg" alt="">
+					</div>
+					<div class="min-card-body">
+						<a>
+							<b>Asssassin's Creed 2018:</b>
+							Depois de uma semana cheia de rumores, a Ubisoft confirmou oficialmente...
+						</a>
+						<small>Sistema CFP - 07/02/2018 15:11:25</small>
+						<i class="fa fa-angle-down"></i>
+					</div>
+				</div>
+				<div class="card" hidden='true' id="card3">
+					<div class="card-header">
+						<img src="./libs/img/icons/moneybreak-512x512.png" alt="">
+						<div>
+							<a>
+								Sistema de Controle Financeiro Pessoal
+							</a>
+							<small>07/02/2018 15:11:25</small>
+						</div>
+					</div>
+					<div class="card-divider"></div>
+					<div class="card-body">
+						<div>Assassin's Creed 2018</div>
+						<p>
+								Depois de uma semana cheia de rumores, a Ubisoft confirmou oficialmente quando teremos um novo game da série Assassin's Creed. O próximo título vai sair antes de março de 2018, que é quando acaba o ano fiscal da companhia.
+								
+								A informação foi confirmada durante a conferência para revelar os resultados financeiros da companhia. Para acompanhar o anúncio, o Twitter oficial da franquia no Reino Unido ainda compartilhou o gif abaixo, com a fala: "Afie a sua lâmina. Os assassinos vão sair das sombras em breve".
+						</p>
+						<img src="http://sm.ign.com/ign_br/video/x/xbox-games/xbox-games-with-gold-for-february-2018-revealed-ign-news_t5mu.jpg" alt="">
+		
+					</div>
+				</div>
+			</div>
 	</section>
-	<section>
+	<!-- <section>
 		<div class="card">
 			<div class="card-header">
 				<img src="./libs/img/icons/moneybreak-512x512.png" alt="">
@@ -113,7 +177,7 @@
 			</div>
 		</div>
 		
-	</section>
+	</section> -->
 </div>
 <div ng-include="'./views/template/nav-footer-cfp.html'"></div>
 <div class="toast animated bounce">Essa é uma página de Teste</div>

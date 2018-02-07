@@ -9,12 +9,8 @@ var homeCtrl = function ($scope, $rootScope, $location, genericAPI) {
 		// return false;
 	}
 
-	// carosel
-	$scope.slidePrev = function () {
-		$('#myCarousel').carousel('prev');
-	}
-	$scope.slideNext = function () {
-		$('#myCarousel').carousel('next');
+	$scope.expand = function (e) {
+		$('#'+e).is(":visible") ? $('#'+e).hide() : $('#'+e).slideToggle();
 	}
 }
 
