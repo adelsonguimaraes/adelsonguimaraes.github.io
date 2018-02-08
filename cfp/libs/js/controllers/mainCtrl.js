@@ -21,7 +21,7 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     authenticationAPI.sessionCtrl();
 
     if (root.usuario) {
-        $rootScope.usuario.nome = $rootScope.usuario.email.substr(0, $rootScope.usuario.email.indexOf('@'));
+        $rootScope.usuario.alias = $rootScope.usuario.email.substr(0, $rootScope.usuario.email.indexOf('@'));
     }
 
     // modal para aplicação

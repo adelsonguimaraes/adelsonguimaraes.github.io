@@ -307,7 +307,7 @@ const contaDAO = {
                                     // se a data do último vencimento da conta, ainda estiver para chegar ou for hoje
                                     // ou ainda a conta seja INDETERMINADA
                                     // seguimos com o tratamento
-                                    if (+conta.parcela === 0 || vencimentoAtual.format('YYYY-MM-DD').valueOf() >= moment().format('YYYY-MM-DD').valueOf()) {
+                                    if (+conta.parcela === 0 || vencimentoAtual.format('YYYY-MM').valueOf() >= moment().format('YYYY-MM').valueOf()) {
                                         // pegamos a categoria de cada conta
                                         categorias.forEach(function(categoria) {
                                             if (+conta.idcategoria === +categoria.id) {
