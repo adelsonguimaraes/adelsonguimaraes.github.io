@@ -8,7 +8,7 @@
 	/* padding-left: 200px; */
 	/* padding-right: 200px; */
 	padding-top: 40px;
-	padding-bottom: 40px;
+	padding-bottom: 50px;
 	font-family: 'Open Sans';
 	overflow: auto;
 }
@@ -241,7 +241,7 @@
 	transition: 0.3s;
 	border-bottom: 1px solid #f9f9f9;
 	display: block;
-	background: #fff;
+	/* background: rgba(52, 52, 52, 0.63); */
 	/* margin: 0 10px 0 10px;  */
 }
 
@@ -285,4 +285,13 @@
 .min-card-body > i {
 	float: right;
 	font-size: 18px;
+}
+.title-page {
+	background: rgb(255, 255, 255);
+	padding:10px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: arial;
+	border-bottom: 1px solid #E1E1E1;
 }

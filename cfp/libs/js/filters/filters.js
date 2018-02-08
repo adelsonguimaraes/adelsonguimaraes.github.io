@@ -70,6 +70,15 @@ function data ($timeout) {
 	}
 }
 
+function datahora ($timeout) {
+	return function (input) {
+		if(!input || typeof(input) == 'object') return input;
+		var data = moment(input).format('DD/MM/YYYY HH:mm:ss');
+		// var data = input.substring(8, 10) + '/' + input.substring(5, 7) + '/' + input.substring(0, 4) + input.substring(10);
+		return data;
+	}
+}
+
 function moeda () {
 	return function (input) {
 		if(!input || typeof(input) === 'object') return input;
@@ -97,5 +106,6 @@ angular
 	.filter('fax', fax)
 	.filter('cel', cel)
 	.filter('data', data)
+	.filter('datahora', datahora)
 	.filter('moeda', moeda)
 	.filter('indeterminado', indeterminado)
