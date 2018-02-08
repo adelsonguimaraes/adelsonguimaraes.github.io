@@ -69,7 +69,8 @@ let filesToCache = [
     'libs/js/controllers/loginCtrl.js',
     'libs/js/controllers/menupageCtrl.js',
     'libs/js/controllers/homeCtrl.js',
-    'libs/js/controllers/contaCtrl.js'
+    'libs/js/controllers/contaCtrl.js',
+    'libs/js/controllers/alterarsenhaCtrl.js'
 ];
 
 self.addEventListener('install', (e) => {

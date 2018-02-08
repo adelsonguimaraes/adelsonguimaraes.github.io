@@ -18,6 +18,13 @@
 	            templateUrl: "views/login.html",
 	            controller: "loginCtrl",
 	            data: { pageTitle: 'Login', specialClass: 'gray-bg'},
+			})
+			.state('alterarsenha', {
+				cache: false,
+	            url: "/alterarsenha",
+	            templateUrl: "views/alterarsenha.html",
+	            controller: "alterarsenhaCtrl",
+	            data: { pageTitle: 'Alteração de Senha', specialClass: 'gray-bg'},
 	        })
 	        .state('home', {
 				cache: false,

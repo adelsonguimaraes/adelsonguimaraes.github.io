@@ -4,16 +4,20 @@ const usuarioDAO = {
         'nome':'',
         'email':'',
         'senha':'',
+        'ativo':'',
         'perfil':'',
+        'sync':'',
         'datacadastro':'',
         'dataedicao':''
     },
-    setData (id, nome, email, senha, perfil, datacastro, dataedicao) {
+    setData (id, nome, email, senha, ativo, perfil, sync, datacastro, dataedicao) {
         this.data.id = (id != undefined) ? id : null;
         this.data.nome = (nome != undefined) ? nome : null;
         this.data.email = (email != undefined) ? email : null;
         this.data.senha = (senha != undefined) ? senha : null;
+        this.data.ativo = (ativo != undefined) ? ativo : null;
         this.data.perfil = (perfil != undefined) ? perfil : null;
+        this.data.sync = (sync != undefined) ? sync : null;
         this.data.datacastro = (datacastro != undefined) ? datacastro : null;
         this.data.dataedicao = (dataedicao != undefined) ? dataedicao : null;
     },
@@ -26,9 +30,11 @@ const usuarioDAO = {
                 data.nome, // nome 
                 data.email, // email
                 data.senha, // senha
+                (data.ativo != undefined || data.ativo != null) ? data.ativo : 'SIM',
                 data.perfil, // perfil
-                (data.datacadastro != undefined) ? data.datacadastro : moment().format('YYYY-MM-DD HH:mm:ss'), // datacadastro
-                (data.dataedicao != undefined) ? data.dataedicao : null // dataedicao
+                (data.sync != undefined || data.sync != null) ? data.sync : 'NAO',
+                (data.datacadastro != undefined || data.datacadastro != null) ? data.datacadastro : moment().format('YYYY-MM-DD HH:mm:ss'), // datacadastro
+                (data.dataedicao != undefined || data.dataedicao != null) ? data.dataedicao : null // dataedicao
             );
             indexedDBCtrl.start().then(db => {
                 db.add('usuario', this.data).then(data => {
@@ -57,9 +63,11 @@ const usuarioDAO = {
                             data.nome, // nome 
                             data.email, // email
                             data.senha, // senha
+                            data.ativo,
                             data.perfil, // perfil
+                            data.sync,
                             data.datacadastro, // datacadastro
-                            (data.dataedicao != undefined) ? data.dataedicao : moment().format('YYYY-MM-DD HH:mm:ss') // dataedicao
+                            moment().format('YYYY-MM-DD HH:mm:ss') // dataedicao
                         );
                         indexedDBCtrl.start().then(db => {
                             db.update('usuario', this.data).then(data => {
