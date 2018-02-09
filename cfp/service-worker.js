@@ -1,6 +1,6 @@
 importScripts('./libs/js/sw-cache-polyfill.js');
 
-let cacheName = 'cfp-v.1.3.2';
+let cacheName = 'cfp-v.1.3.3';
 let filesToCache = [
     './',
     'index.html',

@@ -31,14 +31,16 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
             content: content
         };
         $('#myModal').modal({
-            backdrop: 'static'
+            // backdrop: 'static'
         });
     };
 
-    if ( root.usuario ) {
-        sincAllDB();
-        verificaSenhaInicial();
-    }
+    $rootScope.closeModalHref = function ( idmodal, href ) {
+        $location.path('/'+href);
+        $('#'+idmodal).modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    };
 
     function sincAllDB () {
         // se off-line ou navegador sem suport a indexedDB
@@ -48,8 +50,9 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
         syncAPI.syncAllDB();
     };
 
-    function verificaSenhaInicial () {
-        if ( !indexedDBCtrl.support) return false;
+    $rootScope.verificaSenhaInicial = function () {
+        // verifica se o usuário está online
+        if (!root.onLine) return false;
         
         usuarioDAO.buscarPorId({id:root.usuario.idusuario}).then(resp => {
             if (resp.success) {
@@ -60,6 +63,11 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
                 }
             }
         });
+    }
+
+    if ( root.usuario ) {
+        sincAllDB();
+        $rootScope.verificaSenhaInicial();
     }
 }
 

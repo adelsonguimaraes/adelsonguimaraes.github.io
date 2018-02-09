@@ -122,6 +122,8 @@ function sync () {
 				$resp = $control->cadastrar();
 				// se retornar um erro
 				if ($resp['success'] === false) die (json_encode($resp));
+				//salva o id antigo em old_id
+				$key['data']['old_id'] = $key['data']['id'];
 				//sob-escreve o id com o atualizado
 				$key['data']['id'] = $resp['data'];
 				// adiciona ao array de cadastrados

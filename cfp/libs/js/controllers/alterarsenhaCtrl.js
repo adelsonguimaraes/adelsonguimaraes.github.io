@@ -44,19 +44,9 @@ var alterarsenhaCtrl = function ($scope, $rootScope, $location, genericAPI, $tim
             }
 
             newObj.id = $rootScope.usuario.idusuario;
-
+            newObj.novasenha = MD5(newObj.novasenha);
+            newObj.novasenha = MD5(newObj.novasenha);
             $rootScope.startLoad();
-            
-            // se tem suporte para indexeddb
-            if (indexedDBCtrl.support) {
-                usuarioDAO['atualizarSenha'](newObj).then(response => {
-                    if (response.success) {
-                        $rootScope.stopLoad();
-                    }
-                });
-                // return false;
-            };
-
             
             // se há internet
             if (!navigator.onLine) return false;
@@ -64,14 +54,31 @@ var alterarsenhaCtrl = function ($scope, $rootScope, $location, genericAPI, $tim
             $rootScope.startLoad();
 
             var data = {
-                "metodo":'atualizar',
-                "data":newObj,
+                "metodo":'atualizarSenha',
+                "data":{
+                    idusuario: newObj.id,
+                    novasenha: newObj.novasenha
+                },
                 "class":"usuario"
             };
             genericAPI.generic(data)
                 .then(function successCallback(response) {
-                    $rootScope.stopLoad();
-                    $rootScope.logout();
+                    console.log(response);
+                    if ( response.data.success ) {
+                        // se tem suporte para indexeddb
+                        if (indexedDBCtrl.support) {
+                            usuarioDAO['atualizarSenha'](newObj).then(response => {
+                                if (response.success) {
+                                    $rootScope.stopLoad();
+                                    $rootScope.logout();
+                                }
+                            });
+                            // return false;
+                        }else{
+                            $rootScope.stopLoad();
+                            $rootScope.logout();
+                        }
+                    }
                 }, function errorCallback(response) {
                     //error
                 });	

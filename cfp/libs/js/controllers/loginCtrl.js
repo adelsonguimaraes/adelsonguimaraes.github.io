@@ -5,7 +5,7 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI, sync
 
 	//verifica sessao
 	if($rootScope.usuario) {
-		$location.path('/menu');
+		$location.path('/home');
 		return false;
 	}
 	
@@ -43,14 +43,15 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI, sync
 			if (response.success) {
 				//criamos a session
 				response.data.idusuario = response.data.id;
-				authenticationAPI.createSession(response.data, true);
+				authenticationAPI.createSession(montDataSession(response.data), true);
 				//logion error é escondido
 				$scope.login.error = false;
 				//redirecionamos para home
-				$location.path('/menu');
-				window.location.replace('#/menu');
+				$location.path('/home');
+				window.location.replace('#/home');
 				syncAPI.syncAllDB();
 				$rootScope.stopLoad();
+				$rootScope.verificaSenhaInicial();
 			}else{
 				if (navigator.onLine) {
 					authenticationAPI.authentication(data)
@@ -58,13 +59,16 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI, sync
 						//se o sucesso === true
 						if(response.data.success == true){
 							//criamos a session
-							authenticationAPI.createSession(response.data.data, true);//obj.infinity);
+							authenticationAPI.createSession(montDataSession(response.data.data), true);//obj.infinity);
+							// adiciona ao banco local
+							console.log(response.data.data);
+							adicionaUsuarioDBLocal(response.data.data);
 							//logion error é escondido
 							$scope.login.error = false;
 							//redirecionamos para home
-							$location.path('/menu');
+							$location.path('/home');
 							syncAPI.syncAllDB();
-							adicionaUsuarioDBLocal(response.data.data);
+							$rootScope.verificaSenhaInicial();
 						}else{
 							//ativamos o login error com true
 							$scope.login.error = true;
@@ -79,6 +83,19 @@ var loginCtrl = function ($scope, $rootScope, $location, authenticationAPI, sync
 				}
 			}
 		});
+	}
+
+	function montDataSession (data) {
+		let usuario = {
+			idusuario: data.id,
+			email: data.email, 
+			nome: data.nome, 
+			senha: data.senha, 
+			perfil: data.perfil, 
+			ativo: data.ativo, 
+			inatividade: data.ativo
+		};
+		return usuario;
 	}
 }
 

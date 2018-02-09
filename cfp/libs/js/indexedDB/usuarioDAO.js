@@ -26,7 +26,7 @@ const usuarioDAO = {
             var response = {success:false, msg:'default', data: ''};
             // seta os atributos
             usuarioDAO.setData(
-                +data.idusuario, // id
+                +data.id, // id
                 data.nome, // nome 
                 data.email, // email
                 data.senha, // senha
@@ -93,7 +93,7 @@ const usuarioDAO = {
             this.buscarPorId(data).then(resp => {
                 if (resp.success) {
                     let obj = resp.data;
-                    obj.senha = MD5(data.novasenha);
+                    obj.senha = data.novasenha;
                     obj.sync = 'SIM';
                     this.atualizar(obj).then(resp => {
                         if (resp.success) {

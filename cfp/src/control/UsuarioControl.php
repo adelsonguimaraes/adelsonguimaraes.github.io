@@ -35,6 +35,9 @@ Class UsuarioControl {
 	function atualizar () {
 		return $this->objDAO->atualizar($this->obj);
 	}
+	function atualizarSenha ( $data ) {
+		return $this->objDAO->atualizarSenha( $data );
+	}
 	function deletar () {
 		return $this->objDAO->deletar($this->obj);
 	}
@@ -43,6 +46,9 @@ Class UsuarioControl {
 	}
 	function qtdTotal () {
 		return $this->objDAO->qtdTotal();
+	}
+	function auth ( $data ) {
+		return $this->objDAO->auth( $data );
 	}
 }
 

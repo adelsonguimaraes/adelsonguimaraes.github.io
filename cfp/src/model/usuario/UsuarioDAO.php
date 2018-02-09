@@ -69,6 +69,23 @@ Class UsuarioDAO {
 		return $this->superdao->getResponse();
 	}
 
+	function atualizarSenha ( $data ) {
+		$this->sql = sprintf("UPDATE usuario set senha = '%s', sync = '%s' where id = %d", 
+			mysqli_real_escape_string($this->con, $data['novasenha']),
+			mysqli_real_escape_string($this->con, 'SIM'),
+			mysqli_real_escape_string($this->con, $data['idusuario'])
+		);
+		$this->superdao->resetResponse();
+
+		if(!mysqli_query($this->con, $this->sql)) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Usuario', 'AtualizarSenha' ) );
+		}else{
+			$this->superdao->setSuccess( true );
+			$this->superdao->setData( true );
+		}
+		return $this->superdao->getResponse();
+	}
+
 	//buscarPorId
 	function buscarPorId (Usuario $obj) {
 		$this->sql = sprintf("SELECT * FROM usuario WHERE id = %d",
@@ -165,6 +182,28 @@ Class UsuarioDAO {
 			$total = $row->quantidade;
 		}
 		return $total;
+	}
+
+	function auth ( $data ) {
+		$this->sql = sprintf("SELECT * from usuario where email = '%s' and senha = '%s'",
+			mysqli_real_escape_string($this->con, $data['email']),
+			mysqli_real_escape_string($this->con, $data['senha'])
+		);
+		$result = mysqli_query ( $this->con, $this->sql );
+
+		$this->superdao->resetResponse();
+		
+		if ( !$result ) {
+			$this->superdao->setMsg( resolve( mysqli_errno( $this->con ), mysqli_error( $this->con ), 'Usuario' , 'ListarPaginado' ) );
+		}else{
+			if ( $row = mysqli_fetch_assoc ( $result ) ) {				
+				$this->superdao->setSuccess( true );			
+				$this->superdao->setData( $row );
+			}else{
+				$this->superdao->setMsg("Usuário ou Senha Inválidos!");
+			}
+		}
+		return $this->superdao->getResponse();
 	}
 }
 

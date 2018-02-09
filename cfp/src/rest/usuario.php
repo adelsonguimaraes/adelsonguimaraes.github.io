@@ -26,6 +26,9 @@ switch ($_POST['metodo']) {
 	case 'atualizar':
 		atualizar();
 		break;
+	case 'atualizarSenha':
+		atualizarSenha();
+		break;
 	case 'deletar':
 		deletar();
 		break;
@@ -74,6 +77,11 @@ function atualizar () {
 	$control = new UsuarioControl($obj);
 	$response = $control->atualizar();
 	echo json_encode($response);
+}
+function atualizarSenha () {
+	$data = $_POST['data'];
+	$control = new UsuarioControl();
+	echo json_encode( $control->atualizarSenha($data) );
 }
 function deletar () {
 	$data = $_POST['data'];

@@ -257,7 +257,7 @@ const categoriaDAO = {
                         }
                         case 'atualizar': {
                             // deletamos o dado do banco e adicionamos novamente com o ID nuvem
-                            indexedDBCtrl.remove('categoria', data[i].data.id).then(() => {
+                            indexedDBCtrl.remove('categoria', data[i].data.old_id).then(() => {
                                 categoriaDAO.cadastrar(data[i].data).then(response => {
                                     if (response.success){
                                         percorreArraySync(i+1);

@@ -260,6 +260,7 @@
 	width: 70px;
 	background: #ededed;
 	overflow: hidden;
+	text-align: center;
 }
 .min-card-img > img {
 	/* width: 100%; */

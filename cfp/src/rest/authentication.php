@@ -1,5 +1,5 @@
 <?php
- session_start();
+//  session_start();
 
 // rest : authentication
 
@@ -28,49 +28,7 @@ switch ($_POST['metodo']) {
 */
 
 function logar() {
-
-    $con = Conexao::getInstance()->getConexao();
-
     $data = $_POST['data'];
-
-    $pass= $data['senha'];
-    $userName = $data['email']; 
-
-    $userName = stripslashes ( strip_tags( trim( $userName ) ) ); 
-    $pass = stripslashes ( strip_tags( trim( $pass ) ) ); 
-
-    $userName = mysqli_real_escape_string( $con, $userName ); 
-    $pass = mysqli_real_escape_string ( $con ,$pass ); 
-
-    $sql = "SELECT * FROM usuario WHERE email='$userName' and senha='$pass'"; 
-
-    $result = array (); 
-    if ($resultdb = mysqli_query( $con, $sql )) {
-        $count = $resultdb->num_rows; 
-        if ($count == 1) {
-            if ($row = mysqli_fetch_assoc($resultdb)){
-                $result = array(
-                    "success"   => true,
-                    "msg"       => "logado",
-                    "data"      => $usuario = array(
-                                    'idusuario'=>$row['id'],
-                                    'email'=>$row['email'], 
-                                    'nome'=> $row['nome'], 
-                                    'senha'=> $row['senha'], 
-                                    'perfil'=> $row['perfil'], 
-                                    'ativo'=> $row['ativo'], 
-                                    'inatividade'=>'ativo'
-                                    )
-                );
-            }   
-        } else {
-            $result = array(
-                "success"   => false,
-                "msg"       => "Login ou Senha inválidos!",
-                "data"      => null
-            );
-        }   
-        $resultdb->close (); 
-    }
-    echo json_encode($result);
+    $control = new UsuarioControl();
+    echo json_encode($control->auth($data));
 }
