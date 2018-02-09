@@ -299,3 +299,6 @@
 .bg-white {
 	background: #fff;
 }
+.no-border {
+	border: none;
+}

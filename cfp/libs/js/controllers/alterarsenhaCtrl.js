@@ -43,19 +43,21 @@ var alterarsenhaCtrl = function ($scope, $rootScope, $location, genericAPI, $tim
                 return false;
             }
 
+            newObj.id = $rootScope.usuario.idusuario;
+
             $rootScope.startLoad();
             
             // se tem suporte para indexeddb
             if (indexedDBCtrl.support) {
-                usuarioDAO['atualizar'](newObj).then(response => {
+                usuarioDAO['atualizarSenha'](newObj).then(response => {
                     if (response.success) {
                         $rootScope.stopLoad();
-                        // $rootScope.syncDB('alterarsenha', 'listarAlterarSenhasPorUsuario');
                     }
                 });
-                return false;
+                // return false;
             };
 
+            
             // se há internet
             if (!navigator.onLine) return false;
             
@@ -69,6 +71,7 @@ var alterarsenhaCtrl = function ($scope, $rootScope, $location, genericAPI, $tim
             genericAPI.generic(data)
                 .then(function successCallback(response) {
                     $rootScope.stopLoad();
+                    $rootScope.logout();
                 }, function errorCallback(response) {
                     //error
                 });	

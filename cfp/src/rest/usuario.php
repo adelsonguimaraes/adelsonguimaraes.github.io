@@ -66,7 +66,10 @@ function atualizar () {
 		$data['senha'],
 		$data['ativo'],
 		$data['perfil'],
-		$data['pushkey']
+		$data['pushkey'],
+		$data['sync'],
+		$data['datacastro'],
+		$data['dataedicao']
 	);
 	$control = new UsuarioControl($obj);
 	$response = $control->atualizar();

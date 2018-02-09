@@ -87,6 +87,28 @@ const usuarioDAO = {
             });
         });
     },
+    atualizarSenha (data) {
+        return new Promise (resolve => {
+            let response = {success:false, msg:'default', data:''};
+            this.buscarPorId(data).then(resp => {
+                if (resp.success) {
+                    let obj = resp.data;
+                    obj.senha = MD5(data.novasenha);
+                    obj.sync = 'SIM';
+                    this.atualizar(obj).then(resp => {
+                        if (resp.success) {
+                            response.success = true; 
+                            response.msg = 'Senha atualizada com sucesso!';
+                            response.data = resp.data;
+                            resolve(response);
+                        }
+                    });
+                }else{
+                    resolve(resp);
+                }
+            });
+        });
+    },
     buscarPorId (data) {
         return new Promise (resolve => {
             var response = {success:false, msg:'default', data: ''};
@@ -167,6 +189,49 @@ const usuarioDAO = {
                     });
                 }, 100);
             });
+        });
+    },
+    sync(data) {
+        return new Promise (resolve => {
+            function percorreArraySync(i) {
+                if (data[i] != undefined) {
+                    switch (data[i].metodo) {
+                        // case 'cadastrar': {
+                        //     contaDAO.cadastrar(data[i].data).then(response => {
+                        //         if (response.success){
+                        //             percorreArraySync(i+1);
+                        //             // console.log('[contaDAO]:[Sync] Cadastro com Sucesso', response.data);
+                        //         }
+                        //     });
+                        //     break;
+                        // }
+                        case 'atualizar': {
+                            // deletamos o dado do banco e adicionamos novamente com o ID nuvem
+                            indexedDBCtrl.remove('conta', data[i].data.id).then(() => {
+                                contaDAO.cadastrar(data[i].data).then(response => {
+                                    if (response.success){
+                                        percorreArraySync(i+1);
+                                        // console.log('[contaDAO]:[Sync] Atualizado com Sucesso', response.data);
+                                    }
+                                });
+                            });
+                            break;
+                        }
+                        // case 'deletar': {
+                        //     indexedDBCtrl.remove('conta', data[i].data.id).then(() => {
+                        //         i++;
+                        //         percorreArraySync(i+1);
+                        //         // console.log('[contaDAO]:[Sync] Deletado com Sucesso');
+                        //     });
+                        //     break;
+                        // }
+                    }
+                }else{
+                    // se finalizou os dados
+                    resolve();
+                }
+            }
+            percorreArraySync(0);
         });
     }
 }

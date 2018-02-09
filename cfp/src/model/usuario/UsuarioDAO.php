@@ -49,14 +49,14 @@ Class UsuarioDAO {
 
 	//atualizar
 	function atualizar (Usuario $obj) {
-		$this->sql = sprintf("UPDATE usuario SET nome = '%s', email = '%s', senha = '%s', ativo = '%s', perfil = '%s', pushkey = '%s', dataedicao = '%s' WHERE id = %d ",
+		$this->sql = sprintf("UPDATE usuario SET nome = '%s', email = '%s', senha = '%s', ativo = '%s', perfil = '%s', sync = '%s', dataedicao = '%s' WHERE id = %d ",
 			mysqli_real_escape_string($this->con, $obj->getNome()),
 			mysqli_real_escape_string($this->con, $obj->getEmail()),
 			mysqli_real_escape_string($this->con, $obj->getSenha()),
 			mysqli_real_escape_string($this->con, $obj->getAtivo()),
 			mysqli_real_escape_string($this->con, $obj->getPerfil()),
-			mysqli_real_escape_string($this->con, $obj->getPushkey()),
-			mysqli_real_escape_string($this->con, date('Y-m-d H:i:s')),
+			mysqli_real_escape_string($this->con, $obj->getSync()),
+			mysqli_real_escape_string($this->con, !empty($obj->getDataedicao()) ? $obj->getDataedicao() : date('Y-m-d H:i:s')),
 			mysqli_real_escape_string($this->con, $obj->getId()));
 		$this->superdao->resetResponse();
 

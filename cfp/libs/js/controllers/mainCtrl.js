@@ -51,11 +51,15 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
     function verificaSenhaInicial () {
         if ( !indexedDBCtrl.support) return false;
         
-        let u = usuarioDAO.buscarPorId({id:root.usuario.idusuario});
-        if (u.sync !== 'SIM' ) {
-            alert('Verificamos que você ainda não atualizou a senha padrão, por segurança é necessário atualizá-la!');
-            window.location.replace('#/alterarsenha');
-        }
+        usuarioDAO.buscarPorId({id:root.usuario.idusuario}).then(resp => {
+            if (resp.success) {
+                let u = resp.data;
+                if (u.sync !== 'SIM' ) {
+                    alert('Verificamos que você ainda não atualizou a senha padrão, por segurança é necessário atualizá-la!');
+                    window.location.replace('#/alterarsenha');
+                }
+            }
+        });
     }
 }
 

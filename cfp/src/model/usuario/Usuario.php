@@ -18,6 +18,7 @@ Class Usuario implements JsonSerializable {
 	private $ativo;
 	private $perfil;
 	private $pushkey;
+	private $sync;
 	private $datacadastro;
 	private $dataedicao;
 
@@ -31,6 +32,7 @@ Class Usuario implements JsonSerializable {
 		$ativo = NULL,
 		$perfil = NULL,
 		$pushkey = NULL,
+		$sync = NULL,
 		$datacadastro = NULL,
 		$dataedicao = NULL
 	)
@@ -42,6 +44,7 @@ Class Usuario implements JsonSerializable {
 		$this->ativo	= $ativo;
 		$this->perfil	= $perfil;
 		$this->pushkey	= $pushkey;
+		$this->sync = $sync;
 		$this->datacadastro	= $datacadastro;
 		$this->dataedicao	= $dataedicao;
 	}
@@ -96,6 +99,13 @@ Class Usuario implements JsonSerializable {
 		$this->pushkey = $pushkey;
 		return $this;
 	}
+	public function getSync() {
+		return $this->sync;
+	}
+	public function setSync($sync) {
+		$this->sync = $sync;
+		return $this;
+	}
 	public function getDatacadastro() {
 		return $this->datacadastro;
 	}
@@ -121,6 +131,7 @@ Class Usuario implements JsonSerializable {
 			"ativo"	=> $this->ativo,
 			"perfil"	=> $this->perfil,
 			"pushkey"	=> $this->pushkey,
+			"sync"	=> $this->sync,
 			"datacadastro"	=> $this->datacadastro,
 			"dataedicao"	=> $this->dataedicao
 		];
