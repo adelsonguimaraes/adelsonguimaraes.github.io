@@ -300,6 +300,40 @@
 .bg-white {
 	background: #fff;
 }
+.bg-animate {
+	background: linear-gradient(293deg, #38456e, #554e70, #dedde3);
+	background-size: 600% 600%;
+	
+	-webkit-animation: cfp 8s ease infinite;
+	-moz-animation: cfp 8s ease infinite;
+	-o-animation: cfp 8s ease infinite;
+	animation: cfp 8s ease infinite;
+}
+
+@-webkit-keyframes cfp {
+    0%{background-position:30% 0%}
+    50%{background-position:71% 100%}
+    100%{background-position:30% 0%}
+}
+@-moz-keyframes cfp {
+    0%{background-position:30% 0%}
+    50%{background-position:71% 100%}
+    100%{background-position:30% 0%}
+}
+@-o-keyframes cfp {
+    0%{background-position:30% 0%}
+    50%{background-position:71% 100%}
+    100%{background-position:30% 0%}
+}
+@keyframes cfp { 
+    0%{background-position:30% 0%}
+    50%{background-position:71% 100%}
+    100%{background-position:30% 0%}
+}
+
 .no-border {
 	border: none;
+}
+.pd-10 {
+	padding: 10px;
 }

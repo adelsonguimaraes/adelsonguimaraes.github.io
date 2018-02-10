@@ -2,22 +2,22 @@ body {
 	margin: 0 auto;
 	padding-top: 80px;
 	padding-bottom: 40px;
-	background-color:#a7bee2;
-	background-image: url(../img/financas.jpg);
+	background-color:#fff;
+	/* background-image: url(../img/financas.jpg); */
 	background-repeat: no-repeat;
 	background-size: 500%;
 }
 
 .panel_login {
 	margin: 0 auto;
-	margin-top: 25px;
+	margin-top: 10%;
 	background: #fff;
-	border-radius: 15px;
+	/* border-radius: 15px; */
 }
 .form_header {
 	padding: 20px;
-	border-bottom: 1px solid #595959;
-	background: slategrey;
+	border-bottom: 1px solid rgb(216, 216, 216);
+	/* background: slategrey; */
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
 }

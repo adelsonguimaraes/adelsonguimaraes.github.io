@@ -45,7 +45,6 @@ var alterarsenhaCtrl = function ($scope, $rootScope, $location, genericAPI, $tim
 
             newObj.id = $rootScope.usuario.idusuario;
             newObj.novasenha = MD5(newObj.novasenha);
-            newObj.novasenha = MD5(newObj.novasenha);
             $rootScope.startLoad();
             
             // se há internet

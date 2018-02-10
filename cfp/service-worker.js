@@ -1,6 +1,6 @@
 importScripts('./libs/js/sw-cache-polyfill.js');
 
-let cacheName = 'cfp-v.1.3.3';
+let cacheName = 'cfp-v.1.3.4';
 let filesToCache = [
     './',
     'index.html',
@@ -75,6 +75,8 @@ let filesToCache = [
 
 self.addEventListener('install', (e) => {
     console.log( '[ServiceWorker] Installer' );
+    // forçando service atualizar
+    self.skipWaiting();
     e.waitUntil(
         caches.open(cacheName).then((cache) =>{
             // console.log( '[ServiceWorker] Caching app shell' );

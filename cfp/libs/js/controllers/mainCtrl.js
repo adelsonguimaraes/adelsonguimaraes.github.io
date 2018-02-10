@@ -5,6 +5,8 @@ var mainCtrl = function ($location, $rootScope, $scope, authenticationAPI, gener
 
     var root = $rootScope;
 
+    // window.location.reload(true); // forçando a atualização do cache
+
     root.usuario = ""; //startando variavel global usuario
     root.onLine = navigator.onLine;
 
