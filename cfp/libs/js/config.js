@@ -88,6 +88,13 @@
 	            //         ]);
 	            //     }
 	            // }
+			})
+			.state('emaberto', {
+				cache: false,
+	            url: "/emaberto",
+	            templateUrl: "views/contasemaberto.html",
+	            controller: "contasemabertoCtrl",
+	            data: { pageTitle: 'Contas em Aberto', specialClass: 'gray-bg'}
 	        })
 
 	        .state('menupage', {

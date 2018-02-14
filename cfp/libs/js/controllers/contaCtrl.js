@@ -226,6 +226,10 @@ var contaCtrl = function ($scope, $rootScope, $location, genericAPI, $timeout) {
             iniciaScope();
         }
 
+        $scope.fecharConta = function () {
+            $location.path('/emaberto');
+        }
+
         setTimeout(()=>{
             var x = ($scope.page === 'apagar') ? 'despesa' : 'recebimento';
             setActivatedMenu(document.getElementById('menu_'+x));
