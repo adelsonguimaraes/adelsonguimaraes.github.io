@@ -423,7 +423,8 @@ const contaDAO = {
                         }
                         case 'atualizar': {
                             // deletamos o dado do banco e adicionamos novamente com o ID nuvem
-                            indexedDBCtrl.remove('conta', data[i].data.old_id).then(() => {
+                            let id = (data[i].data.old_id !== undefined) ? data[i].data.old_id : data[i].data.id; // tratando o id para cadastro e atualização
+                            indexedDBCtrl.remove('conta', id).then(() => {
                                 contaDAO.cadastrar(data[i].data).then(response => {
                                     if (response.success){
                                         percorreArraySync(i+1);
