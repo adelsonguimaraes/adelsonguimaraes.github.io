@@ -33,6 +33,7 @@ var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
 
 var markerLocal = null;
 var markerEquipe = null;
+var ciclo = 0;
 
 function init() {
 
@@ -105,7 +106,10 @@ function showPosition(position) {
   // navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
   // };
   // var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
-  if (markerEquipe!= null) markerEquipe.setMap(null);
+  if (markerEquipe!= null) {
+    ciclo++;
+    markerEquipe.setMap(null);
+  }
   markerEquipe = new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!", icon: '../libs/img/worker-icon.png'}); // equipe
   
   // var markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
@@ -119,7 +123,7 @@ function showPosition(position) {
   //   fillColor: "#0000FF",
   //   fillOpacity: 0.4
   // });
-  map.setCenter(latlon); // centraliza na minha posição
+  if (ciclo <= 0 ) map.setCenter(latlon); // centraliza na minha posição
 
 
   }
