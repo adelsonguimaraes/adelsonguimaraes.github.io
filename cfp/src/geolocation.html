@@ -33,8 +33,8 @@ function getLocation() {
 }
  
 function showPosition(position) {
-  var latLocal = '-3.106951';
-  var lonLocal = '-60.020758';
+  var latLocal = '-3.107039';
+  var lonLocal = '-60.020749';
 
   lat=position.coords.latitude;
   lon=position.coords.longitude;
@@ -59,7 +59,7 @@ function showPosition(position) {
   mapholder.style.width='500px';
  
   var myOptions={
-  center:latlon,zoom:14,
+  center:latlon,zoom:8,
   mapTypeId:google.maps.MapTypeId.ROADMAP,
   mapTypeControl:false,
   navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
