@@ -31,13 +31,16 @@ var myOptions = {
 };
 var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
 
+var markerLocal = null;
+var markerEquipe = null;
+
 function init() {
 
   mapholder = document.getElementById('mapholder')
   mapholder.style.height = '250px';
   mapholder.style.width = '500px';
 
-  var markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
+  markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
   var circulo = new google.maps.Circle({
     map: map,
     center: new google.maps.LatLng(latLocal, lonLocal),
@@ -102,7 +105,8 @@ function showPosition(position) {
   // navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
   // };
   // var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
-  var markerEquipe = new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!", icon: '../libs/img/worker-icon.png'}); // equipe
+  markerEquipe = new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!", icon: '../libs/img/worker-icon.png'}); // equipe
+  console.log(markerEquipe);
   // var markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
   // var circulo = new google.maps.Circle({
   //   map: map,
