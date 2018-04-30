@@ -20,6 +20,7 @@ var radius = 20;
 
 var latLocal = '-3.107039';
 var lonLocal = '-60.020749';
+var latlonLocal = new google.maps.LatLng(latLocal, lonLocal);
 
 var myOptions = {
   center: latlonLocal, zoom: 18,
@@ -31,7 +32,6 @@ var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
 
 function init() {
 
-  latlonLocal = new google.maps.LatLng(latLocal, lonLocal)
   mapholder = document.getElementById('mapholder')
   mapholder.style.height = '250px';
   mapholder.style.width = '500px';
