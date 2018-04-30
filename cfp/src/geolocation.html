@@ -32,7 +32,6 @@ function showPosition(position) {
   var latLocal = '-3.106951';
   var lonLocal = '-60.020758';
 
-  console.log('aqui estamos');
     if (position.coords.latitude === latLocal && position.coords.longitude === lonLocal) {
       x.innerHTML = "Você está na AKTO.";
       console.log('Você está na AKTO');
@@ -40,6 +39,14 @@ function showPosition(position) {
 
   lat=position.coords.latitude;
   lon=position.coords.longitude;
+
+  var distancia = getDistanceFromLatLonInKm(
+    { lat: latLocal, lng: lonLocal },
+    { lat: lat, lng: lon }
+  );
+
+  console.log(distancia);
+
   latlon=new google.maps.LatLng(lat, lon)
   mapholder=document.getElementById('mapholder')
   mapholder.style.height='250px';
@@ -68,7 +75,6 @@ function showPosition(position) {
  
 function showError(error)
   {
-    console.log('Estamos aqui');
   switch(error.code)
     {
     case error.PERMISSION_DENIED:
@@ -102,6 +108,22 @@ function showError(error)
     console.log(error)
   }
 }
+
+// calulando distancia entre duas coordenadas
+function getDistanceFromLatLonInKm(position1, position2) {
+  "use strict";
+  var deg2rad = function (deg) { return deg * (Math.PI / 180); },
+    R = 6371,
+    dLat = deg2rad(position2.lat - position1.lat),
+    dLng = deg2rad(position2.lng - position1.lng),
+    a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+      + Math.cos(deg2rad(position1.lat))
+      * Math.cos(deg2rad(position1.lat))
+      * Math.sin(dLng / 2) * Math.sin(dLng / 2),
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return ((R * c * 1000).toFixed());
+}
+
 
 </script>
 </body>
