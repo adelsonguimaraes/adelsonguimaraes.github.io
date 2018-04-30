@@ -14,19 +14,24 @@
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyDz6MK5RAxChbfU8A4CuraLMkDDiIQoTk8"></script>
 <script>
 var x=document.getElementById("demo");
-function getLocation()
-  {
-  if (navigator.geolocation)
-    {
-    navigator.geolocation.getCurrentPosition(showPosition,showError);
-    }
-  else{x.innerHTML="Geolocalização não é suportada nesse browser.";}
-  }
- 
-function showPosition(position)
-  {
+function getLocation() {
+  if (navigator.geolocation) {
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
 
+    navigator.geolocation.getCurrentPosition(showPosition, showError, options);
+  }else{
+    x.innerHTML="Geolocalização não é suportada nesse browser.";
+  }
+}
+ 
+function showPosition(position) {
+  console.log('aqui estamos');
     if (position.coords.latitude === '-3.106951' && position.coords.longitude === '-60.020758') {
+      x.innerHTML = "Você está na AKTO.";
       console.log('Você está na AKTO');
     }
 
@@ -49,6 +54,7 @@ function showPosition(position)
  
 function showError(error)
   {
+    console.log('Estamos aqui');
   switch(error.code)
     {
     case error.PERMISSION_DENIED:
