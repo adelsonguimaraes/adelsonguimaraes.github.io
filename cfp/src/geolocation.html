@@ -29,8 +29,11 @@ function getLocation() {
 }
  
 function showPosition(position) {
+  var latLocal = '-3.106951';
+  var lonLocal = '-60.020758';
+
   console.log('aqui estamos');
-    if (position.coords.latitude === '-3.106951' && position.coords.longitude === '-60.020758') {
+    if (position.coords.latitude === latLocal && position.coords.longitude === lonLocal) {
       x.innerHTML = "Você está na AKTO.";
       console.log('Você está na AKTO');
     }
@@ -49,10 +52,10 @@ function showPosition(position) {
   navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
   };
   var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
-  var marker=new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!"});
+  var marker=new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!", icon: 'http://icons.iconarchive.com/icons/martin-berube/people/256/construction-worker-icon.png'});
   var circulo = new google.maps.Circle({
     map: map,
-    center: new google.maps.LatLng(lat, lon),
+    center: new google.maps.LatLng(latLocal, lonLocal),
     radius: 20, // 1000 metros = 1k.
     strokeColor: "#0000FF",
     strokeOpacity: 0.8,
