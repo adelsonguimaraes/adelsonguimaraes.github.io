@@ -8,6 +8,7 @@
 <body>
 <p id="demo">Clique no botão para obter sua localização:</p>
 <p id="metros">Esperando para mostrar distância:</p>
+<button style="height:40px; padding:10px;" onclick="IniciarTarefa()">Iniciar Tarefa</button>
 <!-- <button onclick="getLocation()">Clique aqui</button> -->
 <!-- <button onClick="localizarUsuario()">Minha Localização</button> <br> -->
 
@@ -21,6 +22,9 @@ var radius = 20;
 var latLocal = '-3.107039';
 var lonLocal = '-60.020749';
 var latlonLocal = new google.maps.LatLng(latLocal, lonLocal);
+
+var lat = 0;
+var lon = 0;
 
 // opções iniciais do mapa
 var myOptions = {
@@ -80,16 +84,16 @@ function showPosition(position) {
   lat=position.coords.latitude;
   lon=position.coords.longitude;
   
-  var distancia = getDistanceFromLatLonInKm(
-    { lat: latLocal, lng: lonLocal },
-    { lat: lat, lng: lon }
-  );
+  // var distancia = getDistanceFromLatLonInKm(
+  //   { lat: latLocal, lng: lonLocal },
+  //   { lat: lat, lng: lon }
+  // );
 
-  if (distancia <= radius) {
-    x.innerHTML = "<b><font color='green'>Parabéns você está no seu local de Tarefa.</font><b>";
-  }else{
-    x.innerHTML = "<b><font color='red'>Você está distante do Local de Tarefa, se aproxime mais!</font><b>";
-  }
+  // if (distancia <= radius) {
+  //   x.innerHTML = "<b><font color='green'>Parabéns você está no seu local de Tarefa.</font><b>";
+  // }else{
+  //   x.innerHTML = "<b><font color='red'>Você está distante do Local de Tarefa, se aproxime mais!</font><b>";
+  // }
 
   dist.innerHTML = "Você está há " + distancia + " metros do local da tarefa!";
   
@@ -127,6 +131,20 @@ function showPosition(position) {
 
 
   }
+
+  function iniciarTarefa(latLocal, lonLocal, lat, lon) {
+    var distancia = getDistanceFromLatLonInKm(
+      { lat: latLocal, lng: lonLocal },
+      { lat: lat, lng: lon }
+    );
+
+    if (distancia <= radius) {
+      x.innerHTML = "<b><font color='green'>Parabéns você está no seu local de Tarefa.</font><b>";
+    } else {
+      x.innerHTML = "<b><font color='red'>Você está distante do Local de Tarefa, se aproxime mais!</font><b>";
+    }
+  }
+
  
 function showError(error) {
   switch(error.code)
