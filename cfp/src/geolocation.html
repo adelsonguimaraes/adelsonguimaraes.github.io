@@ -25,6 +25,11 @@ function getLocation()
  
 function showPosition(position)
   {
+
+    if (position.coords.latitude === '-3.106951' && position.coords.longitude === '-60.020758') {
+      console.log('Você está na AKTO');
+    }
+
   lat=position.coords.latitude;
   lon=position.coords.longitude;
   latlon=new google.maps.LatLng(lat, lon)
