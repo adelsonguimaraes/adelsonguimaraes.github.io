@@ -84,10 +84,10 @@ function showPosition(position) {
   lat=position.coords.latitude;
   lon=position.coords.longitude;
   
-  // var distancia = getDistanceFromLatLonInKm(
-  //   { lat: latLocal, lng: lonLocal },
-  //   { lat: lat, lng: lon }
-  // );
+  var distancia = getDistanceFromLatLonInKm(
+    { lat: latLocal, lng: lonLocal },
+    { lat: lat, lng: lon }
+  );
 
   // if (distancia <= radius) {
   //   x.innerHTML = "<b><font color='green'>Parabéns você está no seu local de Tarefa.</font><b>";
@@ -132,7 +132,7 @@ function showPosition(position) {
 
   }
 
-  function iniciarTarefa(latLocal, lonLocal, lat, lon) {
+  function IniciarTarefa(latLocal, lonLocal, lat, lon) {
     var distancia = getDistanceFromLatLonInKm(
       { lat: latLocal, lng: lonLocal },
       { lat: lat, lng: lon }
