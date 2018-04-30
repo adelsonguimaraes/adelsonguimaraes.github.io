@@ -7,6 +7,7 @@
 </header>
 <body>
 <p id="demo">Clique no botão para obter sua localização:</p>
+<p id="metros">Esperando para mostrar distância:</p>
 <button onclick="getLocation()">Clique aqui</button>
 <!-- <button onClick="localizarUsuario()">Minha Localização</button> <br> -->
 
@@ -14,6 +15,9 @@
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyDz6MK5RAxChbfU8A4CuraLMkDDiIQoTk8"></script>
 <script>
 var x=document.getElementById("demo");
+var dist = document.getElementById("metros");
+var radius = 20;
+
 function getLocation() {
   if (navigator.geolocation) {
     var options = {
@@ -32,22 +36,24 @@ function showPosition(position) {
   var latLocal = '-3.106951';
   var lonLocal = '-60.020758';
 
-    if (position.coords.latitude === latLocal && position.coords.longitude === lonLocal) {
-      x.innerHTML = "Você está na AKTO.";
-      console.log('Você está na AKTO');
-    }
-
   lat=position.coords.latitude;
   lon=position.coords.longitude;
-
+  
   var distancia = getDistanceFromLatLonInKm(
     { lat: latLocal, lng: lonLocal },
     { lat: lat, lng: lon }
   );
 
-  console.log(distancia);
+  if (distancia <= radius) {
+    x.innerHTML = "<b><font color='green'>Parabéns você está no seu local de Tarefa.</font><b>";
+  }else{
+    x.innerHTML = "<b><font color='red'>Você está distante do Local de Tarefa, se aproxime mais!</font><b>";
+  }
 
+  dist.innerHTML = "Você está há " + distancia + " metros do local da tarefa!";
+  
   latlon=new google.maps.LatLng(lat, lon)
+  latlonLocal = new google.maps.LatLng(latLocal, lonLocal)
   mapholder=document.getElementById('mapholder')
   mapholder.style.height='250px';
   mapholder.style.width='500px';
@@ -59,11 +65,12 @@ function showPosition(position) {
   navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
   };
   var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
-  var marker=new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!", icon: '../libs/img/worker-icon.png'});
+  var marker=new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!", icon: '../libs/img/worker-icon.png'}); // equipe
+  var marker = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
   var circulo = new google.maps.Circle({
     map: map,
     center: new google.maps.LatLng(latLocal, lonLocal),
-    radius: 20, // 1000 metros = 1k.
+    radius: radius, // 1000 metros = 1k.
     strokeColor: "#0000FF",
     strokeOpacity: 0.8,
     strokeWeight: 2,
@@ -91,23 +98,23 @@ function showError(error)
       break;
     }
   }
-  function localizarUsuario(){
-  if (window.navigator && window.navigator.geolocation) {
-   var geolocation = window.navigator.geolocation;
-   geolocation.getCurrentPosition(sucesso, erro);
-  } else {
-     alert('Geolocalização não suportada em seu navegador.')
-  }
-  function sucesso(posicao){
-    console.log(posicao);
-    var latitude = posicao.coords.latitude;
-    var longitude = posicao.coords.longitude;
-    alert('Sua latitude estimada é: ' + latitude + ' e longitude: ' + longitude )
-  }
-  function erro(error){
-    console.log(error)
-  }
-}
+//   function localizarUsuario(){
+//   if (window.navigator && window.navigator.geolocation) {
+//    var geolocation = window.navigator.geolocation;
+//    geolocation.getCurrentPosition(sucesso, erro);
+//   } else {
+//      alert('Geolocalização não suportada em seu navegador.')
+//   }
+//   function sucesso(posicao){
+    
+//     var latitude = posicao.coords.latitude;
+//     var longitude = posicao.coords.longitude;
+//     alert('Sua latitude estimada é: ' + latitude + ' e longitude: ' + longitude )
+//   }
+//   function erro(error){
+//     console.log(error)
+//   }
+// }
 
 // calulando distancia entre duas coordenadas
 function getDistanceFromLatLonInKm(position1, position2) {
