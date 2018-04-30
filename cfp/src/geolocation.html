@@ -26,7 +26,13 @@ function getLocation() {
       maximumAge: 0
     };
 
-    navigator.geolocation.getCurrentPosition(showPosition, showError, options);
+    const watcher = navigator.geolocation.watchPosition(function(position){
+      console.log(position);
+    }, function (error) {
+      console.log(error);
+    }, { enableHighAccuracy: true, maximumAge: 30000, timeout: 50000 });
+
+    navigator.geolocation.getPosition(showPosition, showError, options);
   }else{
     x.innerHTML="Geolocalização não é suportada nesse browser.";
   }
