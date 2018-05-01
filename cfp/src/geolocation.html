@@ -213,8 +213,6 @@ function getDistanceFromLatLonInKm(position1, position2) {
 //calculando distancia entre rotas;
 function calculateAndDisplayRoute() {
         // var selectedMode = document.getElementById('mode').value;
-        var directionsRendererOptions = new google.maps.DirectionsRendererOptions;
-        directionsRendererOptions.preserveViewport(true);
         directionsDisplay.setMap(map);
         directionsService.route({
           origin: {lat: +lat, lng: +lon},  // Haight.
@@ -222,6 +220,7 @@ function calculateAndDisplayRoute() {
           // Note that Javascript allows us to access the constant
           // using square brackets and a string value as its
           // "property."
+          preserveViewport: true,
           travelMode: google.maps.TravelMode['DRIVING']
         }, function(response, status) {
           if (status == 'OK') {
