@@ -213,6 +213,8 @@ function getDistanceFromLatLonInKm(position1, position2) {
 //calculando distancia entre rotas;
 function calculateAndDisplayRoute() {
         // var selectedMode = document.getElementById('mode').value;
+        // var directionsRendererOptions = new google.maps.DirectionsRendererOptions;
+        // directionsRendererOptions.preserveViewport(true);
         directionsDisplay.setMap(map);
         directionsService.route({
           origin: {lat: +lat, lng: +lon},  // Haight.
@@ -225,6 +227,7 @@ function calculateAndDisplayRoute() {
         }, function(response, status) {
           if (status == 'OK') {
             directionsDisplay.setDirections(response);
+            directionsDisplay.setOptions({preserveViewport: true});
           } else {
             window.alert('Directions request failed due to ' + status);
           }
