@@ -214,8 +214,8 @@ function calculateAndDisplayRoute() {
         // var selectedMode = document.getElementById('mode').value;
         directionsDisplay.setMap(map);
         directionsService.route({
-          origin: {lat: lat, lng: lon},  // Haight.
-          destination: {lat: latLocal, lng: lonLocal},  // Ocean Beach.
+          origin: {lat: +lat, lng: +lon},  // Haight.
+          destination: {lat: +latLocal, lng: +lonLocal},  // Ocean Beach.
           // Note that Javascript allows us to access the constant
           // using square brackets and a string value as its
           // "property."
