@@ -125,8 +125,6 @@ function showPosition(position) {
     icon: '../libs/img/worker-icon.png',
     animation: google.maps.Animation.Bounce
     });
-
-  calculateAndDisplayRoute();
   
   // var markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
   // var circulo = new google.maps.Circle({
@@ -139,7 +137,10 @@ function showPosition(position) {
   //   fillColor: "#0000FF",
   //   fillOpacity: 0.4
   // });
-  if (ciclo <= 0 ) map.setCenter(latlon); // centraliza na minha posição
+  if (ciclo <= 0 ) {
+    map.setCenter(latlon); // centraliza na minha posição
+    calculateAndDisplayRoute();
+  }
 
     
 
