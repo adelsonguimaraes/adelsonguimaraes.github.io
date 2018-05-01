@@ -61,7 +61,7 @@ var ciclo = 0;
 function init() {
 
   mapholder = document.getElementById('mapholder')
-  // mapholder.style.height = '250px';
+  mapholder.style.height = (window.innerHeight-50)+'px';
   // mapholder.style.width = '500px';
 
   markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
