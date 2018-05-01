@@ -46,7 +46,6 @@ function persistentNotification() {
             body: "Katros está online.",
             icon: 'http://pm1.narvii.com/6496/9f8fa6eb74db07eef91e502c0910d9e766fc41ac_128.jpg'
         };
-        var notification = new Notification("Um amigo logou", options);
         navigator.serviceWorker.getRegistration()
         .then(reg => reg.showNotification("Um amigo logou", options))
         .catch(err => console.warn('Service Worker registration error: ' + err));
