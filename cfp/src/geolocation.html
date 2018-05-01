@@ -216,6 +216,8 @@ function calculateAndDisplayRoute() {
         // var directionsRendererOptions = new google.maps.DirectionsRendererOptions;
         // directionsRendererOptions.preserveViewport(true);
         directionsDisplay.setMap(map);
+        console.log('Aqui');
+        directionsDisplay.setOptions({preserveViewport: true});
         directionsService.route({
           origin: {lat: +lat, lng: +lon},  // Haight.
           destination: {lat: +latLocal, lng: +lonLocal},  // Ocean Beach.
@@ -227,7 +229,6 @@ function calculateAndDisplayRoute() {
         }, function(response, status) {
           if (status == 'OK') {
             directionsDisplay.setDirections(response);
-            directionsDisplay.setOptions({preserveViewport: true});
           } else {
             window.alert('Directions request failed due to ' + status);
           }
