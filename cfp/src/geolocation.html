@@ -4,13 +4,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <style>
+    body {
+      /* background: rgba(27, 27, 27, 0.808); */
+      padding: 10px;
+      margin: 0 auto;
+    }
+
+    #mapholder {
+      /* border: 1px solid red; */
+      width: 100%;
+      height: 600px;
+      min-height: 400px;
+    }
+  </style>
+
 </header>
 <body>
 <p id="demo">Clique no botão para obter sua localização:</p>
 <p id="metros">Esperando para mostrar distância:</p>
 <button style="height:40px; padding:10px;" onclick="IniciarTarefa()">Iniciar Tarefa</button>
-<!-- <button onclick="getLocation()">Clique aqui</button> -->
-<!-- <button onClick="localizarUsuario()">Minha Localização</button> <br> -->
+<button style="height:40px; padding:10px;" onclick="centralizar()">Centralizar</button>
+
 
 <div id="mapholder"></div>
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyDz6MK5RAxChbfU8A4CuraLMkDDiIQoTk8"></script>
@@ -45,8 +61,8 @@ var ciclo = 0;
 function init() {
 
   mapholder = document.getElementById('mapholder')
-  mapholder.style.height = '250px';
-  mapholder.style.width = '500px';
+  // mapholder.style.height = '250px';
+  // mapholder.style.width = '500px';
 
   markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
   var circulo = new google.maps.Circle({
@@ -159,6 +175,10 @@ function showPosition(position) {
     }
   }
 
+function centralizar () {
+  latlon=new google.maps.LatLng(lat, lon);
+  map.setCenter(latlon);
+}
  
 function showError(error) {
   switch(error.code)
