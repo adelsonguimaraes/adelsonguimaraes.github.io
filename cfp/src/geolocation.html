@@ -217,7 +217,7 @@ function calculateAndDisplayRoute() {
         // directionsRendererOptions.preserveViewport(true);
         directionsDisplay.setMap(map);
         console.log('Aqui');
-        directionsDisplay.setOptions({preserveViewport: true});
+        directionsDisplay.setOptions(new google.maps.DirectionsRendererOptions({preserveViewport: true}));
         directionsService.route({
           origin: {lat: +lat, lng: +lon},  // Haight.
           destination: {lat: +latLocal, lng: +lonLocal},  // Ocean Beach.
