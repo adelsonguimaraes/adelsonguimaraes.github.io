@@ -114,7 +114,14 @@ function showPosition(position) {
     ciclo++;
     markerEquipe.setMap(null);
   }
-  markerEquipe = new google.maps.Marker({position:latlon,map:map,title:"Você está Aqui!", icon: '../libs/img/worker-icon.png'}); // equipe
+  // equipe
+  markerEquipe = new google.maps.Marker({
+    position:latlon,
+    map:map,
+    title:"Você está Aqui!", 
+    icon: '../libs/img/worker-icon.png',
+    animation: google.maps.Animation.Bounce
+    });
   
   // var markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
   // var circulo = new google.maps.Circle({
