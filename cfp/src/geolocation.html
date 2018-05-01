@@ -50,7 +50,8 @@ var myOptions = {
   center: latlonLocal, zoom: 18,
   mapTypeId: google.maps.MapTypeId.ROADMAP,
   mapTypeControl: false,
-  navigationControlOptions: { style: google.maps.NavigationControlStyle.SMALL }
+  navigationControlOptions: { style: google.maps.NavigationControlStyle.SMALL },
+  disableDefaultUI: true
 };
 var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
 
