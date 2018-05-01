@@ -1,12 +1,11 @@
-// importScripts('./libs/js/sw-cache-polyfill.js');
+importScripts('./libs/js/sw-cache-polyfill.js');
 
 let cacheName = 'v.1.0.0';
 let filesToCache = [
     './',
-    'index.html'
-    // ,
-    // 'libs/css/style.css',
-    // 'libs/js/notification.js'
+    'index.html',
+    'libs/css/style.css',
+    'libs/js/notification.js'
 ];
 
 self.addEventListener('install', (e) => {
