@@ -67,8 +67,8 @@ function getLocation() {
   if (navigator.geolocation) {
     var options = {
       enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
+      timeout: 30000, // 30 segundos
+      maximumAge: 30000
     };
     
     const watcher = navigator.geolocation.watchPosition(showPosition, showError, options);
@@ -216,8 +216,10 @@ function calculateAndDisplayRoute() {
         // var directionsRendererOptions = new google.maps.DirectionsRendererOptions;
         // directionsRendererOptions.preserveViewport(true);
         directionsDisplay.setMap(map);
-        console.log('Aqui');
-        directionsDisplay.setOptions({preserveViewport: true});
+        directionsDisplay.setOptions({
+          preserveViewport: true,
+          suppressMarkers: true
+        });
         directionsService.route({
           origin: {lat: +lat, lng: +lon},  // Haight.
           destination: {lat: +latLocal, lng: +lonLocal},  // Ocean Beach.
