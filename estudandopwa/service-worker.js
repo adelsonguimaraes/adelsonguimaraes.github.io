@@ -5,7 +5,7 @@ let filesToCache = [
     './',
     'index.html',
     'libs/css/style.css',
-    'libs/js/notification.js'
+    'libs/js/util/notification.js'
 ];
 
 self.addEventListener('install', (e) => {
