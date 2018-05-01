@@ -217,14 +217,13 @@ function calculateAndDisplayRoute() {
         // directionsRendererOptions.preserveViewport(true);
         directionsDisplay.setMap(map);
         console.log('Aqui');
-        directionsDisplay.setOptions(new google.maps.DirectionsRendererOptions({preserveViewport: true}));
+        directionsDisplay.setOptions({preserveViewport: true});
         directionsService.route({
           origin: {lat: +lat, lng: +lon},  // Haight.
           destination: {lat: +latLocal, lng: +lonLocal},  // Ocean Beach.
           // Note that Javascript allows us to access the constant
           // using square brackets and a string value as its
           // "property."
-          preserveViewport: true,
           travelMode: google.maps.TravelMode['DRIVING']
         }, function(response, status) {
           if (status == 'OK') {
