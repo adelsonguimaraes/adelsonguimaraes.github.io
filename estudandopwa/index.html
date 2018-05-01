@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <base href="./">
+    <base href="/adelsonguimaraes.github.io/estudandopwa/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="libs/css/style.css">
+    <link rel="manifest" href="manifest.json">
     <title>Document</title>
 </head>
 <body>
     <div class="wapp">
         
     </div>
-
+    <script>
+        /* Service Worker */
+        if ( 'serviceWorker' in navigator ) {
+            navigator.serviceWorker
+            .register('./service-worker.js?'+Date.now())
+            .then((reg) => {
+                console.log('Service Worker Registered');
+            })
+            .catch((err) => {
+                console.log('erro', err);
+            });
+        }
+    </script>
     <script src="libs/js/util/notification.js"></script>
 </body>
 </html>
