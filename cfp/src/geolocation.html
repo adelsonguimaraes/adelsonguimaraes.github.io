@@ -26,6 +26,9 @@ var latlonLocal = new google.maps.LatLng(latLocal, lonLocal);
 var lat = 0;
 var lon = 0;
 
+var directionsDisplay = new google.maps.DirectionsRenderer;
+var directionsService = new google.maps.DirectionsService;
+
 // opções iniciais do mapa
 var myOptions = {
   center: latlonLocal, zoom: 18,
@@ -122,6 +125,8 @@ function showPosition(position) {
     icon: '../libs/img/worker-icon.png',
     animation: google.maps.Animation.Bounce
     });
+
+  calculateAndDisplayRoute();
   
   // var markerLocal = new google.maps.Marker({ position: latlonLocal, map: map, title: "Local da Tarefa", icon: '../libs/img/work-icon.png' }); // local
   // var circulo = new google.maps.Circle({
@@ -136,6 +141,7 @@ function showPosition(position) {
   // });
   if (ciclo <= 0 ) map.setCenter(latlon); // centraliza na minha posição
 
+    
 
   }
 
@@ -202,6 +208,26 @@ function getDistanceFromLatLonInKm(position1, position2) {
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return ((R * c * 1000).toFixed());
 }
+
+//calculando distancia entre rotas;
+function calculateAndDisplayRoute() {
+        // var selectedMode = document.getElementById('mode').value;
+        directionsDisplay.setMap(map);
+        directionsService.route({
+          origin: {lat: lat, lng: lon},  // Haight.
+          destination: {lat: latLocal, lng: lonLocal},  // Ocean Beach.
+          // Note that Javascript allows us to access the constant
+          // using square brackets and a string value as its
+          // "property."
+          travelMode: google.maps.TravelMode['DRIVING']
+        }, function(response, status) {
+          if (status == 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
 
 
 </script>
