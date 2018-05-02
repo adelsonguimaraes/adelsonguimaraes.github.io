@@ -18,13 +18,11 @@ if ('storage' in navigator && 'estimate' in navigator.storage) {
                     e.waitUntil(
                         caches.open(cacheName).then((cache) => {
                             // console.log( '[ServiceWorker] Caching app shell' );
-                            window.alert(`<b><font color="red">O Cache foi adicionado! Quota: ${usage} utilizado de ${quota}</font></b>`);
                             return cache.addAll(filesToCache);
                         })
                     );
                 }else{
                     // console.log(`Using ${usage} out of ${quota} bytes.`);
-                    window.alert(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
                     console.warn(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
                 }
         });
