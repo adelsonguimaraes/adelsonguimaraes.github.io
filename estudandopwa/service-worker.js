@@ -11,7 +11,7 @@ let filesToCache = [
 self.addEventListener('install', (e) => {
     console.log( '[ServiceWorker] Installer' );
     // forçando service atualizar
-    self.skipWaiting();
+    // self.skipWaiting();
     // verificando se ainda há espaço para armazenamento em cache
     if ('storage' in navigator && 'estimate' in navigator.storage) {
         navigator.storage.estimate().then(({ usage, quota }) => {
