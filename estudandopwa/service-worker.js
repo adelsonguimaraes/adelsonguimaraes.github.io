@@ -24,6 +24,8 @@ self.addEventListener('install', (e) => {
                 );
             }else{
                 // console.log(`Using ${usage} out of ${quota} bytes.`);
+                var info = document.getElementById('info');
+                info.innerHTML = `<b><font color="red">O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}</font></b>`;
                 console.warn(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
             }
         });
