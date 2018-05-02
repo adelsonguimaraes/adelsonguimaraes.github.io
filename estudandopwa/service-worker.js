@@ -7,30 +7,30 @@ let filesToCache = [
     'libs/css/style.css',
     'libs/js/util/notification.js'
 ];
-
-self.addEventListener('install', (e) => {
-    console.log( '[ServiceWorker] Installer' );
-    // forçando service atualizar
-    // self.skipWaiting();
-    // verificando se ainda há espaço para armazenamento em cache
-    if ('storage' in navigator && 'estimate' in navigator.storage) {
-        navigator.storage.estimate().then(({ usage, quota }) => {
-            if ( usage < quota ) {
-                e.waitUntil(
-                    caches.open(cacheName).then((cache) => {
-                        // console.log( '[ServiceWorker] Caching app shell' );
-                        return cache.addAll(filesToCache);
-                    })
-                );
-            }else{
-                // console.log(`Using ${usage} out of ${quota} bytes.`);
-                var info = document.getElementById('info');
-                info.innerHTML = `<b><font color="red">O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}</font></b>`;
-                console.warn(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
-            }
+// verificando se ainda há espaço para armazenamento em cache
+if ('storage' in navigator && 'estimate' in navigator.storage) {
+    navigator.storage.estimate().then(({ usage, quota }) => {
+    self.addEventListener('install', (e) => {
+        console.log( '[ServiceWorker] Installer' );
+        // forçando service atualizar
+        self.skipWaiting();
+                if ( usage < quota ) {
+                    e.waitUntil(
+                        caches.open(cacheName).then((cache) => {
+                            // console.log( '[ServiceWorker] Caching app shell' );
+                            return cache.addAll(filesToCache);
+                        })
+                    );
+                }else{
+                    // console.log(`Using ${usage} out of ${quota} bytes.`);
+                    var info = document.getElementById('info');
+                    info.innerHTML = `<b><font color="red">O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}</font></b>`;
+                    console.warn(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
+                }
         });
-    }
-});
+
+    });
+}
 
 self.addEventListener('activate', (e) => {
     console.log( '[ServiceWorker] Activate' );
