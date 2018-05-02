@@ -7,7 +7,6 @@ let filesToCache = [
     'libs/css/style.css',
     'libs/js/util/notification.js'
 ];
-let info = document.getElementById('info');
 // verificando se ainda há espaço para armazenamento em cache
 if ('storage' in navigator && 'estimate' in navigator.storage) {
     navigator.storage.estimate().then(({ usage, quota }) => {
@@ -19,13 +18,13 @@ if ('storage' in navigator && 'estimate' in navigator.storage) {
                     e.waitUntil(
                         caches.open(cacheName).then((cache) => {
                             // console.log( '[ServiceWorker] Caching app shell' );
-                            info.innerHTML = `<b><font color="red">O Cache foi adicionado! Quota: ${usage} utilizado de ${quota}</font></b>`;
+                            alert(`<b><font color="red">O Cache foi adicionado! Quota: ${usage} utilizado de ${quota}</font></b>`);
                             return cache.addAll(filesToCache);
                         })
                     );
                 }else{
                     // console.log(`Using ${usage} out of ${quota} bytes.`);
-                    info.innerHTML = `<b><font color="red">O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}</font></b>`;
+                    alert(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
                     console.warn(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
                 }
         });
