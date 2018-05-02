@@ -2,22 +2,32 @@ importScripts('./libs/js/sw-cache-polyfill.js');
 
 let cacheName = 'estudandopwa-v.1.0.0';
 let filesToCache = [
-    // './',
-    // 'index.html',
-    // 'libs/css/style.css',
-    // 'libs/js/util/notification.js'
+    './',
+    'index.html',
+    'libs/css/style.css',
+    'libs/js/util/notification.js'
 ];
 
 self.addEventListener('install', (e) => {
     console.log( '[ServiceWorker] Installer' );
     // forçando service atualizar
     self.skipWaiting();
-    e.waitUntil(
-        caches.open(cacheName).then((cache) =>{
-            // console.log( '[ServiceWorker] Caching app shell' );
-            return cache.addAll(filesToCache);
-        })
-    );
+    // verificando se ainda há espaço para armazenamento em cache
+    if ('storage' in navigator && 'estimate' in navigator.storage) {
+        navigator.storage.estimate().then(({ usage, quota }) => {
+            if ( usage < quota ) {
+                e.waitUntil(
+                    caches.open(cacheName).then((cache) => {
+                        // console.log( '[ServiceWorker] Caching app shell' );
+                        return cache.addAll(filesToCache);
+                    })
+                );
+            }else{
+                // console.log(`Using ${usage} out of ${quota} bytes.`);
+                console.warn(`O Limite de Quota foi atingido e não pode-se mais salvar em Cache! Quota: ${usage} utilizado de ${quota}`);
+            }
+        });
+    }
 });
 
 self.addEventListener('activate', (e) => {
