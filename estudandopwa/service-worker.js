@@ -1,6 +1,6 @@
-importScripts('./libs/js/sw-cache-polyfill.js');
+// importScripts('./libs/js/sw-cache-polyfill.js');
 
-let cacheName = 'v.1.0.0';
+let cacheName = 'estudandopwa-v.1.0.0';
 let filesToCache = [
     './',
     'index.html'
