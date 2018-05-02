@@ -17,6 +17,7 @@ function requestPermission() {
 }
 requestPermission();
 
+// notification sem ServiceWorker, não funciona mobile
 function nonPersistentNotification() {
   if (!('Notification' in window)) {
     console.warn('Notification API not supported!');
@@ -34,7 +35,7 @@ function nonPersistentNotification() {
   }
 }
 
-
+// notifcation com Service Worker, funciona Mobile e Desktop
 function persistentNotification() {
   if (!('Notification' in window) || !('ServiceWorkerRegistration' in window)) {
     console.warn('Persistent Notification API not supported!');
@@ -43,7 +44,7 @@ function persistentNotification() {
   
     try {
         var options = {
-            body: "Katros está online.",
+            body: "Kratrs está online.",
             icon: 'http://pm1.narvii.com/6496/9f8fa6eb74db07eef91e502c0910d9e766fc41ac_128.jpg'
         };
         navigator.serviceWorker.getRegistration()
