@@ -1,4 +1,4 @@
-// importScripts('./libs/js/sw-cache-polyfill.js');
+importScripts('./libs/js/sw-cache-polyfill.js');
 
 let cacheName = 'estudandopwa-v.1.0.0';
 let filesToCache = [
@@ -14,7 +14,7 @@ self.addEventListener('install', (e) => {
     self.skipWaiting();
     e.waitUntil(
         caches.open(cacheName).then((cache) =>{
-            // console.log( '[ServiceWorker] Caching app shell' );
+            console.log( '[ServiceWorker] Caching app shell' );
             return cache.addAll(filesToCache);
         })
     );
