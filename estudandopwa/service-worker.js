@@ -3,8 +3,8 @@ importScripts('./libs/js/sw-cache-polyfill.js');
 let cacheName = 'v.1.0.0';
 let filesToCache = [
     './',
-    'index.html'
-    // 'libs/css/style.css',
+    'index.html',
+    'libs/css/style.css',
     // 'libs/js/util/notification.js'
 ];
 
