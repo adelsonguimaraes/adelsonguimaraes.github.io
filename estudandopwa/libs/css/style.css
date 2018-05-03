@@ -1,6 +1,31 @@
+html, 
+body {
+    height: 100%;
+}
 body {
     margin: 0 auto;
-}
+ }
 .wapp {
     padding: 10px;
+}
+.panel {
+    min-width: 400px;
+    width: 400px;
+    margin: 2px;
+}
+.panel-h {
+    background: rgb(199, 207, 255);
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.panel-b {
+    background: rgb(254, 255, 181);
+    padding: 10px;
+}
+.panel-r {
+    background: rgb(199, 207, 255);
+    padding: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }

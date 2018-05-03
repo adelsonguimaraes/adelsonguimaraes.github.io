@@ -1,0 +1,15 @@
+.errorpage {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+.errorpage > h1 {
+   /* background: orange; */
+   padding: 50px; 
+   font-style: italic;
+   font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.errorpage > h1 > span {
+   padding: 8px; 
+}
