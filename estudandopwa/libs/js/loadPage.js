@@ -15,7 +15,8 @@ let routes = [
     {
         "alias": "geolocation",
         "html": "./app/views/geolocation.html",
-        "controller": "geolocationCtrl"
+        "controller": "geolocationCtrl",
+        "style": "geolocation"
     }
 ];
 
