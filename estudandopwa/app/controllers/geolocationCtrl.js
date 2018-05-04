@@ -60,9 +60,9 @@ function getLocation() {
             maximumAge: 30000 // 30 segundos para atualizar a localização
         };
 
-        const watcher = navigator.geolocation.watchPosition(showPosition, showError, options);
+        // const watcher = navigator.geolocation.watchPosition(showPosition, showError, options);
 
-        // navigator.geolocation.getCurrentPosition(showPosition, showError, options);
+        navigator.geolocation.getCurrentPosition(showPosition, showError, options);
     } else {
         x.innerHTML = "Geolocalização não é suportada nesse browser.";
     }
@@ -135,6 +135,7 @@ function showPosition(position) {
 }
 
 function IniciarTarefa() {
+    getLocation();
     var distancia = getDistanceFromLatLonInKm(
         { lat: latLocal, lng: lonLocal },
         { lat: lat, lng: lon }
