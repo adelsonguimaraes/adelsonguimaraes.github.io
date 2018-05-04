@@ -1,5 +1,5 @@
-let routeDefault = '#/404';
-let script = null;
+let routeDefault = '#/404'; // start route default
+let script = null; // start script
 let routes = [
     {
         "alias":"404",
