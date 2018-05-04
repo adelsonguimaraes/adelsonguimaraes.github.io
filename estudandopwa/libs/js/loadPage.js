@@ -1,5 +1,5 @@
-let routeDefault = '#/404'; // start route default
-let script = null; // start script
+let routeDefault = '#/404';
+let script = null;
 let routes = [
     {
         "alias":"404",
@@ -174,6 +174,7 @@ function getHashPage () {
     
 }
 
+// função que recebe o ALIAS de uma ROTA e trata, lançando o usuário para a rota caso exista ou para o default caso não
 function goPage(alias) {
     // escrevendo o hash
     var route = getRoute(alias);
@@ -196,10 +197,12 @@ function goPage(alias) {
 }
 
 
-setRouteDefault('404');
+// setando a rota padrão, qualquer tentativa de acesso a uma roa inexistente, é imediatamente devovle para a rota padrão
+setRouteDefault('home');
+// getando a primeira vez que o usuário abre o site
 getHashPage();
 
-// escutando o evento de alteração no hash
+// escutando o evento de alteração no hash (o HASH é o final do link do navegador, que é a nossa rota, quando ela for alterada manualmente getamos aqui nesse eventos)
 if ("onhashchange" in window) {
     window.addEventListener("hashchange", function (e) {
         getHashPage();
