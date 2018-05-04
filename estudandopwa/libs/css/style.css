@@ -29,3 +29,19 @@ body {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
+.btn {
+    padding: 10px;
+}
+.btn-text-4x{
+    font-size: 18px;
+}
+.btn-success {
+    background: green;
+    color: #fff;
+    border: 1px solid forestgreen;
+}
+.btn-success:hover {
+    background: rgb(0, 150, 0);
+    color: #fff;
+    border: 1px solid forestgreen;
+}
