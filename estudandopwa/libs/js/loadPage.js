@@ -23,6 +23,12 @@ let routes = [
         "html": "./app/views/notification.html",
         "controller": "notificationCtrl",
         "style": "notification"
+    },
+    {
+        "alias": "testeinternet",
+        "html": "./app/views/testeinternet.html",
+        "controller": "testeinternetCtrl",
+        "style": "testeinternet"
     }
 ];
 
