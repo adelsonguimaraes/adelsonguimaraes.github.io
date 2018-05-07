@@ -7,17 +7,21 @@
 .toast {
     position: fixed;
     background: rgba(0, 0, 0, 0.863);
-    padding: 15px;
+    padding: 0 10px 0 10px;
     /* height: 45px; */
     bottom: 20px;
     left: 20px;
     color: #fff;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 600;
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    /* display: none; */
+    display: none;
+    /* display: flex; */
+}
+.toast > p {
+    padding: 2px;
 }
 .toast > img {
-    position: relative;
-    
+    padding: 12px 0 0 5px;
+    height: 38px;
 }

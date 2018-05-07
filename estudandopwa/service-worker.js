@@ -5,7 +5,8 @@ let filesToCache = [
     './',
     'index.html',
     'libs/css/style.css',
-    'libs/js/util/notification.js'
+    'libs/js/util/notification.js',
+    'libs/img/off-line.jpg'
 ];
 // verificando se ainda há espaço para armazenamento em cache
 if ('storage' in navigator && 'estimate' in navigator.storage) {
