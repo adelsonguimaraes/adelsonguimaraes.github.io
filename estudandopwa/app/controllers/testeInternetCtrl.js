@@ -16,7 +16,7 @@ function setStatusNet(e) {
         p.innerHTML = "Ligue a internet para testar!";
         img.src = "libs/img/off-line.jpg";
         img.height = "140";
-        toast.style.display = "block";
+        toast.style.display = "flex";
     }
 }
 
