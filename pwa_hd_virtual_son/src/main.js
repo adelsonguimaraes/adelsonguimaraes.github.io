@@ -1,11 +1,10 @@
-require('./style.scss');
-
 class init {
-    constructor(name) {
-        let partil = require('./partial.html');
+    constructor() {
+        let component = require('./template');
         let app = document.getElementById('app');
-        app.innerHTML = partil;
+        app.innerHTML = component.template;
+        component.action();
     }
 }
 
-new init('Adelson');
+new init();
