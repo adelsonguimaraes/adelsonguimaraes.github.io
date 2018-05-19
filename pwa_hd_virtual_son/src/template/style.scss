@@ -1,4 +1,7 @@
-body {
-    background-color: #fff;
-    color: rgb(156, 55, 55);
-}
+@import 'reset';
+@import 'skeleton';
+@import 'header';
+@import 'content';
+@import 'footer';
+@import 'sidebar';
+@import 'utils';
