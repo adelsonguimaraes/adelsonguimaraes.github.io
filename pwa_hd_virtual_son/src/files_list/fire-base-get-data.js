@@ -3,14 +3,14 @@ import getData from './update-data';
 
 //neste arquivos vamos gerenciar os caminhos 
 
-let foldersPath = [];
+export const foldersPath = [];
 
 export default function (ref) {
     let pos = foldersPath.findIndex((e) => e.id == ref.id); // retorna a posição caso encontre
     if (pos == -1) {
         foldersPath.push(ref);
     }else{
-        foldersPath = foldersPath.slice(0, pos + 1);
+        foldersPath.splice(pos + 1, foldersPath.length - pos);
     }
 
     let firebase_ref = '';
