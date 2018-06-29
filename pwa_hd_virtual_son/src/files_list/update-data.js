@@ -28,7 +28,8 @@ export default function (snapshot) {
         html += partial
             .replace(/{{ fid }}/g, files[f][0])
             .replace(/{{ title }}/g, files[f][1].title)
-            .replace(/{{ type }}/g, files[f][1].type);
+            .replace(/{{ type }}/g, files[f][1].type)
+            .replace(/{{ url }}/g, files[f][1].url);
     }
 
     document.querySelector('#main .files').innerHTML = html;

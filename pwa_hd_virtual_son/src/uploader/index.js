@@ -22,7 +22,7 @@ export default {
                             file();
                             break;
                         case 'folder':
-                            console.log('cria diretório');
+                            folder();
                             break;
                         case 'photo':
                             console.log('tira foto');
