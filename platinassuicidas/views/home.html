@@ -1,0 +1,41 @@
+<!-- Home -->
+<div class="main-home">
+	<section class="descricao">
+		<h3>Descubra o Segredo</h3>
+		<div>
+			<a>Interrogações: {{interrogacoes}}</a>
+			<a>Acertos: {{pista}}</a>
+		</div>
+	</section>
+	<section class="instrucoes" ng-if="!iniciado">
+		<p>
+			Entre os personagens existe um segredo guardado, mas para desvenda-lo você precisará interroga-los e encontrar 5 partes do segredo.
+			
+			<br><br><b>Regras do jogo:</b><br><br>
+
+			1. Você tem <b>{{interrogacoes}}</b> tentativas de Interrogação.<br>
+			2. Click sobre um personagem para interroga-lo.<br>
+			3. Acerto libera um segredo e desativa um personagem.<br>
+			4. A cada erro uma tentativa de interrogação é perdida.<br>
+			5. Encontre as 5 partes e desvende o mistério.<br>
+			6. Zere suas tentativas e o jogo será reiniciado.<br>
+			7. As pistas trocam de personagens a cada jogada.<br>
+			8. Apenas <b>{{time}}</b> para descobrir o segredo.<br>
+			9. Escolha com cuidado.
+			
+		</p>
+		<br>
+		<center><button class="btn btn-default btn-lg" ng-click="iniciar()">Começar o jogo</button></center>
+	</section>
+	<!-- <section>
+		
+	</section> -->
+	<section class="cards-view" ng-if="iniciado">
+		<div class="card" ng-repeat="c in cards" ng-click="clicado(c, $index)" ng-class="{'card-dasativada' : c.desativado}">
+			<div class="card-name">{{$index}} {{c.nome}}</div>
+			<img ng-src="{{c.src}}" alt="">
+		</div>
+		<div><a class="time animated pulse infinite">{{time}}</a></div>
+	</section>
+</div>
+<!-- <div class="toast animated bounce">Essa é uma página de Teste</div> -->

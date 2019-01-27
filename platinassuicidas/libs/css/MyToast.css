@@ -1,0 +1,24 @@
+.mytoast {
+    height: 40px;
+    width: 100%;
+    bottom: 15px;
+    left: 0;
+    text-align: center;
+    background: transparent;
+    position: fixed;
+    transition: all 330ms ease-in;
+    -webkit-transform: translateY(160%); /* esconde menu a esquerda */
+    transform: translateY(160%); /* esconde menu a esquerda */
+}
+.mytoast-show {
+    -webkit-transform: none; /* esconde menu a esquerda */
+    transform: none; /* esconde menu a esquerda */
+    transition: all 130ms ease-in;
+    z-index: 1000;
+}
+.mytoast a {
+    background: #000000c9;
+    padding: 10px 25px;
+    border-radius: '50px';
+    color: #fff;
+}
