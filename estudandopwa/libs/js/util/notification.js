@@ -54,3 +54,14 @@ function persistentNotification() {
         console.warn('Notification API error: ' + err);
     }
 }
+
+
+
+function escutaAgenda () {
+  setTimeout(function () {
+      persistentNotification();
+      console.log('aqui');
+  }, 10000);
+}
+
+escutaAgenda();
