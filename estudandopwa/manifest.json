@@ -38,8 +38,6 @@
     "background_color": "#607d8b",
     "theme_color": "#607d8b",
 
-    "background": {
-        "persistent": true,
-        "scripts": ["libs/js/util/notification.js","service-worker.js"]
-    }
+    "gcm_sender_id": "482941778795",
+    "gcm_sender_id_comment": "Do not change the GCM Sender ID"
 }

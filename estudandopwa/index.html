@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="libs/css/animate.css">
     <link rel="manifest" href="manifest.json">
     <title>Document</title>
+
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+            OneSignal.init({
+            appId: "794ab791-1bac-46a9-9d98-fb2ad442e13d",
+            autoRegister: false,
+            notifyButton: {
+                enable: true,
+            },
+            allowLocalhostAsSecureOrigin: true,
+            });
+        });
+    </script>
 </head>
 <body>
     <main></main>
@@ -16,7 +31,8 @@
         /* Service Worker */
         if ( 'serviceWorker' in navigator ) {
             navigator.serviceWorker
-            .register('./service-worker.js?'+Date.now())
+        // // //     .register('./service-worker.js?'+Date.now())
+            .register('./OneSignalSDKWorker.js')
             .then((reg) => {
                 console.log('Service Worker Registered');
             })
