@@ -22,6 +22,10 @@
             },
             // allowLocalhostAsSecureOrigin: true,
             });
+
+             OneSignal.on('notificationDisplay', function (event) {
+                console.warn('OneSignal notification displayed:', event);
+            });
         });
     </script>
 </head>

@@ -1,19 +1,28 @@
 <?PHP
-	function sendMessage(){
-		$content = array(
-			"en" => 'Mensagem em Portguês'
-			);
-		
+	function sendMessage($configs){
+		// $content = array(
+		// 	"pt_br" => 'Mensagem em Portguês'
+		// 	);
+
 		$fields = array(
 			'app_id' => "794ab791-1bac-46a9-9d98-fb2ad442e13d",
 			'filters' => array(array("field" => "tag", "key" => "level", "relation" => "=", "value" => "10"),array("operator" => "OR"),array("field" => "amount_spent", "relation" => "=", "value" => "0")),
-			'data' => array("foo" => "bar"),
-			'contents' => $content
+			'headings' => $configs['headings'],
+			'subtitle' => $configs['subtitle'],
+			'contents' => $configs['contents'],
+			'data' => $configs['data'],
+			'chrome_web_icon'=> "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfqWL3RP0CcHldwr9_JfFJ1A1oJG4o3wqgjJLR83I4ZZEK-YmR",
+			'wp_wns_sound' => "closure.mp3",
+			'web_buttons' => array(
+				array("id"=>"acessar", "text"=>"Acessar"),
+				array("id"=>"depois", "text"=>"Depois")
+			),
+			'include_player_ids' => array() // enviar para usuários específicos
 		);
 		
 		$fields = json_encode($fields);
-    	print("\nJSON sent:\n");
-    	print($fields);
+    	// print("\nJSON sent:\n");
+    	// print($fields);
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
@@ -30,12 +39,20 @@
 		
 		return $response;
 	}
+
+	// variáveis utilizadads nas informações do conteúdo
+	// $configs = array(
+	// 	"headings" => array("en"=>"Notification Background"),
+	// 	"subtitle" => array("en" => "Teste de notificação em background"),
+	// 	"contents" => array("en" => "Essa notificação foi enviada quando o navegador estava fechado"),
+	// 	"data" => array("site"=>"www.adelsonguimaraes.com.br/estudandopwa")
+	// );
 	
-	$response = sendMessage();
-	$return["allresponses"] = $response;
-	$return = json_encode( $return);
+	// $response = sendMessage($configs);
+	// $return["allresponses"] = $response;
+	// $return = json_encode( $return);
 	
-	print("\n\nJSON received:\n");
-	print($return);
-	print("\n");
+	// print("\n\nJSON received:\n");
+	// print($return);
+	// print("\n");
 ?>
