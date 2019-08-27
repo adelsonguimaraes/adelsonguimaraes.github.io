@@ -14,10 +14,10 @@
 			'chrome_web_icon'=> "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfqWL3RP0CcHldwr9_JfFJ1A1oJG4o3wqgjJLR83I4ZZEK-YmR",
 			'wp_wns_sound' => "closure.mp3",
 			'web_buttons' => array(
-				array("id"=>"acessar", "text"=>"Acessar"),
-				array("id"=>"depois", "text"=>"Depois")
+				array("id"=>"acessar", "text"=>"Acessar", "icon"=>'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/WPVG_icon_2016.svg/1024px-WPVG_icon_2016.svg.png', "url"=>"do_not_open"),
+				array("id"=>"depois", "text"=>"Depois", "icon"=>'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/1024px-Facebook_icon.svg.png', "url"=>"https://facebook.com/?_osp=do_not_open"),
 			),
-			'include_player_ids' => array() // enviar para usuários específicos
+			'include_player_ids' => array("19d88885-5508-4203-adb5-73aa88212d80") // enviar para usuários específicos
 		);
 		
 		$fields = json_encode($fields);

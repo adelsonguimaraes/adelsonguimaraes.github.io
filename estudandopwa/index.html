@@ -11,23 +11,7 @@
     <title>Estudando PWA</title>
 
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
-    <script>
-        var OneSignal = window.OneSignal || [];
-        OneSignal.push(function() {
-            OneSignal.init({
-            appId: "794ab791-1bac-46a9-9d98-fb2ad442e13d",
-            autoRegister: false,
-            notifyButton: {
-                enable: true,
-            },
-            // allowLocalhostAsSecureOrigin: true,
-            });
-
-             OneSignal.on('notificationDisplay', function (event) {
-                console.warn('OneSignal notification displayed:', event);
-            });
-        });
-    </script>
+    <script src="OneSignal.js"></script>
 </head>
 <body>
     <main></main>
@@ -35,7 +19,6 @@
         /* Service Worker */
         if ( 'serviceWorker' in navigator ) {
             navigator.serviceWorker
-        // // //     .register('./service-worker.js?'+Date.now())
             .register('./OneSignalSDKWorker.js')
             .then((reg) => {
                 console.log('Service Worker Registered');
@@ -45,7 +28,8 @@
             });
         }
     </script>
-    <script src="libs/js/util/notification.js"></script>
+    <!-- Chamando Local Notification -->
+    <script src="localNotification.js"></script>
     <script src="libs/js/loadPage.js"></script>
     <!-- <script src="https://maps.google.com/maps/api/js?key=SUA_CHAVE_AQUI"></script> -->
 </body>
