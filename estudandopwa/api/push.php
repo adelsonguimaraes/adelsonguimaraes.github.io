@@ -17,7 +17,7 @@
 				array("id"=>"acessar", "text"=>"Acessar", "icon"=>'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/WPVG_icon_2016.svg/1024px-WPVG_icon_2016.svg.png', "url"=>"do_not_open"),
 				array("id"=>"depois", "text"=>"Depois", "icon"=>'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/1024px-Facebook_icon.svg.png', "url"=>"https://facebook.com/?_osp=do_not_open"),
 			),
-			'include_player_ids' => array("19d88885-5508-4203-adb5-73aa88212d80") // enviar para usuários específicos
+			// 'include_player_ids' => array("19d88885-5508-4203-adb5-73aa88212d80", "3c41324a-76a2-4f54-a524-dab383bdb0a3") // enviar para usuários específicos
 		);
 		
 		$fields = json_encode($fields);
