@@ -1,4 +1,5 @@
-var socket = new WebSocket("wss://connect.websocket.in/incubus_2019?room_id=2019");
+// site do websocket free https://www.websocket.in/
+var socket = new WebSocket("wss://connect.websocket.in/v2/1?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImFlMmY1ZmNiM2U4MGE0ZmI5MjlkZTJiZmMyYWZlYmU5MTcxMDZhNTcwN2JhNmFmNGQxOTc3YjY4MzQxOWNhZmY4YjY3NTNkZmU4ZjY2MmU2In0.eyJhdWQiOiI2IiwianRpIjoiYWUyZjVmY2IzZTgwYTRmYjkyOWRlMmJmYzJhZmViZTkxNzEwNmE1NzA3YmE2YWY0ZDE5NzdiNjgzNDE5Y2FmZjhiNjc1M2RmZThmNjYyZTYiLCJpYXQiOjE1NzU5MTc2ODksIm5iZiI6MTU3NTkxNzY4OSwiZXhwIjoxNjA3NTQwMDg5LCJzdWIiOiIxNDkiLCJzY29wZXMiOltdfQ.R_s9M5B_-YjyqOO_Mq_6GvvosaIb2SLSy1QxNoZmflQ7SkufGaWqpCwju9K-WzRv3NKZgiWYc1QhUFJNgAocN_9oGYIqztmScCSv2p0aQIhyqT3Y-ssgDy-a5lWnaoDW1DLkbPOtIYMRcR36yTFZ9FCOjay7n3ztIuNdgq8bI5VBceg5DYRhEGAC8zRmKPDATwc9qzxze7zv_POTw78OofYpaZDZuEd-YMe6DNSSr3KEt9ev-V94kbsHrvL3a8HIG9lUoZg5cK1mTdX4cY4F_4Y65l32Zr1QjSFpOkbmWQWWnVPBwe0aboIdAHHSB_7P8xFe0NngAsaB3aYWjlCvNZGhKF_h5DyxiNjiUzJrOq5gCVNzvZdS-Z9RsFEk0IOJiRJpPDE6dnxmbTZcPprSnbx5GCyVzMAzq49vFQnnLLGh6ciLod0vzx3UwFSL8aAyJ_1nG3jZG5EHfX5RHb-206lZdIt15z5mgqOTLSF2y0i_it8VjGvwLPxRbK1jOZOekMGc8Z9XnBc5hjy4Wo1UhLa8NukSt-xTyCMzvy4bZltJ2EAQPo8rUvTH9BPArd-YPXIr4CZoygYXvTinW4lukf6ZWkMAL1lrW3Tw6oKqbu91JtBDExPOgVvCTUYX6YfCpbOyB1Q0Vt2LrTix5oYgbR4QBRULpgx56uCyYp1Q4d8");
 
 socket.onopen = function (e) {
 	console.log(e);
@@ -6,11 +7,11 @@ socket.onopen = function (e) {
 }
 
 socket.onmessage = function(evt) {
-  var data = JSON.parse(evt.data);
+  var data = (Array.isArray(evt.data)) ? JSON.parse(evt.data) : evt.data;
   console.log(data);
 };
 
-function addMessage() {
-  var message = "Oi tudo bem?";
+function addMessage(message) {
+  if (message==undefined) message = "Oi tudo bem?";
   socket.send(message);
 }
