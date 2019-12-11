@@ -2,3 +2,6 @@
     font-weight: bold;
     color: brown;
 }
+.home td {
+    white-space: normal !important; 
+}

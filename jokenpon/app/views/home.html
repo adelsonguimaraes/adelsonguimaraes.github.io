@@ -124,22 +124,18 @@
                         <thead>
                             <tr>
                                 <th>Jogador</th>
-                                <!-- <th>:</th> -->
-                                <th align="right">Jogada</th>
+                                <th align="right"></th>
                                 <th></th>
-                                <th align="left">Jogada</th>
-                                <!-- <th>:</th> -->
+                                <th align="left"></th>
                                 <th>Jogador</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="r in rodada">
                                 <td>{{r.jogador1.nome}}</td>
-                                <!-- <td>{{}}</td> -->
                                 <td align="right" style="font-weight: bold;"><a ng-style="{color: r.jogador1.pontos<0 ? 'brown' : 'black'}">{{r.jogador1.pontos}}</a> <i style="transform: rotate(90deg); font-size: 25px;" class="fa" ng-class="[{'fa-hand-rock-o' : r.jogador1.jogada=='pedra'}, {'fa-hand-paper-o' : r.jogador1.jogada=='papel'}, {'fa-hand-peace-o' : r.jogador1.jogada=='tesoura'}]"></i></td>
                                 <td>Vs</td>
                                 <td align="left" style="font-weight: bold;"><i style="transform: rotate(-90deg) rotateY(180deg); font-size: 25px;" class="fa" ng-class="[{'fa-hand-rock-o' : r.jogador2.jogada=='pedra'}, {'fa-hand-paper-o' : r.jogador2.jogada=='papel'}, {'fa-hand-peace-o' : r.jogador2.jogada=='tesoura'}]"></i> <a ng-style="{color: r.jogador2.pontos<0 ? 'brown' : 'black'}">{{r.jogador2.pontos}}</a></td>
-                                <!-- <td>{{r.jogador2.pontos}}</td> -->
                                 <td>{{r.jogador2.nome}}</td>
                             </tr>
                         </tbody>
