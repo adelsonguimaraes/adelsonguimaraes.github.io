@@ -1,0 +1,28 @@
+.main-splash {
+    background-color: #fff;
+    width: 100% !important;
+    height: 100% !important;
+    top:0 !important;
+    left: 0 !important;
+    position: fixed;
+    display: none;
+    z-index: 10050;
+    opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+
+.main-splash > img {
+    max-width: 100%;
+    max-height: 100%;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    overflow: auto;
+    position: fixed;
+}
+
+.main-splash > show {
+    display: block !important;
+}

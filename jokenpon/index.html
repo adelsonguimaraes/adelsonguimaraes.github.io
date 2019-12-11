@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="jokenpon">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="manifest" href="manifest.json">
+
+    <base href="./">
+    <title>JokenpOn</title>
+
+    <!-- FavIcon -->
+    <link rel="icon" href="favicon.ico" />
+
+    <!-- Bootstrap -->
+    <link href="libs/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="libs/css/unicorn-ui/buttons.css">
+    <link rel="stylesheet" href="libs/css/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    
+    <link href='libs/css/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
+    <link href='libs/css/fullcalendar/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+
+    <!-- Font awesome -->
+    <link href="libs/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+    <!-- Font Goole -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
+
+    <link rel="stylesheet" href="libs/css/animate/animate.css">
+    <link rel="stylesheet" href="libs/css/introjs/introjs.min.css">
+    <link rel="stylesheet" href="libs/css/introjs/introjs-rtl.min.css">
+    <link rel="stylesheet" href="libs/css/MyToast.css">
+    <link rel="stylesheet" href="libs/css/Splash.css">
+    <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="libs/css/image-viewer/imageviewer.css"/>
+    <link rel="stylesheet" href="libs/css/plugins/sweetalert/sweetalert.css" />
+
+    <link rel="stylesheet" href="app/css/style.css">
+    <link rel="stylesheet" href="app/css/home.css">
+</head>
+
+<body ng-controller="mainCtrl as main" class="{{$state.current.data.specialClass}}" landing-scrollspy id="page-top">
+    <!-- Main view  -->
+    <div ui-view></div>
+    <div id="loading" class="main-splash" style="display:{{loading}}">
+        <img style="margin-top:120px;" src="libs/img/ajax_loader_blue.gif" alt="">
+    </div>
+    <!-- <div class="btn" style="top:12px; right:18px; z-index: 500; position: fixed; background: #ececec;" onClick="window.location.reload(true)" title="Atualizar Cache"><i class="fa fa-cloud-download"></i></div> -->
+</body>
+<!-- Main Angular scripts-->
+<script type="text/javascript" src="libs/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="libs/js/jquery/jquery-ui-1.10.4.min.js"></script>
+<script type="text/javascript" src="libs/js/bootstrap/bootstrap.min.js"></script>
+
+<script src="libs/leaflet/leaflet.js"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
+<script src='libs/js/image-viewer/imageviewer.min.js'></script>
+
+<script src='libs/js/moment.min.js'></script>
+
+<script type="text/javascript" src="libs/js/angular/angular.min.js"></script>
+<script type="text/javascript" src="libs/js/angular/angular-sanitize.js"></script>
+<script type="text/javascript" src="libs/js/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>
+<script type="text/javascript" src="libs/js/angular-translate/angular-translate.min.js"></script>
+<script type="text/javascript" src="libs/js/ui-router/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="libs/js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>
+<script type="text/javascript" src="libs/js/plugins/angular-idle/angular-idle.js"></script>
+
+<!-- <script src='libs/js/fullcalendar/locale/pt-br.js'></script> -->
+<script src="libs/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="libs/js/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.pt-BR.js"></script>
+
+<script type="text/javascript" src="libs/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="libs/js/plugins/sweetalert/angular-sweetalert.min.js"></script>
+
+<script type="text/javascript" src="libs/js/MD5.js"></script>
+<script type="text/javascript" src="libs/js/GenericModal.js"></script>
+<script type="text/javascript" src="libs/js/introjs/intro.min.js"></script>
+<script type="text/javascript" src="libs/js/Chart.min.js"></script>
+
+<script type="text/javascript" src="libs/js/polyfill/object.observe.polyfill.js"></script>
+<script type="text/javascript" src="libs/js/polyfill/array.observe.polyfill.js"></script>
+<script type="text/javascript" src="libs/js/MyToast.js"></script>
+<script type="text/javascript" src="libs/js/MarkText.js"></script>
+<script type="text/javascript" src="libs/js/FormataMoeda.js"></script>
+
+<script type="text/javascript" src="libs/js/ps-input-time.js"></script>
+
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="config.js"></script>
+
+<!-- controllers -->
+<script type="text/javascript" src="app/controllers/mainCtrl.js"></script>
+<script src="app/controllers/homeCtrl.js"></script>
+<!-- services -->
+<script src="app/services/authenticationAPIService.js"></script>
+<script src="app/services/genericAPIService.js"></script>
+
+<!-- diretivas -->
+<script type="text/javascript" src="app/directives/directives.js"></script>
+
+<!-- filters -->
+<script src="app/filters/filters.js"></script>
+
+<!-- factory -->
+<script src="app/factories/factories.js"></script>
+
+</html>

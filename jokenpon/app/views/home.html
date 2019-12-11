@@ -1,0 +1,154 @@
+<!-- <div ng-include="'app/views/common/header.html'"></div> -->
+<div class="home">
+    <section ng-if="view==1">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <center>
+                    <h4>Bem Vindo ao JokenpOn</h4>
+                    <hr>
+                    <p><b>Regras:</b></p>
+                    <p>Vidas Iniciais 5 <i class="glyphicon glyphicon-heart"></i></p>
+                    <p>Vitória recebe +1 <i class="glyphicon glyphicon-heart"></i></p>
+                    <p>Empate perde -1 <i class="glyphicon glyphicon-heart"></i></p>
+                    <p>Derrota perde -2 <i class="glyphicon glyphicon-heart"></i></p>
+                </center>
+            </div>
+            <div class="panel-body">
+                <form name="form">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="">Nome</label>
+                                <input type="text" class="form-control" name="nome" id="nome" ng-model="obj.nome" ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer" style="display: flow-root;">
+                <div class="btn-group pull-right">
+                    <button class="btn btn-default" ng-click="entrar(obj)" ng-disabled="form.$invalid">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section ng-if="view==2">
+        <div class="panel panel-default" style="height: 100vh; margin-bottom: 0;">
+            <div class="panel-heading">
+                <div style="display: flex;">
+                    <h4 style="flex: 1;">Jogador: {{jogador.nome}}</h4>
+                    <h4 style="width:50px;">
+                        <i class="glyphicon glyphicon-heart" style="color:brown;"></i> {{jogador.moeda}}
+                    </h4>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <label for="">Escolha sua jogada! Tempo: <span class="time">{{jogo.tempo}}</label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-4">
+                            <div class="form-group">
+                                <button class="btn btn-default btn-lg" ng-class="{'active' : btn == 'pedra'}" ng-click="setButton('pedra')">
+                                    <label for="">Pedra</label><br>
+                                    <i class="fa fa-hand-rock-o fa-4x" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-4">
+                            <div class="form-group">
+                                <button class="btn btn-default btn-lg" ng-class="{'active' : btn == 'papel'}"  ng-click="setButton('papel')">
+                                    <label for="">Papel</label><br>
+                                    <i class="fa fa-hand-paper-o fa-4x" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-4">
+                            <div class="form-group">
+                                <button class="btn btn-default btn-lg" ng-class="{'active' : btn == 'tesoura'}"  ng-click="setButton('tesoura')">
+                                    <label for="">Tesoura</label><br>
+                                    <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <button class="btn btn-default btn-block" ng-click="jogando()">Jogar</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            
+                        </div>
+                    </div>
+                        
+                </form>
+            </div>
+            <!-- <div class="panel-footer" style="display: flex;">
+                    <textarea class="form-control" name="chat" id="chat" style="width: 100%;
+                    resize: none; height: 45vh"></textarea>
+            </div> -->
+        </div>
+    </section>
+
+    <section ng-if="view==3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div style="display: flex;">
+                    <h4 style="flex: 1;">Jogador: {{jogador.nome}}</h4>
+                    <h4 style="width:50px;">
+                        <i class="glyphicon glyphicon-heart" style="color:brown;"></i> {{jogador.moeda}}
+                    </h4>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <p ng-repeat="j in jogo.jogadores" style="display: flex;">
+                                <label style="flex:1;">{{j.nome}}</label>
+                                <label style="width:50px;"><i class="glyphicon glyphicon-heart" style="color:brown;"></i> {{j.moeda}}</label>
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <center><h4>Tabela</h4></center>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Jogador</th>
+                                <!-- <th>:</th> -->
+                                <th align="right">Jogada</th>
+                                <th></th>
+                                <th align="left">Jogada</th>
+                                <!-- <th>:</th> -->
+                                <th>Jogador</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="r in rodada">
+                                <td>{{r.jogador1.nome}}</td>
+                                <!-- <td>{{}}</td> -->
+                                <td align="right" style="font-weight: bold;"><a ng-style="{color: r.jogador1.pontos<0 ? 'brown' : 'black'}">{{r.jogador1.pontos}}</a> <i style="transform: rotate(90deg); font-size: 25px;" class="fa" ng-class="[{'fa-hand-rock-o' : r.jogador1.jogada=='pedra'}, {'fa-hand-paper-o' : r.jogador1.jogada=='papel'}, {'fa-hand-peace-o' : r.jogador1.jogada=='tesoura'}]"></i></td>
+                                <td>Vs</td>
+                                <td align="left" style="font-weight: bold;"><i style="transform: rotate(-90deg) rotateY(180deg); font-size: 25px;" class="fa" ng-class="[{'fa-hand-rock-o' : r.jogador2.jogada=='pedra'}, {'fa-hand-paper-o' : r.jogador2.jogada=='papel'}, {'fa-hand-peace-o' : r.jogador2.jogada=='tesoura'}]"></i> <a ng-style="{color: r.jogador2.pontos<0 ? 'brown' : 'black'}">{{r.jogador2.pontos}}</a></td>
+                                <!-- <td>{{r.jogador2.pontos}}</td> -->
+                                <td>{{r.jogador2.nome}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="panel-footer">
+                <center><h3>Nova Jogada em: {{jogo.tempo}}</h3></center>
+            </div>
+        </div>
+    </section>
+</div>

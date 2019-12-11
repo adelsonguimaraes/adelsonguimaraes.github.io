@@ -1,0 +1,129 @@
+.mymenu {
+    top:0;
+    /* left: 0; */
+    height: 100%;
+    /* width: 100%; */
+    background: rgba(0, 0, 0, 0.747);
+    position: fixed;
+    z-index: 9000;
+    /* left: -420px; esconde menu a esquerda */
+    /* transition: ease .3s all; */
+    transition: all 130ms ease-in;
+    -webkit-transform: translateX(-103%); /* esconde menu a esquerda */
+    transform: translateX(-103%); /* esconde menu a esquerda */
+    pointer-events: none; /* desativa eventos */
+}
+.mymenu-show {
+    /* left: 0px; mostra menu */
+    width: 100%;
+    transition: all 330ms ease-out;
+    -webkit-transform: none; /* mostra menu */
+    transform: none; /* mostra menu */
+    pointer-events: auto; /* ativa eventos */
+}
+.mymenu .close {
+    padding: 10px;
+    font-size: 35px;
+    color: rgb(170, 7, 7);
+    background: #000000ab;
+    opacity: initial;
+    text-shadow: none;
+}
+
+.mymenu .box {
+    background: #fff;
+    border-right: 1px solid rgba(0, 0, 0, 0.397);
+    width: 310px;
+    height: 100%;
+    overflow: auto;
+}
+.mymenu::after {
+    opacity: 0.3;
+}
+.mymenu .header {
+    height: 200px;
+    width: 100%;
+    /* background: blueviolet; */
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+    cursor: pointer;
+}
+.mymenu .user {
+    margin: 0 auto;
+    height: 120px;
+    width: 120px;
+}
+.mymenu .user img {
+    height: 120px;
+    width: 120px;
+    border-radius: 100px;
+    padding: 5px;
+    border: 1px double #ccc;
+}
+.mymenu .header a {
+    display: block;
+    text-align: center;
+    padding: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
+.mymenu ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    margin-bottom: 40px;
+}
+.mymenu ul:nth-child(3)  {
+    padding-left: 18px;
+    display: none; /*esconde o sub menus*/
+}
+.mymenu li {
+    border-bottom: 1px solid #ccc;
+}
+.mymenu li a {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    color: black;
+    cursor: pointer;
+}
+.mymenu li a:hover {
+    background: #ccc;
+}
+.mymenu li .active  {
+    border-left: 5px solid #2196F3;
+    background: #d4d4d4;
+}
+.mymenu li a i {
+    padding-right: 3px;
+}
+.mymenu .footer {
+    position: fixed;
+    border-top: 1px solid #ccc;
+    width: 310px;
+    height: 45px;
+    bottom:0;
+}
+.mymenu .footer a {
+    color: red;
+    display: block;
+    padding: 12px 20px;
+    font-size: 18px;
+    text-align: right;
+    text-decoration: none;
+    cursor: pointer;
+    background: #fff;
+}
+.mymenu .footer a:hover {
+    background: #ccc;
+}
+.mymenu .footer .version {
+    padding: 15px 10px;
+    position: absolute;
+}
