@@ -14,6 +14,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
                     player: false,
                     jogada: null,
                     pontos: 0,
+                    adversarios: []
                 },
                 {
                     index: 2,
@@ -22,6 +23,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
                     player: false,
                     jogada: null,
                     pontos: 0,
+                    adversarios: []
                 }
             ]
         }
@@ -37,6 +39,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
             player: true,
             jogada: null,
             pontos: 0,
+            adversarios: []
         };
         $scope.jogo.jogadores.push($scope.jogador);
         if ($scope.jogador!==null) $scope.view = 2;
@@ -142,108 +145,84 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
     ];
     function rodada () {
         $scope.rodada = [];
-
-        var total = 0;
-        // pegando total de jogadores com moedas
-        for (f of $scope.jogo.jogadores) {
-            f.rodadas = 0;
-            if (f.moeda>=0) total++;
+        var jogadores = [];
+        
+        // repetir 2 vezes
+        // montando uma lista de jogadores duplicados
+        // a lista irá ser usada para monta a tabela de versos
+        var i=0;
+        while (i < 2) {
+            // laço de jogadores
+            var index = 0;
+            for (j of $scope.jogo.jogadores) {
+                // se o jogador tem moedas
+                if (j.moeda>0) {
+                    jogadores.push({
+                        index: index,
+                        indexjodador: j.index, 
+                        nome: j.nome,
+                        jogada: j.jogada,
+                        usado: false
+                    });       
+                }
+                index++;
+            }
+            i++;
         }
 
-        // criando rodada pra jogadores com moeda
-        for (var i=0; i<total; i++) {
-            // listando os jogadores
-            for (j of $scope.jogo.jogadores) {
-                // se esse jogador tiver moedas
-                if (j.moeda>0 && j.rodadas<2) {
-                    // se rodada estiver vazia
-                    if ($scope.rodada[i] == undefined) {
-                        // adicionamos a rodada
+        // lista de rodadas possíveis
+        for (r=0; r<jogadores.length/2; r++) {
+            // a lista de jogadores duplicados
+            for (j of jogadores) {
+                // se nessa posição a rodada não existir
+                if ($scope.rodada[r] == undefined) {
+                    // e se o jogador ainda não foi usado
+                    if (j.usado === undefined || j.usado === false) {
+                        // criamos a rodada e adicioanamos o dado do jogador como jogador1
                         $scope.rodada.push({
                             jogador1: {
                                 index: j.index,
                                 nome: j.nome,
-                                pontos: 0
+                                jogada: j.jogada,
+                                pontos: ''
                             },
                             jogador2: {
-                                index: null,
-                                nome: null,
-                                pontos: null
+                                index: '',
+                                nome: '',
+                                jogada: '',
+                                pontos: ''
                             }
                         });
+                        // setamos que esse jogador já foi usado
+                        j.usado = true;
+                    }
+                }else{
+                    // caso a rodada já exista nessa posição verificamos se o jogador 2 está vazio
+                    if ($scope.rodada[r].jogador2.index === '') {
+                        // se o jogador da lista ainda não foir usado
+                        if (j.usado === undefined || j.usado === false) {
+                            // então adicionamos como jogador 2 na rodada
+                            $scope.rodada[r].jogador2.index = j.index;
+                            $scope.rodada[r].jogador2.nome = j.nome;
+                            $scope.rodada[r].jogador2.jogada = j.jogada;
+                            // calculamos os pontos do jogador
+                            $scope.rodada[r].jogador2.pontos = jokenpo(j.jogada, $scope.rodada[r].jogador1.jogada).pontos;
+                            // calculamos a quantidade de moedas do jogador depois na rodada
+                            // $scope.jodaores[j.indexjodador].moeda += +($scope.rodada[r].jogador2.pontos);
 
-                        // adicionando a quantidade de rodadas do jogador
-                        j.rodadas++;
-                    }else{
-                        // pegando a rodada
-                        var r = $scope.rodada[i];
-                        // se o jogador da lista não estiver na rodada, adicionamos
-                        if (r.jogador2.index !== j.index && j.rodadas<2) {
-                            r.jogador2.index = j.index;
-                            r.jogador2.nome = j.nome;
-                            r.jogador1.pontos = jokenpo(r.jogador1.jogada, j.jogada).pontos;
-                            r.jogador2.pontos = jokenpo(j.jogada, r.jogador1.jogada).pontos;
-
-                            $scope.jogo.jogadores[r.jogador1.index].moeda += +(r.jogador1.pontos);
-                            $scope.jogo.jogadores[r.jogador2.index].moeda += +(r.jogador2.pontos);
-
-                            // adicionando a quantidade de rodadas do jogador
-                            j.rodadas++;
+                            // e agora com a informação de pontos do jogador 2 calculamos os pontos do jogador 1
+                            $scope.rodada[r].jogador1.pontos = jokenpo($scope.rodada[r].jogador1.jogada, j.jogada).pontos;
+                            // calculamos a quantidade de moedas do jogador depois na rodada
+                            // $scope.jodaores[$scope.rodada[r].jogador1.indexjodador].moeda += +($scope.rodada[r].jogador1.pontos);
+                            j.usado = true;
                         }
                     }
                 }
             }
         }
 
-        // return false;
-
-        // // laço de jogadores
-        // for (j of $scope.jogo.jogadores) {
-        //     if (j.moeda>0) {
-        //         if ($scope.rodada.length>0) {
-        //             for (r of $scope.rodada) {
-        //                 if (j.index !== r.jogador1.index && j.index !== r.jogador2.index) {
-        //                     if (r.jogador2.index == null) {
-        //                         r.jogador2.index = j.index;
-        //                         r.jogador2.nome = j.nome;
-        //                         r.jogador1.pontos = jokenpo(r.jogador1.jogada, j.jogada).pontos;
-        //                         r.jogador2.pontos = jokenpo(j.jogada, r.jogador1.jogada).pontos;
-
-        //                         $scope.jogo.jogadores[r.jogador1.index].moeda += +(r.jogador1.pontos);
-        //                         $scope.jogo.jogadores[r.jogador2.index].moeda += +(r.jogador2.pontos);
-        //                     }else{
-        //                         $scope.rodada.push({
-        //                             jogador1: {
-        //                                 index: j.index,
-        //                                 nome: j.nome,
-        //                                 pontos: 0
-        //                             },
-        //                             jogador2: {
-        //                                 index: null,
-        //                                 nome: null,
-        //                                 pontos: null
-        //                             }
-        //                         });
-        //                     }
-        //                 }
-        //             }
-        //         }else{
-        //             $scope.rodada.push({
-        //                 jogador1: {
-        //                     index: j.index,
-        //                     nome: j.nome,
-        //                     pontos: 0
-        //                 },
-        //                 jogador2: {
-        //                     index: null,
-        //                     nome: null,
-        //                     pontos: null
-        //                 }
-        //             });
-        //         }
-        //     }
-        // }
-
+        console.log($scope.rodada);
+        
         // if ($scope.jogo.jogadores[0].moeda>0) {
         //     // rodada 1 - jogador 1 vs 2
         //     $scope.rodada.push({
