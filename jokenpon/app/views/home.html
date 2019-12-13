@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                <form>
+                <form ng-if="jogador.moeda>0">
                     <div class="row">
                         <div class="col-sm-12 col-xs-12">
                             <label for="">Escolha sua jogada! Tempo: <span class="time">{{jogo.tempo}}</label>
@@ -91,6 +91,17 @@
                     </div>
                         
                 </form>
+                <div  ng-if="jogador.moeda<=0">
+                    <center>
+                        <h4>Você foi <strike>eliminado</strike> mas o jogo só acaba quando houver um vencedor!</h4>
+                        <p style="font-size: 14em;">&#128565;</p>
+                        <p>
+                            A batalha segue entre {{jogo.jogadores[0].nome}} vs {{jogo.jogadores[1].nome}}
+                        </p>
+                        <hr>
+                        <label style="font-size: 20px;">Próxima rodada em: <span class="time">{{jogo.tempo}}</label>
+                    </center>
+                </div>
             </div>
             <!-- <div class="panel-footer" style="display: flex;">
                     <textarea class="form-control" name="chat" id="chat" style="width: 100%;
@@ -121,7 +132,7 @@
                         </div>
                     </div>
                     <hr>
-                    <center><h4>Tabela</h4></center>
+                    <center><h4>Rodada {{countRodada}}</h4></center>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -170,6 +181,28 @@
                 text-align: center;
                 background: #0000007a;
                 color: white;">{{vencedor.nome}}</p>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn-default btn-block btn-lg" ng-click="jogarNovamente()">Jogar Novamente</button>
+            </div>
+        </div>
+    </section>
+    <section ng-if="view==5">
+        <div class="panel panel-default panel-flex">
+            <div class="panel-heading">
+                <center><h3>Empate</h3></center>
+            </div>
+            <div class="panel-body" style="flex: 1;">
+                <p style="font-size: 15em;
+                text-align: center;
+                color:#f19710;">
+                    &#128560;
+                </p>
+                <p style="    font-size: 40px;
+                font-weight: bold;
+                text-align: center;
+                background: #0000007a;
+                color: white;">Não deu!</p>
             </div>
             <div class="panel-footer">
                 <button class="btn btn-default btn-block btn-lg" ng-click="jogarNovamente()">Jogar Novamente</button>

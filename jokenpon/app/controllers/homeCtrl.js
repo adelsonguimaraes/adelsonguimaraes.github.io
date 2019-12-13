@@ -4,6 +4,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
 
     function reset () {
         $scope.view = 1; // a tela atual que o jogo se encontra | 1. Inicial | 2. Escolha de Jogada | 3. Rodada | 4. Vencedor
+        $scope.countRodada = 0;
         $scope.obj = {
             nome: ''
         };
@@ -87,7 +88,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
                 // caso ninguém tenha mais moedas
                 }else if (commoeda.length<=0) {
                     $interval.cancel(tr);
-                    document.write("<h4>EMPATE!</h4");
+                    $scope.view=5;
                 // caso não seguimos com a play
                 }else{
                     $interval.cancel(tr);
@@ -175,6 +176,7 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
         }
     ];
     function rodada () {
+        $scope.countRodada++;
         $scope.rodada = [];
         var jogadores = [];
         
