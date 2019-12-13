@@ -34,7 +34,7 @@
     </section>
 
     <section ng-if="view==2">
-        <div class="panel panel-default" style="height: 100vh; margin-bottom: 0;">
+        <div class="panel panel-default" style="margin-bottom: 0;">
             <div class="panel-heading">
                 <div style="display: flex;">
                     <h4 style="flex: 1;">Jogador: {{jogador.nome}}</h4>
@@ -114,6 +114,7 @@
                         <div class="col-sm-12 col-xs-12">
                             <p ng-repeat="j in jogo.jogadores" style="display: flex;">
                                 <label style="flex:1;">{{j.nome}}</label>
+                                <label style="flex:1;">{{(j.moeda<=0) ? 'Eliminado' : ''}}</label>
                                 <label style="width:50px;"><i class="glyphicon glyphicon-heart" style="color:brown;"></i> {{j.moeda}}</label>
                             </p>
                         </div>
@@ -144,6 +145,29 @@
             </div>
             <div class="panel-footer">
                 <center><h3>Nova Jogada em: {{jogo.tempo}}</h3></center>
+            </div>
+        </div>
+    </section>
+    <section ng-if="view==4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <center><h3>Vencedor</h3></center>
+            </div>
+            <div class="panel-body" style="height: 562px;
+            background-image: url(libs/img/cong.png);
+            background-size: cover;
+            background-position: -90px -35px;
+            background-repeat: no-repeat;
+            background-color: white;">
+                <p style="font-size: 15em;
+                text-align: center;">
+                    <i class="fa fa-trophy"></i>
+                </p>
+                <p style="    font-size: 40px;
+                font-weight: bold;
+                text-align: center;
+                background: #0000007a;
+                color: white;">{{vencedor.nome}}</p>
             </div>
         </div>
     </section>
