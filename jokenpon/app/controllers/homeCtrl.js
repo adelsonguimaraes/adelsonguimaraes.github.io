@@ -3,7 +3,10 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
     // if (!$rootScope.usuario) { $location.path("/login"); return false; }
 
     function reset () {
-        $scope.view = 1; // a tela atual que o jogo se encontra
+        $scope.view = 1; // a tela atual que o jogo se encontra | 1. Inicial | 2. Escolha de Jogada | 3. Rodada | 4. Vencedor
+        $scope.obj = {
+            nome: ''
+        };
         $scope.jogo = {
             tempo: 30,
             jogadores: [
@@ -27,7 +30,8 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
                 }
             ]
         }
-        $scope.jogador = null;
+        $scope.jogador = JSON.parse(localStorage.getItem('jogador'));
+        if ($scope.jogador!==null) $scope.obj.nome = $scope.jogador.nome;
     }
     reset();
 
@@ -42,8 +46,11 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
             adversarios: []
         };
         $scope.jogo.jogadores.push($scope.jogador);
-        if ($scope.jogador!==null) $scope.view = 2;
-        // tempo();
+        if ($scope.jogador!==null) {
+            $scope.view = 2;
+            localStorage.setItem('jogador', JSON.stringify($scope.jogador));
+        }
+        tempo();
     }
 
     var t;
@@ -66,11 +73,28 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
         tr = $interval(function () {
             $scope.jogo.tempo--;
             if ($scope.jogo.tempo<=0) {
-                // calculando as moedas
-                $interval.cancel(tr);
-                $scope.view = 2;
-                tempo(); // chamando o contador de tempo para a jogada
-                $scope.btn = null;
+                // verificando se já temos um campeão
+                var commoeda = [];
+                for (j of $scope.jogo.jogadores) {
+                    // FIM DO JOGO VENCEDOR
+                    if (j.moeda>0) commoeda.push(j);
+                }
+                // se existir apenas um jogador com moedas
+                if (commoeda.length==1) {
+                    $scope.vencedor = commoeda[0];
+                    $scope.view = 4;
+                    $interval.cancel(tr);
+                // caso ninguém tenha mais moedas
+                }else if (commoeda.length<=0) {
+                    $interval.cancel(tr);
+                    document.write("<h4>EMPATE!</h4");
+                // caso não seguimos com a play
+                }else{
+                    $interval.cancel(tr);
+                    $scope.view = 2;
+                    tempo(); // chamando o contador de tempo para a jogada
+                    $scope.btn = null;
+                }
             }
         }, 1000);
     };
@@ -150,7 +174,6 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
             }
         }
     ];
-    $scope.vencedor = $scope.jogo.jogadores[0];
     function rodada () {
         $scope.rodada = [];
         var jogadores = [];
@@ -177,13 +200,6 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
             }
             i++;
         }
-
-        // FIM DO JOGO VENCEDOR
-        if (jogadores.length<=2) {
-            $scope.vencedor = $scope.jogo.jogadores[jogadores[0].indexjogador];
-            $scope.view = 4;
-            $interval.cancel(tr);
-        };
 
         // calculando o total de jogadas, se tiver apenas 2(4) jogadores, necessário apenas 1 par de jogada
         var total = (jogadores.length>4) ? (jogadores.length/2) : 1;
@@ -214,25 +230,26 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
                         j.usado = true;
                     }
                 }else{
+                    var rodada = $scope.rodada[r];
                     // caso a rodada já exista nessa posição verificamos se o jogador 2 está vazio
-                    if ($scope.rodada[r].jogador2.indexjogador === '') {
+                    if (rodada.jogador2.indexjogador === '') {
                         // se o jogador da lista ainda não foir usado
                         if (j.usado === undefined || j.usado === false) {
                             // então adicionamos como jogador 2 na rodada
-                            $scope.rodada[r].jogador2.indexjogador = j.indexjogador;
-                            $scope.rodada[r].jogador2.nome = j.nome;
-                            $scope.rodada[r].jogador2.jogada = j.jogada;
+                            rodada.jogador2.indexjogador = j.indexjogador;
+                            rodada.jogador2.nome = j.nome;
+                            rodada.jogador2.jogada = j.jogada;
                             // calculamos os pontos do jogador
-                            $scope.rodada[r].jogador2.pontos = jokenpo(j.jogada, $scope.rodada[r].jogador1.jogada).pontos;
+                            rodada.jogador2.pontos = jokenpo(j.jogada, rodada.jogador1.jogada).pontos;
                             // calculamos a quantidade de moedas do jogador depois na rodada
-                            $scope.jogo.jogadores[$scope.rodada[r].jogador1.indexjogador].moeda += +($scope.rodada[r].jogador1.pontos);
+                            $scope.jogo.jogadores[j.indexjogador].moeda += +(rodada.jogador2.pontos);
                             
+                            // JOGADOR 1
+
                             // e agora com a informação de pontos do jogador 2 calculamos os pontos do jogador 1
-                            $scope.rodada[r].jogador1.pontos = jokenpo($scope.rodada[r].jogador1.jogada, j.jogada).pontos;
+                            rodada.jogador1.pontos = jokenpo($scope.rodada[r].jogador1.jogada, j.jogada).pontos;
                             // calculamos a quantidade de moedas do jogador depois na rodada
-                            $scope.jogo.jogadores[j.indexjogador].moeda += +($scope.rodada[r].jogador2.pontos);
-                            console.log($scope.rodada[r].jogador2);
-                            console.log($scope.jogo.jogadores[j.indexjogador]);
+                            $scope.jogo.jogadores[rodada.jogador1.indexjogador].moeda += +(rodada.jogador1.pontos);
                             j.usado = true;
                         }
                     }
@@ -257,6 +274,10 @@ angular.module(module).controller('homeCtrl', function ($rootScope, $scope, auth
         if (a=='tesoura' && b=='papel') r = {resultado: 'venceu', pontos: '+1'};
         if (a=='tesoura' && b=='tesoura') r = {resultado: 'empate', pontos: '-1'};
         return r;
+    }
+
+    $scope.jogarNovamente = function () {
+        reset();
     }
 
 });

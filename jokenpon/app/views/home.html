@@ -1,7 +1,7 @@
 <!-- <div ng-include="'app/views/common/header.html'"></div> -->
 <div class="home">
     <section ng-if="view==1">
-        <div class="panel panel-default">
+        <div class="panel panel-default panel-flex">
             <div class="panel-heading">
                 <center>
                     <h4>Bem Vindo ao JokenpOn</h4>
@@ -19,22 +19,23 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="">Nome</label>
-                                <input type="text" class="form-control" name="nome" id="nome" ng-model="obj.nome" ng-required="true">
+                                <input type="text" class="form-control" name="nome" id="nome" ng-model="obj.nome" ng-required="true" ng-disabled="jogador!==null">
                             </div>
                         </div>
                     </div>
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-default btn-lg" ng-click="entrar(obj)" ng-disabled="form.$invalid">Jogar</button>
+                    </div>
                 </form>
             </div>
-            <div class="panel-footer" style="display: flow-root;">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-default" ng-click="entrar(obj)" ng-disabled="form.$invalid">Salvar</button>
-                </div>
-            </div>
+            <!-- <div class="panel-footer" style="display: flow-root;">
+                
+            </div> -->
         </div>
     </section>
 
     <section ng-if="view==2">
-        <div class="panel panel-default" style="margin-bottom: 0;">
+        <div class="panel panel-default panel-flex" style="margin-bottom: 0;">
             <div class="panel-heading">
                 <div style="display: flex;">
                     <h4 style="flex: 1;">Jogador: {{jogador.nome}}</h4>
@@ -79,7 +80,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-xs-12">
-                            <button class="btn btn-default btn-block" ng-click="jogando()">Jogar</button>
+                            <button class="btn btn-default btn-block btn-lg" ng-click="jogando()">Jogar</button>
                         </div>
                     </div>
                     <hr>
@@ -99,7 +100,7 @@
     </section>
 
     <section ng-if="view==3">
-        <div class="panel panel-default">
+        <div class="panel panel-default panel-flex">
             <div class="panel-heading">
                 <div style="display: flex;">
                     <h4 style="flex: 1;">Jogador: {{jogador.nome}}</h4>
@@ -149,18 +150,19 @@
         </div>
     </section>
     <section ng-if="view==4">
-        <div class="panel panel-default">
+        <div class="panel panel-default panel-flex">
             <div class="panel-heading">
                 <center><h3>Vencedor</h3></center>
             </div>
-            <div class="panel-body" style="height: 562px;
+            <div class="panel-body" style="flex: 1;
             background-image: url(libs/img/cong.png);
             background-size: cover;
             background-position: -90px -35px;
             background-repeat: no-repeat;
             background-color: white;">
-                <p style="font-size: 15em;
-                text-align: center;">
+                <p class="animated bounce infinite" style="font-size: 15em;
+                text-align: center;
+                color:#f19710;">
                     <i class="fa fa-trophy"></i>
                 </p>
                 <p style="    font-size: 40px;
@@ -168,6 +170,9 @@
                 text-align: center;
                 background: #0000007a;
                 color: white;">{{vencedor.nome}}</p>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn-default btn-block btn-lg" ng-click="jogarNovamente()">Jogar Novamente</button>
             </div>
         </div>
     </section>
